@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import it.unical.igpe.Assets;
+import it.unical.igpe.GameConfig;
 import it.unical.igpe.IGPEGame;
 import it.unical.igpe.TileLayer;
 import it.unical.igpe.entity.Bullet;
@@ -83,24 +84,27 @@ public class GameScreen implements Screen {
 		
 		currentFrame = Assets.walkAnimation.getKeyFrame(0);
 		
+		rotation = getAngle((float)Gdx.input.getX(), (float) Gdx.input.getY());
+//		System.out.println(rotation);
+		
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			rotation = 0f;
 			player.MoveUp();
+//			rotation = 0f;
 			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
 		}
 		else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			rotation = 90f;
 			player.MoveLeft();
+//			rotation = 90f;
 			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
 		}
 		else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			rotation = 180f;
 			player.MoveDown();
+//			rotation = 180f;
 			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
 		}
 		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			rotation = 270f;
 			player.MoveRight();
+//			rotation = 270f;
 			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
 		}
 		if(Gdx.input.justTouched()) {
@@ -125,8 +129,29 @@ public class GameScreen implements Screen {
 					batch.draw(Assets.Wood, x * 32, y * 32);
 			}
 		}
+		
 		batch.draw(currentFrame, posP.x, posP.y, 0, 0, 64, 64, 1f, 1f, rotation);
 		batch.end();
+	}
+	
+	public float getAngle(float x, float y) {
+	    //float angle = (float) Math.toDegrees(Math.atan2(y, x));
+		y -= GameConfig.HEIGHT;
+		float angle = (float) Math.toDegrees(Math.atan2(y - (float) player.getPos().y, x - (float)player.getPos().x));
+		
+		/*Vector2 v2 = new Vector2(x,y);
+		
+		System.out.println(v2.angle());
+		
+		float angle = v2.angle();
+		*/
+		
+	    if(angle < 0){
+	        angle += 360;
+	    }
+
+	    return angle;
+		
 	}
 	
 	@Override
