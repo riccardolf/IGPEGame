@@ -135,22 +135,38 @@ public class GameScreen implements Screen {
 	}
 	
 	public float getAngle(float x, float y) {
+		// angolo tra vettore (1,0) e punto del mouse normalizzato (lunghezza 1)
 	    //float angle = (float) Math.toDegrees(Math.atan2(y, x));
-		y -= GameConfig.HEIGHT;
-		float angle = (float) Math.toDegrees(Math.atan2(y - (float) player.getPos().y, x - (float)player.getPos().x));
+		//y -= GameConfig.HEIGHT;
+		//float angle = (float) Math.toDegrees(Math.atan2(y - (float) player.getPos().y, x - (float)player.getPos().x));
 		
 		/*Vector2 v2 = new Vector2(x,y);
 		
 		System.out.println(v2.angle());
 		
 		float angle = v2.angle();
-		*/
+		
 		
 	    if(angle < 0){
 	        angle += 360;
 	    }
 
-	    return angle;
+	    return angle;*/
+		
+		float angle = 0.0f;
+		
+		Vector2 center = new Vector2(GameConfig.WIDTH / 2 , GameConfig.HEIGHT / 2);
+		Vector2 mouse = new Vector2(x, y);
+		//arccos
+		float ipot = (float) Math.sqrt(Math.pow(center.x - mouse.x, 2) + Math.pow(center.y - mouse.y, 2));
+		float cat = center.x - mouse.x;
+		angle = (float) Math.toDegrees(Math.acos(cat/ipot));
+		//angle = center.angle(mouse);
+		
+		System.out.println(angle);
+		System.out.println("Center " + center.x+ " " + center.y);
+		
+		return angle;
 		
 	}
 	
