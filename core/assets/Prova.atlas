@@ -1,0 +1,146 @@
+
+Prova.png
+size: 2048,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+survivor-idle_handgun
+  rotate: false
+  xy: 2, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 4
+survivor-idle_handgun
+  rotate: false
+  xy: 2, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 16
+survivor-idle_handgun
+  rotate: false
+  xy: 2, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 5
+survivor-idle_handgun
+  rotate: false
+  xy: 2, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 15
+survivor-idle_handgun
+  rotate: false
+  xy: 257, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 6
+survivor-idle_handgun
+  rotate: false
+  xy: 257, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 14
+survivor-idle_handgun
+  rotate: false
+  xy: 257, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 7
+survivor-idle_handgun
+  rotate: false
+  xy: 257, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 13
+survivor-idle_handgun
+  rotate: false
+  xy: 512, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 8
+survivor-idle_handgun
+  rotate: false
+  xy: 512, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 12
+survivor-idle_handgun
+  rotate: false
+  xy: 512, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 9
+survivor-idle_handgun
+  rotate: false
+  xy: 512, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 11
+survivor-idle_handgun
+  rotate: false
+  xy: 767, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 10
+survivor-idle_handgun
+  rotate: false
+  xy: 767, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 17
+survivor-idle_handgun
+  rotate: false
+  xy: 767, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 3
+survivor-idle_handgun
+  rotate: false
+  xy: 1022, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 18
+survivor-idle_handgun
+  rotate: false
+  xy: 1022, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 2
+survivor-idle_handgun
+  rotate: false
+  xy: 1022, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 19
+survivor-idle_handgun
+  rotate: false
+  xy: 1022, 2
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 1
+survivor-idle_handgun
+  rotate: false
+  xy: 1277, 220
+  size: 253, 216
+  orig: 253, 216
+  offset: 0, 0
+  index: 0

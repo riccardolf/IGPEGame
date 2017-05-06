@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -60,7 +59,6 @@ public class GameScreen implements Screen {
 				map[i][j] = 1;
 			}
 		}*/
-		// Non sovrascrive la mappa
 		try {
 			layer = layer.FromFile("map.txt");
 		} catch (IOException e) {
@@ -83,37 +81,30 @@ public class GameScreen implements Screen {
 		
 		batch.setProjectionMatrix(camera.combined);
 		
-		currentFrame = Assets.walkAnimation.getKeyFrame(0);
+		currentFrame = Assets.runningAnimation.getKeyFrame(stateTime,true);
 		
-		rotation = getAngle((float)Gdx.input.getX(), (float) Gdx.input.getY());
-//		System.out.println(rotation);
+		rotation = getAngle((float)Gdx.input.getX(), (float) Gdx.input.getY()) + 90;
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+		if(Gdx.input.isKeyPressed(Input.Keys.W)) {
 			player.MoveUp();
-//			rotation = 0f;
-			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
+			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
 		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+		else if(Gdx.input.isKeyPressed(Input.Keys.A)) {
 			player.MoveLeft();
-//			rotation = 90f;
-			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
+			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
 		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+		else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 			player.MoveDown();
-//			rotation = 180f;
-			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
+			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
 		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+		else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
 			player.MoveRight();
-//			rotation = 270f;
-			currentFrame = Assets.walkAnimation.getKeyFrame(stateTime, true);
+			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
 		}
 		if(Gdx.input.justTouched()) {
 		    touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		    //bullet.fire(touchPos);
-		    currentFrame = Assets.shootAnimation.getKeyFrame(1);
+		    bullet.fire(touchPos, rotation);
 		}
-			
 		
 		batch.begin();
 		
@@ -130,71 +121,13 @@ public class GameScreen implements Screen {
 					batch.draw(Assets.Wood, x * 32, y * 32);
 			}
 		}
-		
-		batch.draw(currentFrame, posP.x, posP.y, 0, 0, 64, 64, 1f, 1f, rotation);
+		batch.draw(currentFrame, posP.x, posP.y, 32, 32, 64, 64, 1f, 1f, rotation);
 		batch.end();
 	}
 	
 	public float getAngle(float x, float y) {
 		// angolo tra vettore (1,0) e punto del mouse normalizzato (lunghezza 1)
-	    //float angle = (float) Math.toDegrees(Math.atan2(y, x));
-		//y -= GameConfig.HEIGHT;
-		//float angle = (float) Math.toDegrees(Math.atan2(y - (float) player.getPos().y, x - (float)player.getPos().x));
-		
-		/*Vector2 v2 = new Vector2(x,y);
-		
-		System.out.println(v2.angle());
-		
-		float angle = v2.angle();
-		
-		
-	    if(angle < 0){
-	        angle += 360;
-	    }
-
-	    return angle;*/
-		
-		float angle = 0.0f;
-		/* Versione di kikke
-		 * 
-		 * 
-		Vector2 center = new Vector2(GameConfig.WIDTH / 2 , GameConfig.HEIGHT / 2);
-		Vector2 mouse = new Vector2(x, y);
-		//arccos
-		float ipot = (float) Math.sqrt(Math.pow(center.x - mouse.x, 2) + Math.pow(center.y - mouse.y, 2));
-		float cat = center.x - mouse.x;
-		angle = (float) Math.toDegrees(Math.acos(cat/ipot));
-		//angle = center.angle(mouse);
-		
-		System.out.println(angle);
-		System.out.println("Center " + center.x+ " " + center.y);
-		*/
-		
-		// centerX and centerY are the center points of the sprite. playerX and playerY are the co-ordinates of the sprite.
-		
-		float centerX = player.getPos().x ;
-		float centerY = player.getPos().y ;
-		Vector2 mouse = new Vector2(x, y);         
-		float radiansToMouse = (float) Math.atan2(centerX - mouse.x, centerY - mouse.y);
-		         
-		float degreesToMouse = (60f*radiansToMouse) * -1;
-		
-		int x1=Gdx.input.getX();
-        int y1=Gdx.graphics.getHeight()-Gdx.input.getY();
-
-        double radians= Math.atan2(y1 - centerY, x1 - centerX);
-        float angle1=(float)radians*MathUtils.radiansToDegrees; //here
-        launcherSpr.setRotation(angle);
-		
-		
-		angle=degreesToMouse;
-		System.out.println(angle);
-		
-		
-		/*mouse.Normalize();
-		float rotationInRadians = (float)Math.atan2((double)direction.Y, 
-		                             (double)direction.X) + MathHelper.PiOver2;*/
-		return angle;
+		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
 	}
 	
 	@Override

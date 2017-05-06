@@ -14,7 +14,7 @@ public class Bullet extends AbstractGameObject {
 		HP = 1f;
 	}
 	
-	public void fire(Vector3 dir) {
+	public void fire(Vector3 dir, float angle) {
 		
 	}
 	
