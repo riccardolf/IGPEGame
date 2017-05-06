@@ -1,14 +1,18 @@
 package it.unical.igpe.screens;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -17,6 +21,7 @@ import it.unical.igpe.GameConfig;
 import it.unical.igpe.IGPEGame;
 import it.unical.igpe.TileLayer;
 import it.unical.igpe.entity.Bullet;
+import it.unical.igpe.entity.Enemy;
 import it.unical.igpe.entity.Player;
 
 public class GameScreen implements Screen {
@@ -35,6 +40,9 @@ public class GameScreen implements Screen {
 	boolean Running;
 	boolean Shooting;
 	TextureRegion currentFrame;
+	LinkedList<Bullet> bls;
+	ShapeRenderer sr;
+	Enemy enemy;
 	
 	@SuppressWarnings("static-access")
 	public GameScreen(IGPEGame _game) {
@@ -49,6 +57,7 @@ public class GameScreen implements Screen {
 		
 		posP = new Vector2(100, 100);
 		player = new Player(posP);
+		enemy = new Enemy(new Vector2(500,500));
 		
 		touchPos = new Vector3();
 		
@@ -67,6 +76,8 @@ public class GameScreen implements Screen {
 		
 		map = layer.map;
 		batch = new SpriteBatch();
+		sr = new ShapeRenderer();
+		bls = player.getBullets();
 	}
 
 	@Override
@@ -79,7 +90,15 @@ public class GameScreen implements Screen {
 		camera.position.y = posP.y;
 		camera.update();
 		
+		bls = player.getBullets();
+		for (Bullet bullet : bls) {
+			bullet.update();
+		}
+		
 		batch.setProjectionMatrix(camera.combined);
+		sr.setProjectionMatrix(camera.combined);
+		
+		enemy.findPathToTarget(player.getPos());
 		
 		currentFrame = Assets.runningAnimation.getKeyFrame(stateTime,true);
 		
@@ -103,8 +122,10 @@ public class GameScreen implements Screen {
 		}
 		if(Gdx.input.justTouched()) {
 		    touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		    bullet.fire(touchPos, rotation);
+		    player.fire(rotation);
 		}
+		
+		// Direction bound to the player, so the bullet receive from the player the direction
 		
 		batch.begin();
 		
@@ -123,6 +144,14 @@ public class GameScreen implements Screen {
 		}
 		batch.draw(currentFrame, posP.x, posP.y, 32, 32, 64, 64, 1f, 1f, rotation);
 		batch.end();
+		
+		sr.begin(ShapeType.Filled);
+		sr.setColor(Color.BLACK);
+		for (Bullet bullet : bls) {
+			sr.circle(bullet.getPos().x, bullet.getPos().y, 4);
+		}
+		sr.circle(enemy.getPos().x, enemy.getPos().y, 15);
+		sr.end();
 	}
 	
 	public float getAngle(float x, float y) {
