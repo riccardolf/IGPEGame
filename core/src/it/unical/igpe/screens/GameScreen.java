@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -155,9 +154,7 @@ public class GameScreen implements Screen {
 	    return angle;*/
 		
 		float angle = 0.0f;
-		/* Versione di kikke
-		 * 
-		 * 
+		
 		Vector2 center = new Vector2(GameConfig.WIDTH / 2 , GameConfig.HEIGHT / 2);
 		Vector2 mouse = new Vector2(x, y);
 		//arccos
@@ -168,33 +165,9 @@ public class GameScreen implements Screen {
 		
 		System.out.println(angle);
 		System.out.println("Center " + center.x+ " " + center.y);
-		*/
 		
-		// centerX and centerY are the center points of the sprite. playerX and playerY are the co-ordinates of the sprite.
-		
-		float centerX = player.getPos().x ;
-		float centerY = player.getPos().y ;
-		Vector2 mouse = new Vector2(x, y);         
-		float radiansToMouse = (float) Math.atan2(centerX - mouse.x, centerY - mouse.y);
-		         
-		float degreesToMouse = (60f*radiansToMouse) * -1;
-		
-		int x1=Gdx.input.getX();
-        int y1=Gdx.graphics.getHeight()-Gdx.input.getY();
-
-        double radians= Math.atan2(y1 - centerY, x1 - centerX);
-        float angle1=(float)radians*MathUtils.radiansToDegrees; //here
-        launcherSpr.setRotation(angle);
-		
-		
-		angle=degreesToMouse;
-		System.out.println(angle);
-		
-		
-		/*mouse.Normalize();
-		float rotationInRadians = (float)Math.atan2((double)direction.Y, 
-		                             (double)direction.X) + MathHelper.PiOver2;*/
 		return angle;
+		
 	}
 	
 	@Override

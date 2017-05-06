@@ -3,7 +3,6 @@ package it.unical.igpe;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
@@ -29,8 +28,7 @@ public class Assets {
 		Wood = tmp[0][3];
 
 		// load character's texture
-		
-		walkSheet = new Texture(Gdx.files.internal("player1.png"));
+		walkSheet = new Texture(Gdx.files.internal("player.png"));
 		tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / 2, walkSheet.getHeight() / 4);
 		TextureRegion[] walkFrames = new TextureRegion[2 * 3];
 		TextureRegion[] shootFrames = new TextureRegion[2 * 1];
