@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.Collidable;
 import it.unical.igpe.GameConfig;
 
 public class Player extends AbstractGameObject {
@@ -27,6 +26,10 @@ public class Player extends AbstractGameObject {
 		b.add(bullet);
 	}
 	
+	public void hit(float dmg) {
+		this.HP -= dmg;
+	}
+	
 	public void tick() {
 		for (Bullet bullet : b) {
 			bullet.update();
@@ -37,11 +40,5 @@ public class Player extends AbstractGameObject {
 	
 	public LinkedList<Bullet> getBullets() {
 		return b;
-	}
-
-	@Override
-	public boolean handleCollision(Collidable box) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

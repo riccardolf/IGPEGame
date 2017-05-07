@@ -63,11 +63,7 @@ public class GameScreen implements Screen {
 		
 		
 		map = new int[16][16];
-		/*for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map.length; j++) {
-				map[i][j] = 1;
-			}
-		}*/
+		
 		try {
 			layer = layer.FromFile("map.txt");
 		} catch (IOException e) {

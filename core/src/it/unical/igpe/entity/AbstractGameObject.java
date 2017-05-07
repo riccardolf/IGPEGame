@@ -3,9 +3,9 @@ package it.unical.igpe.entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.Collidable;
+import it.unical.igpe.GameConfig;
 
-public abstract class AbstractGameObject implements Collidable {
+public abstract class AbstractGameObject {
 	protected float angle;
 	protected Vector2 pos;
 	protected Rectangle boundingBox;
@@ -15,32 +15,38 @@ public abstract class AbstractGameObject implements Collidable {
 	protected float speed;
 	
 	public void MoveUp() {
-		this.pos.y += speed;
+		this.pos.y += GameConfig.MOVESPEED;
 	}
 	public void MoveDown() {
-		this.pos.y -= speed;
+		this.pos.y -= GameConfig.MOVESPEED;
 	}
 	public void MoveRight() {
-		this.pos.x += speed;
+		this.pos.x += GameConfig.MOVESPEED;
 	}
 	public void MoveLeft() {
-		this.pos.x -= speed;
+		this.pos.x -= GameConfig.MOVESPEED;
 	}
 	public void MoveUpLeft() {
-		this.pos.y += speed * 0.7;
-		this.pos.x -= speed * 0.7;
+		this.pos.y += GameConfig.DIAGONALSPEED;
+		this.pos.x -= GameConfig.DIAGONALSPEED;
 	}
 	public void MoveUpRight() {
-		this.pos.y += speed * 0.7;
-		this.pos.x += speed * 0.7;
+		this.pos.y += GameConfig.DIAGONALSPEED;
+		this.pos.x += GameConfig.DIAGONALSPEED;
 	}
 	public void MoveDownLeft() {
-		this.pos.y -= speed * 0.7;
-		this.pos.x -= speed * 0.7;
+		this.pos.y -= GameConfig.DIAGONALSPEED;
+		this.pos.x -= GameConfig.DIAGONALSPEED;
 	}
 	public void MoveDownRight() {
-		this.pos.y -= speed * 0.7;
-		this.pos.x += speed * 0.7;
+		this.pos.y -= GameConfig.DIAGONALSPEED;
+		this.pos.x += GameConfig.DIAGONALSPEED;
+	}
+	
+	public boolean handleCollision(Rectangle box) {
+		if(this.boundingBox.contains(box))
+			return true;
+		return false;
 	}
 	
 	public Vector2 getPos() {

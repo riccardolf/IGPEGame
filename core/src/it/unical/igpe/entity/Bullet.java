@@ -3,7 +3,6 @@ package it.unical.igpe.entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.Collidable;
 import it.unical.igpe.GameConfig;
 
 public class Bullet extends AbstractGameObject{
@@ -26,12 +25,6 @@ public class Bullet extends AbstractGameObject{
 	public boolean check() {
 		if(this.pos.x > 800 || this.pos.y > 600 || this.pos.x < 0 || this.pos.y < 0)
 			return true;
-		return false;
-	}
-
-	@Override
-	public boolean handleCollision(Collidable box) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
