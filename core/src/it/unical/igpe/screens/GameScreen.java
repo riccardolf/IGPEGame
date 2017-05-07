@@ -23,6 +23,7 @@ import it.unical.igpe.TileLayer;
 import it.unical.igpe.entity.Bullet;
 import it.unical.igpe.entity.Enemy;
 import it.unical.igpe.entity.Player;
+import it.unical.igpe.entity.Wall;
 
 public class GameScreen implements Screen {
 	
@@ -132,8 +133,10 @@ public class GameScreen implements Screen {
 			for (int x = 0; x < layer.map[y].length; x++) {
 				if(map[y][x] == 0)
 					batch.draw(Assets.Water, x * 32, y * 32);
-				else if(map[y][x] == 1)
+				else if(map[y][x] == 1) {
 					batch.draw(Assets.Sand, x * 32, y * 32);
+					new Wall(new Vector2(x * 32, y * 32));
+				}
 				else if(map[y][x] == 2)
 					batch.draw(Assets.Grass, x * 32, y * 32);
 				else if(map[y][x] == 3)
