@@ -3,7 +3,9 @@ package it.unical.igpe.entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class AbstractGameObject extends Thread {
+import it.unical.igpe.Collidable;
+
+public abstract class AbstractGameObject implements Collidable {
 	protected float angle;
 	protected Vector2 pos;
 	protected Rectangle boundingBox;
@@ -23,6 +25,22 @@ public abstract class AbstractGameObject extends Thread {
 	}
 	public void MoveLeft() {
 		this.pos.x -= speed;
+	}
+	public void MoveUpLeft() {
+		this.pos.y += speed * 0.7;
+		this.pos.x -= speed * 0.7;
+	}
+	public void MoveUpRight() {
+		this.pos.y += speed * 0.7;
+		this.pos.x += speed * 0.7;
+	}
+	public void MoveDownLeft() {
+		this.pos.y -= speed * 0.7;
+		this.pos.x -= speed * 0.7;
+	}
+	public void MoveDownRight() {
+		this.pos.y -= speed * 0.7;
+		this.pos.x += speed * 0.7;
 	}
 	
 	public Vector2 getPos() {

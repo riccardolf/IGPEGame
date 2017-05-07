@@ -104,22 +104,24 @@ public class GameScreen implements Screen {
 		
 		rotation = getAngle((float)Gdx.input.getX(), (float) Gdx.input.getY()) + 90;
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+		
+		if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A))
+			player.MoveUpLeft();
+		else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D))
+			player.MoveUpRight();
+		else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A))
+			player.MoveDownLeft();
+		else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
+			player.MoveDownRight();
+		else if(Gdx.input.isKeyPressed(Input.Keys.W))
 			player.MoveUp();
-			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
-		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+		else if(Gdx.input.isKeyPressed(Input.Keys.A))
 			player.MoveLeft();
-			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
-		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+		else if(Gdx.input.isKeyPressed(Input.Keys.S))
 			player.MoveDown();
-			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
-		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+		else if(Gdx.input.isKeyPressed(Input.Keys.D))
 			player.MoveRight();
-			currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
-		}
+			
 		if(Gdx.input.justTouched()) {
 		    touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		    player.fire(rotation);

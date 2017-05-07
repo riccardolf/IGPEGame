@@ -3,6 +3,7 @@ package it.unical.igpe.entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.Collidable;
 import it.unical.igpe.GameConfig;
 
 public class Enemy extends AbstractGameObject {
@@ -16,7 +17,7 @@ public class Enemy extends AbstractGameObject {
 	}
 	
 	public void findPathToTarget(Vector2 target) {
-		// Simple AI, follow you into the level
+		// Simple AI, follow you into the level, TODO 8 directions
 		if(this.pos.x < target.x)
 			this.MoveRight();
 		if(this.pos.x > target.x)
@@ -25,5 +26,11 @@ public class Enemy extends AbstractGameObject {
 			this.MoveUp();
 		if(this.pos.y > target.y)
 			this.MoveDown();
+	}
+
+	@Override
+	public boolean handleCollision(Collidable box) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

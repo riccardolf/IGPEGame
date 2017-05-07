@@ -3,7 +3,9 @@ package it.unical.igpe.entity;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class AbstractStaticObject {
+import it.unical.igpe.Collidable;
+
+public abstract class AbstractStaticObject implements Collidable{
 	protected Vector2 pos;
 	protected Rectangle boundingBox;
 	
