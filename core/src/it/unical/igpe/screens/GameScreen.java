@@ -107,15 +107,12 @@ public class GameScreen implements Screen {
 		else if(Gdx.input.isKeyPressed(Input.Keys.D))
 			player.MoveRight();
 			
-<<<<<<< HEAD
 		if(Gdx.input.justTouched()) {
-		    touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		    player.fire(rotation+90);
 		}
-=======
 		if(Gdx.input.justTouched())
 		    player.fire(rotation);
->>>>>>> origin/master
+
 		
 		// Direction bound to the player, so the bullet receive from the player the direction
 		
