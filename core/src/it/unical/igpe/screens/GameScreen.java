@@ -1,6 +1,5 @@
 package it.unical.igpe.screens;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
@@ -14,19 +13,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import it.unical.igpe.Assets;
 import it.unical.igpe.GameConfig;
 import it.unical.igpe.IGPEGame;
 import it.unical.igpe.TileLayer;
+import it.unical.igpe.World;
 import it.unical.igpe.entity.Bullet;
 import it.unical.igpe.entity.Enemy;
 import it.unical.igpe.entity.Player;
 import it.unical.igpe.entity.Wall;
 
 public class GameScreen implements Screen {
-	
+	World world;
 	IGPEGame game;
 	OrthographicCamera camera;
 	SpriteBatch batch;
@@ -37,18 +36,16 @@ public class GameScreen implements Screen {
 	Player player;
 	Bullet bullet;
 	Vector2 posP;
-	Vector3 touchPos;
-	boolean Running;
-	boolean Shooting;
 	TextureRegion currentFrame;
 	LinkedList<Bullet> bls;
 	ShapeRenderer sr;
 	Enemy enemy;
+	LinkedList<Wall> wls;
 	
-	@SuppressWarnings("static-access")
-	public GameScreen(IGPEGame _game) {
+	public GameScreen(IGPEGame _game, World _world) {
 		
 		this.game = _game;
+		this.world = new World();
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,800,600);
@@ -56,25 +53,16 @@ public class GameScreen implements Screen {
 		stateTime = 0f;
 		rotation = 0f;
 		
-		posP = new Vector2(100, 100);
-		player = new Player(posP);
-		enemy = new Enemy(new Vector2(500,500));
+		posP = world.getPosP();
+		player = world.getPlayer();
+		enemy = world.getEnemy();
 		
-		touchPos = new Vector3();
+		wls = world.getWls();
 		
+		bls = player.getBullets();
 		
-		map = new int[16][16];
-		
-		try {
-			layer = layer.FromFile("map.txt");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		map = layer.map;
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
-		bls = player.getBullets();
 	}
 
 	@Override
@@ -119,28 +107,30 @@ public class GameScreen implements Screen {
 		else if(Gdx.input.isKeyPressed(Input.Keys.D))
 			player.MoveRight();
 			
+<<<<<<< HEAD
 		if(Gdx.input.justTouched()) {
 		    touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		    player.fire(rotation+90);
 		}
+=======
+		if(Gdx.input.justTouched())
+		    player.fire(rotation);
+>>>>>>> origin/master
 		
 		// Direction bound to the player, so the bullet receive from the player the direction
 		
 		batch.begin();
 		
+		
 		// draw map;
-		for(int y = 0; y < layer.map.length; y++) {
-			for (int x = 0; x < layer.map[y].length; x++) {
-				if(map[y][x] == 0)
+		
+		for(int y = 0; y < world.getMap().length; y++) {
+			for (int x = 0; x < world.getMap().length; x++) {
+				if(world.getMap()[y][x] == 0)
 					batch.draw(Assets.Water, x * 32, y * 32);
-				else if(map[y][x] == 1) {
+				else if(world.getMap()[y][x] == 1) {
 					batch.draw(Assets.Sand, x * 32, y * 32);
-					new Wall(new Vector2(x * 32, y * 32));
 				}
-				else if(map[y][x] == 2)
-					batch.draw(Assets.Grass, x * 32, y * 32);
-				else if(map[y][x] == 3)
-					batch.draw(Assets.Wood, x * 32, y * 32);
 			}
 		}
 		batch.draw(currentFrame, posP.x, posP.y, 32, 32, 64, 64, 1f, 1f, rotation);
@@ -153,6 +143,11 @@ public class GameScreen implements Screen {
 		}
 		sr.circle(enemy.getPos().x, enemy.getPos().y, 15);
 		sr.end();
+		
+		/*for (Wall wall : wls) {
+			if(player.handleCollision(wall.getBoundingBox()))
+				System.out.println("Collisione");
+		}*/
 	}
 	
 	public float getAngle(float x, float y) {
