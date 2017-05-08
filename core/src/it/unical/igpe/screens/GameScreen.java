@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
 		
 		currentFrame = Assets.runningAnimation.getKeyFrame(stateTime,true);
 		
-		rotation = getAngle((float)Gdx.input.getX(), (float) Gdx.input.getY()) + 90;
+		rotation = getAngle((float)Gdx.input.getX(), (float) Gdx.input.getY());
 		
 		
 		if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A))
@@ -121,7 +121,7 @@ public class GameScreen implements Screen {
 			
 		if(Gdx.input.justTouched()) {
 		    touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		    player.fire(rotation);
+		    player.fire(rotation+90);
 		}
 		
 		// Direction bound to the player, so the bullet receive from the player the direction

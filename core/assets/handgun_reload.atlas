@@ -1,0 +1,111 @@
+
+handgun_reload.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+handgun_reload
+  rotate: false
+  xy: 2, 526
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 0
+handgun_reload
+  rotate: false
+  xy: 2, 264
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 1
+handgun_reload
+  rotate: false
+  xy: 234, 526
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 2
+handgun_reload
+  rotate: false
+  xy: 2, 2
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 3
+handgun_reload
+  rotate: false
+  xy: 234, 264
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 4
+handgun_reload
+  rotate: false
+  xy: 466, 526
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 5
+handgun_reload
+  rotate: false
+  xy: 234, 2
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 6
+handgun_reload
+  rotate: false
+  xy: 466, 264
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 7
+handgun_reload
+  rotate: false
+  xy: 698, 526
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 8
+handgun_reload
+  rotate: false
+  xy: 466, 2
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 9
+handgun_reload
+  rotate: false
+  xy: 698, 264
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 10
+handgun_reload
+  rotate: false
+  xy: 930, 526
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 11
+handgun_reload
+  rotate: false
+  xy: 698, 2
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 12
+handgun_reload
+  rotate: false
+  xy: 930, 264
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 13
+handgun_reload
+  rotate: false
+  xy: 1162, 526
+  size: 230, 260
+  orig: 230, 260
+  offset: 0, 0
+  index: 14

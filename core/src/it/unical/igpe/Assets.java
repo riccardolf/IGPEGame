@@ -28,7 +28,7 @@ public class Assets {
 		Wood = tmp[0][3];
 
 		// load character's texture
-		atlas = new TextureAtlas(Gdx.files.internal("Prova.atlas"));
-		runningAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("survivor-idle_handgun"));
+		atlas = new TextureAtlas(Gdx.files.internal("rifle_reload.atlas"));
+		runningAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("rifle_reload"));
 	}
 }
