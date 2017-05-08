@@ -25,7 +25,7 @@ public class World {
 	public World() {
 		posP = new Vector2(100,100);
 		player = new Player(posP);
-		enemy = new Enemy(posP);
+		enemy = new Enemy(posP.scl(3f));
 		bls = new LinkedList<Bullet>();
 		wls = new LinkedList<Wall>();
 		ens = new LinkedList<Enemy>();

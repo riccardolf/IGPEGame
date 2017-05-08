@@ -12,7 +12,7 @@ public class Enemy extends AbstractGameObject {
 		ID = "enemy";
 		alive = true;
 		HP = 100f;
-		speed = GameConfig.MOVESPEED * 0.5f;
+		speed = GameConfig.MOVESPEED * 0.3f;
 	}
 	
 	public void hit(float dmg) {
