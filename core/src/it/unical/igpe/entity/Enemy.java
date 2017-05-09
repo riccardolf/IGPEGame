@@ -20,14 +20,22 @@ public class Enemy extends AbstractGameObject {
 	}
 	
 	public void findPathToTarget(Vector2 target) {
-		// Simple AI, follow you into the level, TODO 8 directions
-		if(this.pos.x < target.x)
+		// Simple AI, follow you into the level
+		if(this.pos.x < target.x && this.pos.y < target.y)
+			this.MoveUpRight();
+		else if(this.pos.x < target.x && this.pos.y > target.y)
+			this.MoveDownRight();
+		else if(this.pos.x > target.x && this.pos.y < target.y)
+			this.MoveUpLeft();
+		else if(this.pos.x > target.x && this.pos.y > target.y)
+			this.MoveDownLeft();
+		else if(this.pos.x < target.x)
 			this.MoveRight();
-		if(this.pos.x > target.x)
+		else if(this.pos.x > target.x)
 			this.MoveLeft();
-		if(this.pos.y < target.y)
+		else if(this.pos.y < target.y)
 			this.MoveUp();
-		if(this.pos.y > target.y)
+		else if(this.pos.y > target.y)
 			this.MoveDown();
 	}
 }

@@ -10,6 +10,8 @@ public class Bullet extends AbstractGameObject{
 	public Bullet(Vector2 _pos, float _angle) {
 		this.angle = _angle;
 		this.pos = new Vector2(_pos);
+		this.pos.x += 32;
+		this.pos.y += 32;
 		this.boundingBox = new Rectangle(pos.x, pos.y, 8, 8);
 		this.ID = "bullet";
 		this.alive = true;
@@ -23,8 +25,6 @@ public class Bullet extends AbstractGameObject{
 	}
 	
 	public boolean check() {
-		if(this.pos.x > 800 || this.pos.y > 600 || this.pos.x < 0 || this.pos.y < 0)
-			return true;
 		return false;
 	}
 }

@@ -7,7 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.GameConfig;
 
-public class Player extends AbstractGameObject {
+public class Player extends AbstractGameObject implements Runnable {
+	private Thread thread;
 	private LinkedList<Bullet> b;
 	
 	public Player(Vector2 _pos) {
@@ -19,6 +20,7 @@ public class Player extends AbstractGameObject {
 		this.speed = GameConfig.MOVESPEED;
 		this.angle = 0f;
 		this.b = new LinkedList<Bullet>();
+		this.thread = new Thread();
 	}
 
 	public void fire(float angle) {
@@ -38,7 +40,17 @@ public class Player extends AbstractGameObject {
 		}
 	}
 	
+	public void updateBoundingBox() {
+		this.boundingBox.x = pos.x;
+		this.boundingBox.y = pos.y;				
+	}
+	
 	public LinkedList<Bullet> getBullets() {
 		return b;
+	}
+
+	@Override
+	public void run() {
+		thread.start();
 	}
 }

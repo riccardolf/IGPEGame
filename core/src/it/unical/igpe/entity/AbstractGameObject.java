@@ -44,9 +44,16 @@ public abstract class AbstractGameObject {
 	}
 	
 	public boolean handleCollision(Rectangle box) {
-		if(this.boundingBox.contains(box))
+		if(this.getBoundingBox().contains(box))
 			return true;
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		String s = "Pos: " + this.pos.x + " " + this.pos.y + " Box: " + boundingBox.x + " " + boundingBox.y + " " +
+					boundingBox.width + " " + boundingBox.height;
+		return s;
 	}
 	
 	public Vector2 getPos() {
