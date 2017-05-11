@@ -27,9 +27,11 @@ public class World {
 	private int[][] map;
 	public float rotation;
 	TileLayer layer;
+	private boolean[] collision;
 
 	@SuppressWarnings("static-access")
 	public World() {
+		collision = new boolean[16 * 16];
 		posP = new Vector2(100, 100);
 		player = new Player(posP);
 		Enemy enemy1 = new Enemy(new Vector2(600, 600));
@@ -53,32 +55,37 @@ public class World {
 		for (int y = 0; y < map.length; y++)
 			for (int x = 0; x < map[y].length; x++)
 				if (map[y][x] == 1)
-					wls.add(new Wall(new Vector2(y * 64, x * 64)));
+					collision[x + y * 16] = true;
 
 	}
 
 	public void updateWorld() {
 		rotation = calculateAngle((float) Gdx.input.getX(), (float) Gdx.input.getY());
 
-		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.UPLEFT))
-			player.MoveUpLeft();
-		else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)
-				&& checkMatrix(DIR.UPRIGHT))
-			player.MoveUpRight();
-		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)
-				&& checkMatrix(DIR.DOWNLEFT))
-			player.MoveDownLeft();
-		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)
-				&& checkMatrix(DIR.DOWNRIGHT))
-			player.MoveDownRight();
-		else if (Gdx.input.isKeyPressed(Input.Keys.W) && checkMatrix(DIR.UP))
-			player.MoveUp();
-		else if (Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.LEFT))
-			player.MoveLeft();
-		else if (Gdx.input.isKeyPressed(Input.Keys.S) && checkMatrix(DIR.DOWN))
-			player.MoveDown();
-		else if (Gdx.input.isKeyPressed(Input.Keys.D) && checkMatrix(DIR.RIGHT))
-			player.MoveRight();
+		/*
+		 * if (Gdx.input.isKeyPressed(Input.Keys.W) &&
+		 * Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.UPLEFT))
+		 * player.MoveUpLeft(); else if (Gdx.input.isKeyPressed(Input.Keys.W) &&
+		 * Gdx.input.isKeyPressed(Input.Keys.D) && checkMatrix(DIR.UPRIGHT))
+		 * player.MoveUpRight(); else if (Gdx.input.isKeyPressed(Input.Keys.S)
+		 * && Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.DOWNLEFT))
+		 * player.MoveDownLeft(); else if (Gdx.input.isKeyPressed(Input.Keys.S)
+		 * && Gdx.input.isKeyPressed(Input.Keys.D) &&
+		 * checkMatrix(DIR.DOWNRIGHT)) player.MoveDownRight();
+		 */
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+			if(checkMatrix(DIR.UP))
+				player.MoveUp();
+		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+			if(checkMatrix(DIR.LEFT))
+				player.MoveLeft();
+		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+			if(checkMatrix(DIR.DOWN))
+				player.MoveDown();
+		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+			if(checkMatrix(DIR.RIGHT))
+				player.MoveRight();
+		}
 
 		player.updateBoundingBox();
 		bls = player.getBullets();
@@ -113,42 +120,50 @@ public class World {
 	public boolean checkMatrix(GameConfig.DIR dir) {
 		switch (dir) {
 		case UP:
-			System.out.println(((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
 			if (map[(int) ((player.getPos().x + 32) / 64)][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
 				return false;
 			break;
 		case DOWN:
-			System.out.println(((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
 			if (map[(int) ((player.getPos().x + 32) / 64)][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
 				return false;
 			break;
 		case LEFT:
-			System.out.println(((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
 			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64)] == 1)
 				return false;
 			break;
 		case RIGHT:
-			System.out.println(((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
 			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64)] == 1)
 				return false;
 			break;
 		case UPLEFT:
-			System.out.println(((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
 			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
 				return false;
 			break;
 		case UPRIGHT:
-			System.out.println(((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
 			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
 				return false;
 			break;
 		case DOWNLEFT:
-			System.out.println(((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
 			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
 				return false;
 			break;
 		case DOWNRIGHT:
-			System.out.println(((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
+			System.out.println(
+					((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
 			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
 				return false;
 			break;
