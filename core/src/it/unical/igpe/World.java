@@ -1,6 +1,7 @@
 package it.unical.igpe;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
@@ -13,9 +14,9 @@ import it.unical.igpe.entity.Player;
 import it.unical.igpe.entity.Wall;
 
 public class World {
-	
+	// Array di booleani con i muri, al movimento del player, controllo se in quella posizione c'è il muro
+	// for su bls, for su enemy, se c'è una collisione, l'enemy prende danno e il proiettile viene rimosso
 	private Player player;
-	private Enemy enemy;
 	private Vector2 posP;
 	private LinkedList<Bullet> bls;
 	private LinkedList<Wall> wls;
@@ -23,69 +24,83 @@ public class World {
 	private int[][] map;
 	public float rotation;
 	TileLayer layer;
-	
+
 	@SuppressWarnings("static-access")
 	public World() {
-		posP = new Vector2(100,100);
+		posP = new Vector2(100, 100);
 		player = new Player(posP);
-		enemy = new Enemy(new Vector2(600,600));
+		Enemy enemy1 = new Enemy(new Vector2(600, 600));
+		Enemy enemy2 = new Enemy(new Vector2(-600, -600));
+		Enemy enemy3 = new Enemy(new Vector2(-600, 600));
 		bls = new LinkedList<Bullet>();
 		wls = new LinkedList<Wall>();
 		ens = new LinkedList<Enemy>();
-		ens.add(enemy);
-		
-		map = new int [128][128];
+		ens.add(enemy1);
+		ens.add(enemy2);
+		ens.add(enemy3);
+
+		map = new int[128][128];
 		try {
 			layer = layer.FromFile("map.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		map = layer.map;
-		for(int y = 0; y < map.length; y++)
-			for (int x = 0; x < map[y].length; x++)
-				if(map[y][x] == 1)
-					wls.add(new Wall(new Vector2(y * 64, x * 64)));
-		
-	}
-	
-	public void updateWorld() {
-		rotation =	calculateAngle((float)Gdx.input.getX(), (float) Gdx.input.getY());
-		
-		if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A))
-			player.MoveUpLeft();
-		else if(Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D))
-			player.MoveUpRight();
-		else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A))
-			player.MoveDownLeft();
-		else if(Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
-			player.MoveDownRight();
-		else if(Gdx.input.isKeyPressed(Input.Keys.W))
-			player.MoveUp();
-		else if(Gdx.input.isKeyPressed(Input.Keys.A))
-			player.MoveLeft();
-		else if(Gdx.input.isKeyPressed(Input.Keys.S))
-			player.MoveDown();
-		else if(Gdx.input.isKeyPressed(Input.Keys.D))
-			player.MoveRight();
-		
-		player.updateBoundingBox();
-		
-		if(Gdx.input.justTouched())
-		    player.fire(rotation+90);
 
-		for (Wall wall : wls)
-			if(player.handleCollision(wall.getBoundingBox()))
-				System.out.println("Collisione");
-		
+		map = layer.map;
+		for (int y = 0; y < map.length; y++)
+			for (int x = 0; x < map[y].length; x++)
+				if (map[y][x] == 1)
+					wls.add(new Wall(new Vector2(y * 64, x * 64)));
+
+	}
+
+	public void updateWorld() {
+		rotation = calculateAngle((float) Gdx.input.getX(), (float) Gdx.input.getY());
+
+		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A))
+			player.MoveUpLeft();
+		else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D))
+			player.MoveUpRight();
+		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A))
+			player.MoveDownLeft();
+		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
+			player.MoveDownRight();
+
+		else if (Gdx.input.isKeyPressed(Input.Keys.W))
+			player.MoveUp();
+		else if (Gdx.input.isKeyPressed(Input.Keys.A))
+			player.MoveLeft();
+		else if (Gdx.input.isKeyPressed(Input.Keys.S))
+			player.MoveDown();
+		else if (Gdx.input.isKeyPressed(Input.Keys.D))
+			player.MoveRight();
+
+		player.updateBoundingBox();
 		bls = player.getBullets();
 		for (Bullet bullet : bls) {
 			bullet.update();
 		}
+
+		if (Gdx.input.justTouched())
+			player.fire(rotation + 90);
 		
-		enemy.findPathToTarget(player.getPos());
+		for(Iterator<Bullet> it = bls.iterator(); it.hasNext();) {
+			Bullet b = (Bullet) it.next();
+			for(Iterator<Enemy> iter = ens.iterator(); iter.hasNext();) {
+				Enemy e = (Enemy) iter.next();
+				if(b.handleCollision(e.getBoundingBox())) {
+					System.out.println("Collide");
+					e.hit(10f);
+					it.remove();
+				}
+			}
+		}
+		
+		/*for (Enemy e : ens) {
+			e.findPathToTarget(player.getPos());
+		}	*/	
 	}
-	
+
 	public float calculateAngle(float x, float y) {
 		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
 	}
@@ -94,8 +109,8 @@ public class World {
 		return player;
 	}
 
-	public Enemy getEnemy() {
-		return enemy;
+	public LinkedList<Enemy> getEnemy() {
+		return ens;
 	}
 
 	public Vector2 getPosP() {

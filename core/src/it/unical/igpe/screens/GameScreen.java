@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -35,8 +36,9 @@ public class GameScreen implements Screen {
 	Vector2 posP;
 	TextureRegion currentFrame;
 	LinkedList<Bullet> bls;
+	LinkedList<Enemy> ens;
 	ShapeRenderer sr;
-	Enemy enemy;
+	BitmapFont font;
 	
 	public GameScreen(IGPEGame _game, World _world) {
 		
@@ -51,12 +53,13 @@ public class GameScreen implements Screen {
 		
 		posP = world.getPosP();
 		player = world.getPlayer();
-		enemy = world.getEnemy();
+		ens = world.getEnemy();
 		
 		bls = new LinkedList<Bullet>();
 		
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
+		font = new BitmapFont();
 	}
 
 	@Override
@@ -77,6 +80,8 @@ public class GameScreen implements Screen {
 		currentFrame = Assets.runningAnimation.getKeyFrame(stateTime,true);
 		
 		rotation = world.rotation;
+		
+		bls = player.getBullets();
 				
 		// draw map
 		batch.begin();		
@@ -88,16 +93,20 @@ public class GameScreen implements Screen {
 					batch.draw(Assets.Sand, x * 64, y * 64);
 			}
 		batch.draw(currentFrame, posP.x, posP.y, 32, 32, 64, 64, 1f, 1f, rotation);
+		font.setColor(Color.BLACK);
+		font.draw(batch, "Bullet Num: " + bls.size(), camera.position.x, camera.position.y);
 		batch.end();
 		
-		bls = player.getBullets();
+		
 		
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.BLACK);
 		for (Bullet bullet : bls) {
 			sr.circle(bullet.getPos().x, bullet.getPos().y, 4);
 		}
-		sr.circle(enemy.getPos().x, enemy.getPos().y, 16);
+		for (Enemy e : ens) {
+			sr.circle(e.getPos().x, e.getPos().y, 16);
+		}
 		sr.end();
 		
 	}
