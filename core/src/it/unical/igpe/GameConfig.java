@@ -8,4 +8,6 @@ public class GameConfig {
 	public static final float DIAGONALSPEED = MOVESPEED * 0.7f;
 	public static final float BULLETSPEED = 10f;
 	public static final int MAGCAP = 7;
+	public static enum DIR {UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
+	public static final int TILEDIM = 64;
 }

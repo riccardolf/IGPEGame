@@ -26,6 +26,7 @@ public class Assets {
 		Sand = tmp[0][1];
 		Grass = tmp[0][2];
 		Wood = tmp[0][3];
+		
 
 		// load character's texture
 		atlas = new TextureAtlas(Gdx.files.internal("rifle_reload.atlas"));

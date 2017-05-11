@@ -94,7 +94,7 @@ public class GameScreen implements Screen {
 			}
 		batch.draw(currentFrame, posP.x, posP.y, 32, 32, 64, 64, 1f, 1f, rotation);
 		font.setColor(Color.BLACK);
-		font.draw(batch, "Bullet Num: " + bls.size(), camera.position.x, camera.position.y);
+		font.draw(batch, "Bullet Num: " + bls.size(), camera.position.x - 300, camera.position.y - 250);
 		batch.end();
 		
 		
