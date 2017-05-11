@@ -87,10 +87,10 @@ public class GameScreen implements Screen {
 		batch.begin();		
 		for(int y = 0; y < world.getMap().length; y++)
 			for (int x = 0; x < world.getMap().length; x++) {
-				if(world.getMap()[y][x] == 0)
-					batch.draw(Assets.Water, x * 64, y * 64);
-				else if(world.getMap()[y][x] == 1)
-					batch.draw(Assets.Sand, x * 64, y * 64);
+				if(world.getMap()[x][y] == 0)
+					batch.draw(Assets.Ground, x * 64, y * 64);
+				else if(world.getMap()[x][y] == 1)
+					batch.draw(Assets.Wall, x * 64, y * 64);
 			}
 		batch.draw(currentFrame, posP.x, posP.y, 32, 32, 64, 64, 1f, 1f, rotation);
 		font.setColor(Color.BLACK);
@@ -107,6 +107,8 @@ public class GameScreen implements Screen {
 		for (Enemy e : ens) {
 			sr.circle(e.getPos().x, e.getPos().y, 16);
 		}
+		sr.setColor(Color.RED);
+		sr.circle(player.getPos().x + 32, player.getPos().y + 32, 4);
 		sr.end();
 		
 	}

@@ -15,8 +15,10 @@ import it.unical.igpe.entity.Player;
 import it.unical.igpe.entity.Wall;
 
 public class World {
-	// Array di booleani con i muri, al movimento del player, controllo se in quella posizione c'è il muro
-	// for su bls, for su enemy, se c'è una collisione, l'enemy prende danno e il proiettile viene rimosso
+	// Array di booleani con i muri, al movimento del player, controllo se in
+	// quella posizione c'è il muro
+	// for su bls, for su enemy, se c'è una collisione, l'enemy prende danno e
+	// il proiettile viene rimosso
 	private Player player;
 	private Vector2 posP;
 	private LinkedList<Bullet> bls;
@@ -31,8 +33,8 @@ public class World {
 		posP = new Vector2(100, 100);
 		player = new Player(posP);
 		Enemy enemy1 = new Enemy(new Vector2(600, 600));
-		Enemy enemy2 = new Enemy(new Vector2(-600, -600));
-		Enemy enemy3 = new Enemy(new Vector2(-600, 600));
+		Enemy enemy2 = new Enemy(new Vector2(700, 700));
+		Enemy enemy3 = new Enemy(new Vector2(200, 200));
 		bls = new LinkedList<Bullet>();
 		wls = new LinkedList<Wall>();
 		ens = new LinkedList<Enemy>();
@@ -60,13 +62,15 @@ public class World {
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.UPLEFT))
 			player.MoveUpLeft();
-		else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D) && checkMatrix(DIR.UPRIGHT))
+		else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)
+				&& checkMatrix(DIR.UPRIGHT))
 			player.MoveUpRight();
-		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.DOWNLEFT))
+		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)
+				&& checkMatrix(DIR.DOWNLEFT))
 			player.MoveDownLeft();
-		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D) && checkMatrix(DIR.DOWNLEFT))
+		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)
+				&& checkMatrix(DIR.DOWNRIGHT))
 			player.MoveDownRight();
-
 		else if (Gdx.input.isKeyPressed(Input.Keys.W) && checkMatrix(DIR.UP))
 			player.MoveUp();
 		else if (Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.LEFT))
@@ -84,60 +88,68 @@ public class World {
 
 		if (Gdx.input.justTouched())
 			player.fire(rotation + 90);
-		
-		for(Iterator<Bullet> it = bls.iterator(); it.hasNext();) {
+
+		for (Iterator<Bullet> it = bls.iterator(); it.hasNext();) {
 			Bullet b = (Bullet) it.next();
-			for(Iterator<Enemy> iter = ens.iterator(); iter.hasNext();) {
+			for (Iterator<Enemy> iter = ens.iterator(); iter.hasNext();) {
 				Enemy e = (Enemy) iter.next();
-				if(b.handleCollision(e.getBoundingBox())) {
+				if (b.handleCollision(e.getBoundingBox())) {
 					System.out.println("Collide");
 					e.hit(10f);
 					it.remove();
 				}
 			}
 		}
-		
-		/*for (Enemy e : ens) {
-			e.findPathToTarget(player.getPos());
-		}	*/	
+
+		/*
+		 * for (Enemy e : ens) { e.findPathToTarget(player.getPos()); }
+		 */
 	}
 
 	public float calculateAngle(float x, float y) {
 		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
 	}
-	
+
 	public boolean checkMatrix(GameConfig.DIR dir) {
 		switch (dir) {
 		case UP:
-			if(map[(int) (player.getPos().x / 64)][(int) (player.getPos().y / 64) + 1] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
+			if (map[(int) ((player.getPos().x + 32) / 64)][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
 				return false;
 			break;
 		case DOWN:
-			if(map[(int) (player.getPos().x / 64)][(int) (player.getPos().y / 64) - 1] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
+			if (map[(int) ((player.getPos().x + 32) / 64)][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
 				return false;
 			break;
 		case LEFT:
-			if(map[(int) (player.getPos().x / 64) - 1][(int) (player.getPos().y / 64)] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
+			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64)] == 1)
 				return false;
 			break;
 		case RIGHT:
-			if(map[(int) (player.getPos().x / 64) + 1][(int) (player.getPos().y / 64)] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
+			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64)] == 1)
 				return false;
 			break;
 		case UPLEFT:
-			if(map[(int) (player.getPos().x / 64) - 1][(int) (player.getPos().y / 64) + 1] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
+			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
 				return false;
 			break;
 		case UPRIGHT:
-			if(map[(int) (player.getPos().x / 64) + 1][(int) (player.getPos().y / 64) + 1] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
+			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
 				return false;
 			break;
 		case DOWNLEFT:
-			if(map[(int) (player.getPos().x / 64) - 1][(int) (player.getPos().y / 64) - 1] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
+			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
 				return false;
 			break;
 		case DOWNRIGHT:
-			if(map[(int) (player.getPos().x / 64) + 1][(int) (player.getPos().y / 64) - 1] == 1)
+			System.out.println(((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
+			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
 				return false;
 			break;
 		}

@@ -9,10 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Assets {
 	public static Texture textureBack;
 	public static Texture textureSet;
-	public static TextureRegion Water;
-	public static TextureRegion Sand;
-	public static TextureRegion Grass;
-	public static TextureRegion Wood;
+	public static Texture Ground;
+	public static Texture Wall;
 	
 	public static Animation<TextureRegion> runningAnimation;
 	public static TextureAtlas atlas;
@@ -20,13 +18,9 @@ public class Assets {
 	
 	public static void load() {
 		// load texture for blocks
-		textureSet = new Texture(Gdx.files.internal("tileset.png"));
-		TextureRegion[][] tmp = TextureRegion.split(textureSet, 32, 32);
-		Water = tmp[0][0];
-		Sand = tmp[0][1];
-		Grass = tmp[0][2];
-		Wood = tmp[0][3];
-		
+		textureSet = new Texture(Gdx.files.internal("tileset.png"));		
+		Ground = new Texture(Gdx.files.internal("ground.png"));
+		Wall = new Texture(Gdx.files.internal("wall.png"));
 
 		// load character's texture
 		atlas = new TextureAtlas(Gdx.files.internal("rifle_reload.atlas"));
