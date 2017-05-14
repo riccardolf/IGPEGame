@@ -51,9 +51,8 @@ public abstract class AbstractGameObject {
 	
 	@Override
 	public String toString() {
-		String s = "Pos: " + this.pos.x + " " + this.pos.y + " Box: " + boundingBox.x + " " + boundingBox.y + " " +
+		return "Pos: " + this.pos.x + " " + this.pos.y + " Box: " + boundingBox.x + " " + boundingBox.y + " " +
 					boundingBox.width + " " + boundingBox.height;
-		return s;
 	}
 	
 	public Vector2 getPos() {

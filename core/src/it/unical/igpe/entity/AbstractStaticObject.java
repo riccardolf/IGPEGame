@@ -7,6 +7,11 @@ public abstract class AbstractStaticObject {
 	protected Vector2 pos;
 	protected Rectangle boundingBox;
 	
+	@Override
+	public String toString() {
+		return this.boundingBox.toString();
+	}
+	
 	public Vector2 getPos() {
 		return pos;
 	}

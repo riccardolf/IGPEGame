@@ -6,9 +6,9 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.GameConfig.DIR;
 import it.unical.igpe.entity.Bullet;
 import it.unical.igpe.entity.Enemy;
 import it.unical.igpe.entity.Player;
@@ -21,19 +21,20 @@ public class World {
 	// il proiettile viene rimosso
 	private Player player;
 	private Vector2 posP;
+	private Rectangle box;
 	private LinkedList<Bullet> bls;
 	private LinkedList<Wall> wls;
 	private LinkedList<Enemy> ens;
 	private int[][] map;
 	public float rotation;
 	TileLayer layer;
-	private boolean[] collision;
 
 	@SuppressWarnings("static-access")
 	public World() {
-		collision = new boolean[16 * 16];
 		posP = new Vector2(100, 100);
 		player = new Player(posP);
+		box = new Rectangle();
+		box = player.getBoundingBox();
 		Enemy enemy1 = new Enemy(new Vector2(600, 600));
 		Enemy enemy2 = new Enemy(new Vector2(700, 700));
 		Enemy enemy3 = new Enemy(new Vector2(200, 200));
@@ -55,7 +56,7 @@ public class World {
 		for (int y = 0; y < map.length; y++)
 			for (int x = 0; x < map[y].length; x++)
 				if (map[y][x] == 1)
-					collision[x + y * 16] = true;
+					wls.add(new Wall(new Vector2(x * 64, y * 64)));
 
 	}
 
@@ -74,19 +75,35 @@ public class World {
 		 * checkMatrix(DIR.DOWNRIGHT)) player.MoveDownRight();
 		 */
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			if(checkMatrix(DIR.UP))
+			box = player.getBoundingBox();
+			box.y += GameConfig.MOVESPEED;
+			if(!checkCollision(box))
 				player.MoveUp();
+			else
+				System.out.println("Collision");
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if(checkMatrix(DIR.LEFT))
+			box = player.getBoundingBox();
+			box.x -= GameConfig.MOVESPEED;
+			if(!checkCollision(box))
 				player.MoveLeft();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			if(checkMatrix(DIR.DOWN))
+			else
+				System.out.println("Collision");
+		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {		
+			box = player.getBoundingBox();
+			box.y -= GameConfig.MOVESPEED;
+			if(!checkCollision(box))
 				player.MoveDown();
+			else
+				System.out.println("Collision");
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			if(checkMatrix(DIR.RIGHT))
+			box = player.getBoundingBox();
+			box.x += GameConfig.MOVESPEED;
+			if(!checkCollision(box))
 				player.MoveRight();
+			else
+				System.out.println("Collision");
 		}
-
+		
 		player.updateBoundingBox();
 		bls = player.getBullets();
 		for (Bullet bullet : bls) {
@@ -117,58 +134,16 @@ public class World {
 		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
 	}
 
-	public boolean checkMatrix(GameConfig.DIR dir) {
-		switch (dir) {
-		case UP:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
-			if (map[(int) ((player.getPos().x + 32) / 64)][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
-				return false;
-			break;
-		case DOWN:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64)) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
-			if (map[(int) ((player.getPos().x + 32) / 64)][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
-				return false;
-			break;
-		case LEFT:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
-			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64)] == 1)
-				return false;
-			break;
-		case RIGHT:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64)));
-			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64)] == 1)
-				return false;
-			break;
-		case UPLEFT:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
-			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
-				return false;
-			break;
-		case UPRIGHT:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) + 1));
-			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64) + 1] == 1)
-				return false;
-			break;
-		case DOWNLEFT:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64) - 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
-			if (map[(int) ((player.getPos().x + 32) / 64) - 1][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
-				return false;
-			break;
-		case DOWNRIGHT:
-			System.out.println(
-					((int) ((player.getPos().x + 32) / 64) + 1) + " " + ((int) ((player.getPos().y + 32) / 64) - 1));
-			if (map[(int) ((player.getPos().x + 32) / 64) + 1][(int) ((player.getPos().y + 32) / 64) - 1] == 1)
-				return false;
-			break;
+	public boolean checkCollision(Rectangle box2) {
+		for (Wall wall : wls) {
+			if(box2.contains(wall.getBoundingBox())) {
+				System.out.println("Box: " + box2.toString());
+				System.out.println("Wall: " + wall.toString());
+				return true;
+			}
+			
 		}
-		return true;
+		return false;
 	}
 
 	public Player getPlayer() {

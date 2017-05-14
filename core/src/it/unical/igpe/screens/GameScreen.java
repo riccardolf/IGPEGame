@@ -21,6 +21,7 @@ import it.unical.igpe.World;
 import it.unical.igpe.entity.Bullet;
 import it.unical.igpe.entity.Enemy;
 import it.unical.igpe.entity.Player;
+import it.unical.igpe.entity.Wall;
 
 public class GameScreen implements Screen {
 	World world;
@@ -109,6 +110,10 @@ public class GameScreen implements Screen {
 		}
 		sr.setColor(Color.RED);
 		sr.circle(player.getPos().x + 32, player.getPos().y + 32, 4);
+		sr.rect(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, world.getPlayer().getBoundingBox().width, world.getPlayer().getBoundingBox().height);
+		for (Wall wall : world.getWls()) {
+		sr.rect(wall.getBoundingBox().x, wall.getBoundingBox().y, wall.getBoundingBox().width, wall.getBoundingBox().height);
+		}
 		sr.end();
 		
 	}
