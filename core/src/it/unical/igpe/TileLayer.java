@@ -11,9 +11,9 @@ public class TileLayer {
 	public TileLayer (int[][] existingMap) {
 		map = new int[existingMap.length][existingMap[0].length];
 		
-		for (int y = 0; y < map.length; y++)
-			for (int x = 0; y < map[y].length; y++)
-				map[y][x] = existingMap[y][x];
+		for (int x = 0; x < map.length; x++)
+			for (int y = 0; y < map.length; y++)
+				map[x][y] = existingMap[x][y];
 	}
 	
 	public TileLayer(int width, int height) {
@@ -51,9 +51,9 @@ public class TileLayer {
 		
 		layer = new TileLayer(width, height);
 		
-		for(int y = 0; y < height; y++) {
-			for(int x = 0; x < width; x++) {
-				layer.map[y][x] = tempLayout.get(y).get(x);
+		for(int x = 0; x < height; x++) {
+			for(int y = 0; y < width; y++) {
+				layer.map[x][y] = tempLayout.get(x).get(y);
 			}
 		}
 		

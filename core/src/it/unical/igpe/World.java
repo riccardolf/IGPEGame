@@ -1,12 +1,12 @@
 package it.unical.igpe;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.entity.Bullet;
@@ -45,7 +45,7 @@ public class World {
 		ens.add(enemy2);
 		ens.add(enemy3);
 
-		map = new int[128][128];
+		map = new int[96][96];
 		try {
 			layer = layer.FromFile("map.txt");
 		} catch (IOException e) {
@@ -53,9 +53,9 @@ public class World {
 		}
 
 		map = layer.map;
-		for (int y = 0; y < map.length; y++)
-			for (int x = 0; x < map[y].length; x++)
-				if (map[y][x] == 1)
+		for (int x = 0; x < map.length; x++)
+			for (int y = 0; y < map.length; y++)
+				if (map[x][y] == 1)
 					wls.add(new Wall(new Vector2(x * 64, y * 64)));
 
 	}
@@ -63,47 +63,56 @@ public class World {
 	public void updateWorld() {
 		rotation = calculateAngle((float) Gdx.input.getX(), (float) Gdx.input.getY());
 
-		/*
-		 * if (Gdx.input.isKeyPressed(Input.Keys.W) &&
-		 * Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.UPLEFT))
-		 * player.MoveUpLeft(); else if (Gdx.input.isKeyPressed(Input.Keys.W) &&
-		 * Gdx.input.isKeyPressed(Input.Keys.D) && checkMatrix(DIR.UPRIGHT))
-		 * player.MoveUpRight(); else if (Gdx.input.isKeyPressed(Input.Keys.S)
-		 * && Gdx.input.isKeyPressed(Input.Keys.A) && checkMatrix(DIR.DOWNLEFT))
-		 * player.MoveDownLeft(); else if (Gdx.input.isKeyPressed(Input.Keys.S)
-		 * && Gdx.input.isKeyPressed(Input.Keys.D) &&
-		 * checkMatrix(DIR.DOWNRIGHT)) player.MoveDownRight();
-		 */
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
+			box = player.getBoundingBox();
+			box.x -= GameConfig.MOVESPEED;
+			box.y += GameConfig.MOVESPEED;
+			if (!checkCollisionWall(box))
+				player.MoveUpLeft();
+		}
+		else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
+			box = player.getBoundingBox();
+			box.x += GameConfig.MOVESPEED;
+			box.y += GameConfig.MOVESPEED;
+			if (!checkCollisionWall(box))
+				player.MoveUpRight();
+		}
+		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
+			box = player.getBoundingBox();
+			box.x -= GameConfig.MOVESPEED;
+			box.y -= GameConfig.MOVESPEED;
+			if (!checkCollisionWall(box))
+				player.MoveDownLeft();			
+		}
+		else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
+			box = player.getBoundingBox();
+			box.x += GameConfig.MOVESPEED;
+			box.y -= GameConfig.MOVESPEED;
+			if (!checkCollisionWall(box))
+				player.MoveDownRight();				
+		}
+		else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			box = player.getBoundingBox();
 			box.y += GameConfig.MOVESPEED;
-			if(!checkCollision(box))
+			if (!checkCollisionWall(box))
 				player.MoveUp();
-			else
-				System.out.println("Collision");
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			box = player.getBoundingBox();
 			box.x -= GameConfig.MOVESPEED;
-			if(!checkCollision(box))
+			if (!checkCollisionWall(box))
 				player.MoveLeft();
-			else
-				System.out.println("Collision");
-		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {		
+		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 			box = player.getBoundingBox();
 			box.y -= GameConfig.MOVESPEED;
-			if(!checkCollision(box))
+			if (!checkCollisionWall(box))
 				player.MoveDown();
-			else
-				System.out.println("Collision");
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			box = player.getBoundingBox();
 			box.x += GameConfig.MOVESPEED;
-			if(!checkCollision(box))
+			if (!checkCollisionWall(box))
 				player.MoveRight();
-			else
-				System.out.println("Collision");
 		}
-		
+
 		player.updateBoundingBox();
 		bls = player.getBullets();
 		for (Bullet bullet : bls) {
@@ -111,37 +120,36 @@ public class World {
 		}
 
 		if (Gdx.input.justTouched())
-			player.fire(rotation + 90);
+			player.fire(rotation + 90f);
 
 		for (Iterator<Bullet> it = bls.iterator(); it.hasNext();) {
 			Bullet b = (Bullet) it.next();
-			for (Iterator<Enemy> iter = ens.iterator(); iter.hasNext();) {
-				Enemy e = (Enemy) iter.next();
-				if (b.handleCollision(e.getBoundingBox())) {
-					System.out.println("Collide");
-					e.hit(10f);
-					it.remove();
-				}
+			/*
+			 * for (Iterator<Enemy> iter = ens.iterator(); iter.hasNext();) {
+			 * Enemy e = (Enemy) iter.next(); if
+			 * (b.handleCollision(e.getBoundingBox())) {
+			 * System.out.println("Collide"); e.hit(10f); it.remove(); } }
+			 */
+			if (checkCollisionWall(b.getBoundingBox())) {
+				it.remove();
+				player.setBullets(bls);
 			}
 		}
 
-		/*
-		 * for (Enemy e : ens) { e.findPathToTarget(player.getPos()); }
-		 */
+		// for (Enemy e : ens) { e.findPathToTarget(player.getPos()); }
+
 	}
 
 	public float calculateAngle(float x, float y) {
 		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
 	}
 
-	public boolean checkCollision(Rectangle box2) {
+	public boolean checkCollisionWall(Rectangle box) {
 		for (Wall wall : wls) {
-			if(box2.contains(wall.getBoundingBox())) {
-				System.out.println("Box: " + box2.toString());
-				System.out.println("Wall: " + wall.toString());
+			if (box.intersects(wall.getBoundingBox())) {
+				System.out.println("Collision");
 				return true;
 			}
-			
 		}
 		return false;
 	}

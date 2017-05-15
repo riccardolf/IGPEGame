@@ -86,13 +86,14 @@ public class GameScreen implements Screen {
 				
 		// draw map
 		batch.begin();		
-		for(int y = 0; y < world.getMap().length; y++)
-			for (int x = 0; x < world.getMap().length; x++) {
+		for(int x = 0; x < world.getMap().length; x++)
+			for (int y = 0; y < world.getMap().length; y++)
 				if(world.getMap()[x][y] == 0)
 					batch.draw(Assets.Ground, x * 64, y * 64);
-				else if(world.getMap()[x][y] == 1)
-					batch.draw(Assets.Wall, x * 64, y * 64);
-			}
+		for (Wall wall : world.getWls()) {
+			batch.draw(Assets.Wall, wall.getPos().x, wall.getPos().y);
+		}
+		
 		batch.draw(currentFrame, posP.x, posP.y, 32, 32, 64, 64, 1f, 1f, rotation);
 		font.setColor(Color.BLACK);
 		font.draw(batch, "Bullet Num: " + bls.size(), camera.position.x - 300, camera.position.y - 250);
@@ -103,17 +104,13 @@ public class GameScreen implements Screen {
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.BLACK);
 		for (Bullet bullet : bls) {
-			sr.circle(bullet.getPos().x, bullet.getPos().y, 4);
+			sr.rect(bullet.getPos().x, bullet.getPos().y, bullet.getBoundingBox().width, bullet.getBoundingBox().height);
 		}
 		for (Enemy e : ens) {
 			sr.circle(e.getPos().x, e.getPos().y, 16);
 		}
 		sr.setColor(Color.RED);
 		sr.circle(player.getPos().x + 32, player.getPos().y + 32, 4);
-		sr.rect(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, world.getPlayer().getBoundingBox().width, world.getPlayer().getBoundingBox().height);
-		for (Wall wall : world.getWls()) {
-		sr.rect(wall.getBoundingBox().x, wall.getBoundingBox().y, wall.getBoundingBox().width, wall.getBoundingBox().height);
-		}
 		sr.end();
 		
 	}
@@ -138,6 +135,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		batch.dispose();
+		sr.dispose();
 	}
 
 	@Override

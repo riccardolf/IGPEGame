@@ -1,6 +1,6 @@
 package it.unical.igpe.entity;
 
-import com.badlogic.gdx.math.Rectangle;
+import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.GameConfig;
@@ -8,7 +8,7 @@ import it.unical.igpe.GameConfig;
 public class Enemy extends AbstractGameObject {
 	public Enemy(Vector2 _pos) {
 		pos = new Vector2(_pos);
-		boundingBox = new Rectangle(pos.x, pos.y, 64, 64);
+		boundingBox = new Rectangle((int)pos.x, (int)pos.y, 64, 64);
 		ID = "enemy";
 		alive = true;
 		HP = 100f;

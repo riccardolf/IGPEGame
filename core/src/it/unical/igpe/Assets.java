@@ -23,7 +23,7 @@ public class Assets {
 		Wall = new Texture(Gdx.files.internal("wall.png"));
 
 		// load character's texture
-		atlas = new TextureAtlas(Gdx.files.internal("rifle_reload.atlas"));
-		runningAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("rifle_reload"));
+		atlas = new TextureAtlas(Gdx.files.internal("handgun_idle.atlas"));
+		runningAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("handgun_idle"));
 	}
 }

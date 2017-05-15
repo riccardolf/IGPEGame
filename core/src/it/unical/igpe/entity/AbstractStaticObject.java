@@ -1,6 +1,7 @@
 package it.unical.igpe.entity;
 
-import com.badlogic.gdx.math.Rectangle;
+import java.awt.Rectangle;
+
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class AbstractStaticObject {

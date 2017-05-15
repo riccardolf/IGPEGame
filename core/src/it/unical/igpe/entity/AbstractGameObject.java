@@ -1,6 +1,6 @@
 package it.unical.igpe.entity;
 
-import com.badlogic.gdx.math.Rectangle;
+import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.GameConfig;
@@ -41,12 +41,6 @@ public abstract class AbstractGameObject {
 	public void MoveDownRight() {
 		this.pos.y -= GameConfig.DIAGONALSPEED;
 		this.pos.x += GameConfig.DIAGONALSPEED;
-	}
-	
-	public boolean handleCollision(Rectangle box) {
-		if(this.getBoundingBox().contains(box))
-			return true;
-		return false;
 	}
 	
 	@Override

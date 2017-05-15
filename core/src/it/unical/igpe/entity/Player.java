@@ -2,7 +2,7 @@ package it.unical.igpe.entity;
 
 import java.util.LinkedList;
 
-import com.badlogic.gdx.math.Rectangle;
+import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.GameConfig;
@@ -13,7 +13,7 @@ public class Player extends AbstractGameObject implements Runnable {
 	
 	public Player(Vector2 _pos) {
 		this.pos = _pos;
-		this.boundingBox = new Rectangle(pos.x, pos.y, 64, 64);
+		this.boundingBox = new Rectangle((int)pos.x, (int)pos.y, 64, 64);
 		this.ID = "player";
 		this.alive = true;
 		this.HP = 100f;
@@ -35,18 +35,20 @@ public class Player extends AbstractGameObject implements Runnable {
 	public void tick() {
 		for (Bullet bullet : b) {
 			bullet.update();
-			if(bullet.check())
-				b.remove(bullet);
 		}
 	}
 	
 	public void updateBoundingBox() {
-		this.boundingBox.x = pos.x;
-		this.boundingBox.y = pos.y;				
+		this.boundingBox.x = (int) pos.x;
+		this.boundingBox.y = (int) pos.y;				
 	}
 	
 	public LinkedList<Bullet> getBullets() {
 		return b;
+	}
+	
+	public void setBullets(LinkedList<Bullet> _b) {
+		this.b = _b;
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package it.unical.igpe.entity;
 
-import com.badlogic.gdx.math.Rectangle;
+import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.GameConfig;
@@ -12,7 +12,7 @@ public class Bullet extends AbstractGameObject{
 		this.pos = new Vector2(_pos);
 		this.pos.x += 32;
 		this.pos.y += 32;
-		this.boundingBox = new Rectangle(pos.x, pos.y, 8, 8);
+		this.boundingBox = new Rectangle((int)pos.x, (int)pos.y, 8, 8);
 		this.ID = "bullet";
 		this.alive = true;
 		this.HP = 1f;
@@ -23,8 +23,8 @@ public class Bullet extends AbstractGameObject{
 		pos.x += Math.cos(angle)*speed;
 	    pos.y += Math.sin(angle)*speed;
 	}
-	
-	public boolean check() {
-		return false;
+	@Override
+	public String toString() {
+		return "X: " + pos.x + " Y:" + pos.y;
 	}
 }
