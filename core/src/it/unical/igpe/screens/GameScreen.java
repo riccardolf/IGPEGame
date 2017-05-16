@@ -40,6 +40,7 @@ public class GameScreen implements Screen {
 	LinkedList<Enemy> ens;
 	ShapeRenderer sr;
 	BitmapFont font;
+	private Vector2 PointPos;
 	
 	public GameScreen(IGPEGame _game, World _world) {
 		
@@ -55,6 +56,7 @@ public class GameScreen implements Screen {
 		posP = world.getPosP();
 		player = world.getPlayer();
 		ens = world.getEnemy();
+		PointPos = new Vector2();
 		
 		bls = new LinkedList<Bullet>();
 		
@@ -73,7 +75,7 @@ public class GameScreen implements Screen {
 		camera.position.y = posP.y;
 		camera.update();
 		
-		world.updateWorld();
+		world.updateWorld(delta);
 		
 		batch.setProjectionMatrix(camera.combined);
 		sr.setProjectionMatrix(camera.combined);
@@ -99,7 +101,10 @@ public class GameScreen implements Screen {
 		font.draw(batch, "Bullet Num: " + bls.size(), camera.position.x - 300, camera.position.y - 250);
 		batch.end();
 		
+		//FIXME: The point should follow the player's gun
 		
+		PointPos.x = (float) (player.getPos().x + (32 * (Math.cos(rotation)) - 32 * (Math.sin(rotation))));
+		PointPos.y = (float) (player.getPos().y + (32 * (Math.sin(rotation)) + 32 * (Math.cos(rotation)))); 
 		
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.BLACK);
@@ -110,7 +115,7 @@ public class GameScreen implements Screen {
 			sr.circle(e.getPos().x, e.getPos().y, 16);
 		}
 		sr.setColor(Color.RED);
-		sr.circle(player.getPos().x + 32, player.getPos().y + 32, 4);
+		sr.circle(PointPos.x, PointPos.y, 4);
 		sr.end();
 		
 	}

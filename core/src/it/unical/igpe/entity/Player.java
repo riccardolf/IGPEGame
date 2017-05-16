@@ -9,45 +9,65 @@ import it.unical.igpe.GameConfig;
 
 public class Player extends AbstractGameObject {
 	private LinkedList<Bullet> b;
-	public boolean isReloading;
-	
+	private boolean reloading;
+	private float reloadTime;
+	private float reloadAct;
+
 	public Player(Vector2 _pos) {
 		this.pos = _pos;
-		this.boundingBox = new Rectangle((int)pos.x, (int)pos.y, 64, 64);
+		this.boundingBox = new Rectangle((int) pos.x, (int) pos.y, 64, 64);
 		this.ID = "player";
 		this.alive = true;
 		this.HP = 100f;
 		this.speed = GameConfig.MOVESPEED;
 		this.angle = 0f;
 		this.b = new LinkedList<Bullet>();
-		this.isReloading = false;
+		this.reloading = false;
+		this.reloadTime = 1;
+		this.reloadAct = 0;
 	}
 
 	public void fire(float angle) {
-		Bullet bullet = new Bullet(pos, (float)Math.toRadians(angle));
-		b.add(bullet);
+		if (!reloading)
+			b.add(new Bullet(pos, (float) Math.toRadians(angle)));
 	}
 	
+	public void reload() {
+		reloadAct = 0;
+	}
+
 	public void hit(float dmg) {
 		this.HP -= dmg;
 	}
-	
+
 	public void tick() {
 		for (Bullet bullet : b) {
 			bullet.update();
 		}
 	}
-	
+
 	public void updateBoundingBox() {
 		this.boundingBox.x = (int) pos.x;
-		this.boundingBox.y = (int) pos.y;				
+		this.boundingBox.y = (int) pos.y;
 	}
-	
+
 	public LinkedList<Bullet> getBullets() {
 		return b;
 	}
-	
+
 	public void setBullets(LinkedList<Bullet> _b) {
 		this.b = _b;
+	}
+
+	public boolean isReloading(float delta) {
+		if(reloadAct > reloadTime) {
+			reloading = false;
+		}
+		else if (reloadAct < reloadTime) {
+			reloadAct += delta;
+			reloading = true;
+		}
+		
+		return reloading;
 	}
 }
