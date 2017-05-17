@@ -15,13 +15,7 @@ import it.unical.igpe.entity.Player;
 import it.unical.igpe.entity.Wall;
 
 public class World {
-	// Array di booleani con i muri, al movimento del player, controllo se in
-	// quella posizione c'è il muro
-	// for su bls, for su enemy, se c'è una collisione, l'enemy prende danno e
-	// il proiettile viene rimosso
 	private Player player;
-	private Vector2 posP;
-	private Rectangle box;
 	private LinkedList<Bullet> bls;
 	private LinkedList<Wall> wls;
 	private LinkedList<Enemy> ens;
@@ -29,18 +23,15 @@ public class World {
 	private int clipAct;
 	private int[][] map;
 	public float rotation;
+	private Rectangle box;
 	TileLayer layer;
 
 	@SuppressWarnings("static-access")
 	public World() {
-		posP = new Vector2(100, 100);
-		player = new Player(posP);
-		box = new Rectangle();
-		box = player.getBoundingBox();
+		player = new Player(new Vector2(100, 100));
 		Enemy enemy1 = new Enemy(new Vector2(600, 600));
 		Enemy enemy2 = new Enemy(new Vector2(700, 700));
 		Enemy enemy3 = new Enemy(new Vector2(200, 200));
-		bls = new LinkedList<Bullet>();
 		wls = new LinkedList<Wall>();
 		ens = new LinkedList<Enemy>();
 		bls = player.getBullets();
@@ -71,83 +62,82 @@ public class World {
 
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			box = player.getBoundingBox();
-			box.x -= GameConfig.MOVESPEED;
-			box.y += GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
+					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveUpLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			box = player.getBoundingBox();
-			box.x += GameConfig.MOVESPEED;
-			box.y += GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
+					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveUpRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			box = player.getBoundingBox();
-			box.x -= GameConfig.MOVESPEED;
-			box.y -= GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
+					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveDownLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			box = player.getBoundingBox();
-			box.x += GameConfig.MOVESPEED;
-			box.y -= GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
+					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveDownRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			box = player.getBoundingBox();
-			box.y += GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y + GameConfig.MOVESPEED,
+					player.getBoundingBox().width, player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveUp();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			box = player.getBoundingBox();
-			box.x -= GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED, player.getBoundingBox().y,
+					player.getBoundingBox().width, player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			box = player.getBoundingBox();
-			box.y -= GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y - GameConfig.MOVESPEED,
+					player.getBoundingBox().width, player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveDown();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			box = player.getBoundingBox();
-			box.x += GameConfig.MOVESPEED;
+			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED, player.getBoundingBox().y,
+					player.getBoundingBox().width, player.getBoundingBox().height);
 			if (!checkCollisionWall(box))
 				player.MoveRight();
 		}
-		
+
+		// TODO: weapon's class
 
 		// Fire and Reloading action of the player
-		player.updateBoundingBox();
 		if (Gdx.input.justTouched()) {
 			player.fire(rotation + 90f);
 			clipSize++;
 		}
-		// FIXME: it doesn't check clipSize
-		if(Gdx.input.isKeyPressed(Input.Keys.R) || clipAct > clipSize) {
+		// TODO: Clipsize of specified weapon
+		if (Gdx.input.isKeyPressed(Input.Keys.R) || clipAct > clipSize) {
 			player.reload();
 			clipAct = 0;
 		}
-		
+
 		player.isReloading(delta);
-	
+
 		// Bullet update and Collision
-		
+
 		bls = player.getBullets();
-		// FIXME: Bullet doesn't collide
-		for (Iterator<Bullet> it = bls.iterator(); it.hasNext();) {
+		Iterator<Bullet> it = bls.listIterator();
+		while (it.hasNext()) {
 			Bullet b = it.next();
-			b.toString();
-			if (!checkCollisionWall(b.getBoundingBox())) {
-				b.update();
-			} else {
+			if (checkCollisionWall(b.getBoundingBox())) {
 				it.remove();
+			} else {
+				b.update();
 			}
 		}
-		
+
 		// Updating player's bullets
 		player.setBullets(bls);
-		
+
 		// TODO: Enemy's AI
 		// for (Enemy e : ens) { e.findPathToTarget(player.getPos()); }
 	}
@@ -156,11 +146,14 @@ public class World {
 		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
 	}
 
-	public boolean checkCollisionWall(Rectangle box) {
+	public boolean checkCollisionWall(Rectangle _box) {
 		for (Wall wall : wls) {
-			if (box.intersects(wall.getBoundingBox())) {
-				System.out.println("Collision");
-				return true;
+			if (Math.sqrt(Math.pow((_box.x - wall.getBoundingBox().x), 2)
+					+ Math.pow(_box.y - wall.getBoundingBox().y, 2)) < 128) {
+				if (_box.intersects(wall.getBoundingBox())) {
+					System.out.println("Collision");
+					return true;
+				}
 			}
 		}
 		return false;
@@ -172,10 +165,6 @@ public class World {
 
 	public LinkedList<Enemy> getEnemy() {
 		return ens;
-	}
-
-	public Vector2 getPosP() {
-		return posP;
 	}
 
 	public LinkedList<Bullet> getBls() {

@@ -14,8 +14,7 @@ public class Player extends AbstractGameObject {
 	private float reloadAct;
 
 	public Player(Vector2 _pos) {
-		this.pos = _pos;
-		this.boundingBox = new Rectangle((int) pos.x, (int) pos.y, 64, 64);
+		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 64, 64);
 		this.ID = "player";
 		this.alive = true;
 		this.HP = 100f;
@@ -29,9 +28,9 @@ public class Player extends AbstractGameObject {
 
 	public void fire(float angle) {
 		if (!reloading)
-			b.add(new Bullet(pos, (float) Math.toRadians(angle)));
+			b.add(new Bullet(new Vector2(boundingBox.x, boundingBox.y), (float) Math.toRadians(angle)));
 	}
-	
+
 	public void reload() {
 		reloadAct = 0;
 	}
@@ -46,11 +45,6 @@ public class Player extends AbstractGameObject {
 		}
 	}
 
-	public void updateBoundingBox() {
-		this.boundingBox.x = (int) pos.x;
-		this.boundingBox.y = (int) pos.y;
-	}
-
 	public LinkedList<Bullet> getBullets() {
 		return b;
 	}
@@ -60,14 +54,13 @@ public class Player extends AbstractGameObject {
 	}
 
 	public boolean isReloading(float delta) {
-		if(reloadAct > reloadTime) {
+		if (reloadAct > reloadTime) {
 			reloading = false;
-		}
-		else if (reloadAct < reloadTime) {
+		} else if (reloadAct < reloadTime) {
 			reloadAct += delta;
 			reloading = true;
 		}
-		
+
 		return reloading;
 	}
 }

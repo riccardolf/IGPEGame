@@ -7,75 +7,90 @@ import it.unical.igpe.GameConfig;
 
 public abstract class AbstractGameObject {
 	protected float angle;
-	protected Vector2 pos;
 	protected Rectangle boundingBox;
 	protected String ID;
 	protected boolean alive;
 	protected float HP;
 	protected float speed;
-	
+
 	public void MoveUp() {
-		this.pos.y += GameConfig.MOVESPEED;
+		this.boundingBox.y += GameConfig.MOVESPEED;
 	}
+
 	public void MoveDown() {
-		this.pos.y -= GameConfig.MOVESPEED;
+		this.boundingBox.y -= GameConfig.MOVESPEED;
 	}
+
 	public void MoveRight() {
-		this.pos.x += GameConfig.MOVESPEED;
+		this.boundingBox.x += GameConfig.MOVESPEED;
 	}
+
 	public void MoveLeft() {
-		this.pos.x -= GameConfig.MOVESPEED;
+		this.boundingBox.x -= GameConfig.MOVESPEED;
 	}
+
 	public void MoveUpLeft() {
-		this.pos.y += GameConfig.DIAGONALSPEED;
-		this.pos.x -= GameConfig.DIAGONALSPEED;
+		this.boundingBox.x -= GameConfig.DIAGONALSPEED;
+		this.boundingBox.y += GameConfig.DIAGONALSPEED;
 	}
+
 	public void MoveUpRight() {
-		this.pos.y += GameConfig.DIAGONALSPEED;
-		this.pos.x += GameConfig.DIAGONALSPEED;
+		this.boundingBox.x += GameConfig.DIAGONALSPEED;
+		this.boundingBox.y += GameConfig.DIAGONALSPEED;
 	}
+
 	public void MoveDownLeft() {
-		this.pos.y -= GameConfig.DIAGONALSPEED;
-		this.pos.x -= GameConfig.DIAGONALSPEED;
+		this.boundingBox.x -= GameConfig.DIAGONALSPEED;
+		this.boundingBox.y -= GameConfig.DIAGONALSPEED;
 	}
+
 	public void MoveDownRight() {
-		this.pos.y -= GameConfig.DIAGONALSPEED;
-		this.pos.x += GameConfig.DIAGONALSPEED;
+		this.boundingBox.x += GameConfig.DIAGONALSPEED;
+		this.boundingBox.y -= GameConfig.DIAGONALSPEED;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Pos: " + this.pos.x + " " + this.pos.y + " Box: " + boundingBox.x + " " + boundingBox.y + " " +
-					boundingBox.width + " " + boundingBox.height;
+		return "Pos: " + boundingBox.x + " " + boundingBox.y + " " + boundingBox.width + " " + boundingBox.height;
 	}
-	
+
 	public Vector2 getPos() {
-		return pos;
-	}	
+		return new Vector2(boundingBox.x, boundingBox.y);
+	}
+
 	public void setPos(Vector2 pos) {
-		this.pos = pos;
-	}	
+		this.boundingBox.x = (int) pos.x;
+		this.boundingBox.y = (int) pos.y;
+	}
+
 	public Rectangle getBoundingBox() {
 		return boundingBox;
 	}
+
 	public void setBoundingBox(Rectangle boundingBox) {
 		this.boundingBox = boundingBox;
 	}
+
 	public String getID() {
 		return ID;
 	}
+
 	public void setID(String iD) {
 		ID = iD;
 	}
+
 	public boolean Alive() {
 		return alive;
 	}
+
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
+
 	public float getHP() {
 		return HP;
 	}
+
 	public void setHP(float hP) {
 		HP = hP;
 	}
