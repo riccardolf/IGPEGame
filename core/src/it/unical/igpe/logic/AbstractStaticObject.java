@@ -1,4 +1,4 @@
-package it.unical.igpe.entity;
+package it.unical.igpe.logic;
 
 import java.awt.Rectangle;
 

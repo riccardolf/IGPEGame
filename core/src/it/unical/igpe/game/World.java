@@ -1,4 +1,4 @@
-package it.unical.igpe;
+package it.unical.igpe.game;
 
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -9,12 +9,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.entity.Bullet;
-import it.unical.igpe.entity.Enemy;
-import it.unical.igpe.entity.EnemyManager;
-import it.unical.igpe.entity.Player;
-import it.unical.igpe.entity.PlayerState;
-import it.unical.igpe.entity.Wall;
+import it.unical.igpe.logic.Bullet;
+import it.unical.igpe.logic.Enemy;
+import it.unical.igpe.logic.EnemyManager;
+import it.unical.igpe.logic.Player;
+import it.unical.igpe.logic.Wall;
+import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.tools.PlayerState;
+import it.unical.igpe.tools.TileLayer;
 
 public class World {
 	private Player player;

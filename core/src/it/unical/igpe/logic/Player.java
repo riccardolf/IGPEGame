@@ -1,11 +1,11 @@
-package it.unical.igpe.entity;
+package it.unical.igpe.logic;
 
 import java.util.LinkedList;
 
 import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.GameConfig;
+import it.unical.igpe.tools.GameConfig;
 
 public class Player extends AbstractGameObject {
 	private LinkedList<Bullet> b;

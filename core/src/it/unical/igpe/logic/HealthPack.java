@@ -1,6 +1,7 @@
-package it.unical.igpe.entity;
+package it.unical.igpe.logic;
 
-import it.unical.igpe.GameConfig;
+import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.tools.Lootable;
 
 public class HealthPack extends AbstractStaticObject implements Lootable{
 	private int regen;

@@ -1,4 +1,4 @@
-package it.unical.igpe;
+package it.unical.igpe.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

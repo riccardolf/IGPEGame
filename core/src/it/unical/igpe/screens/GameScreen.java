@@ -14,15 +14,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.Assets;
-import it.unical.igpe.IGPEGame;
-import it.unical.igpe.TileLayer;
-import it.unical.igpe.World;
-import it.unical.igpe.entity.Bullet;
-import it.unical.igpe.entity.Enemy;
-import it.unical.igpe.entity.EnemyManager;
-import it.unical.igpe.entity.Player;
-import it.unical.igpe.entity.Wall;
+import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.game.World;
+import it.unical.igpe.logic.Bullet;
+import it.unical.igpe.logic.Enemy;
+import it.unical.igpe.logic.EnemyManager;
+import it.unical.igpe.logic.Player;
+import it.unical.igpe.logic.Wall;
+import it.unical.igpe.tools.Assets;
+import it.unical.igpe.tools.TileLayer;
 
 public class GameScreen implements Screen {
 	World world;

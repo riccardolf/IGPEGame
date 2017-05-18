@@ -1,6 +1,6 @@
-package it.unical.igpe.entity;
+package it.unical.igpe.logic;
 
-import it.unical.igpe.GameConfig;
+import it.unical.igpe.tools.GameConfig;
 
 public class Weapon {
 	protected int sizeClip;

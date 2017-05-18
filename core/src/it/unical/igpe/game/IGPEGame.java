@@ -1,8 +1,9 @@
-package it.unical.igpe;
+package it.unical.igpe.game;
 
 import com.badlogic.gdx.Game;
 
 import it.unical.igpe.screens.GameScreen;
+import it.unical.igpe.tools.Assets;
 
 public class IGPEGame extends Game {
 	

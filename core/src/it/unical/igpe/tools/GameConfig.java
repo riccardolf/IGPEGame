@@ -1,4 +1,4 @@
-package it.unical.igpe;
+package it.unical.igpe.tools;
 
 public class GameConfig {
 	public static final int WIDTH = 800;
