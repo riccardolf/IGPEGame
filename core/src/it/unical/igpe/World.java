@@ -141,13 +141,13 @@ public class World {
 			Bullet b = it.next();
 			while(iter.hasNext()) {
 				Enemy e = iter.next();
-				if (checkCollisionWall(b.getBoundingBox())) {
-					it.remove();
-				}
-				else if(b.getBoundingBox().intersects(e.getBoundingBox())) {
+				if(b.getBoundingBox().intersects(e.getBoundingBox())) {
 					it.remove();
 					e.hit(25);
 				}
+			}
+			if (checkCollisionWall(b.getBoundingBox())) {
+				it.remove();
 			}
 			b.update();
 		}
