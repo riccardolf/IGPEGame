@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.Assets;
 import it.unical.igpe.IGPEGame;
@@ -20,6 +19,7 @@ import it.unical.igpe.TileLayer;
 import it.unical.igpe.World;
 import it.unical.igpe.entity.Bullet;
 import it.unical.igpe.entity.Enemy;
+import it.unical.igpe.entity.EnemyManager;
 import it.unical.igpe.entity.Player;
 import it.unical.igpe.entity.Wall;
 
@@ -36,10 +36,9 @@ public class GameScreen implements Screen {
 	Bullet bullet;
 	TextureRegion currentFrame;
 	LinkedList<Bullet> bls;
-	LinkedList<Enemy> ens;
+	EnemyManager EM;
 	ShapeRenderer sr;
 	BitmapFont font;
-	private Vector2 PointPos;
 
 	public GameScreen(IGPEGame _game, World _world) {
 
@@ -53,8 +52,7 @@ public class GameScreen implements Screen {
 		rotation = world.rotation;
 
 		player = world.getPlayer();
-		ens = world.getEnemy();
-		PointPos = new Vector2();
+		EM = world.EM;
 
 		bls = new LinkedList<Bullet>();
 
@@ -77,8 +75,18 @@ public class GameScreen implements Screen {
 
 		batch.setProjectionMatrix(camera.combined);
 		sr.setProjectionMatrix(camera.combined);
-
-		currentFrame = Assets.runningAnimation.getKeyFrame(stateTime, true);
+		//TODO: StateManager
+		switch(world.state) {
+		case IDLE:
+			currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
+			break;
+		case RUNNING:
+			currentFrame = Assets.runningPistolAnimation.getKeyFrame(stateTime, true);
+			break;
+		case RELOADING:
+			currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
+			break;
+		}
 
 		rotation = world.rotation;
 
@@ -113,10 +121,10 @@ public class GameScreen implements Screen {
 			sr.rect(bullet.getPos().x, bullet.getPos().y, bullet.getBoundingBox().width,
 					bullet.getBoundingBox().height);
 		}
-		for (Enemy e : ens) {
-			sr.circle(e.getPos().x, e.getPos().y, 16);
-		}
 		sr.setColor(Color.RED);
+		for (Enemy e : EM.getList()) {
+			sr.circle(e.getPos().x, e.getPos().y, 32);
+		}
 		// sr.circle(PointPos.x, PointPos.y, 4);
 		sr.end();
 

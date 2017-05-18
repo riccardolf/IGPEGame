@@ -10,57 +10,75 @@ import it.unical.igpe.GameConfig;
 public class Player extends AbstractGameObject {
 	private LinkedList<Bullet> b;
 	private boolean reloading;
-	private float reloadTime;
-	private float reloadAct;
+	private Weapon activeWeapon;
+	private Weapon pistol;
+	private Weapon rifle;
+	private Weapon shotgun;
 
 	public Player(Vector2 _pos) {
 		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 64, 64);
+		this.reloading = false;
 		this.ID = "player";
 		this.alive = true;
 		this.HP = 100f;
 		this.speed = GameConfig.MOVESPEED;
 		this.angle = 0f;
 		this.b = new LinkedList<Bullet>();
-		this.reloading = false;
-		this.reloadTime = 1;
-		this.reloadAct = 0;
+		this.pistol = new Weapon();
+		this.rifle = new Weapon();
+		this.shotgun = new Weapon();
+		this.pistol.createPistol();
+		this.rifle.createRifle();
+		this.shotgun.createShotgun();
+		this.activeWeapon = pistol;
 	}
 
 	public void fire(float angle) {
-		if (!reloading)
+		if (!reloading) {
 			b.add(new Bullet(new Vector2(boundingBox.x, boundingBox.y), (float) Math.toRadians(angle)));
+			this.activeWeapon.actClip--;
+		}
 	}
 
 	public void reload() {
-		reloadAct = 0;
+		if(!(activeWeapon.actClip == activeWeapon.sizeClip)) {
+			activeWeapon.reloadAct = 0;
+			reloading = true;
+		}
 	}
 
 	public void hit(float dmg) {
 		this.HP -= dmg;
 	}
 
-	public void tick() {
-		for (Bullet bullet : b) {
-			bullet.update();
+	public boolean isReloading(float delta) {
+		if (activeWeapon.reloadAct > activeWeapon.reloadTime) {
+			reloading = false;
+		} else if (activeWeapon.reloadAct < activeWeapon.reloadTime) {
+			activeWeapon.reloadAct += delta;
+			reloading = true;
+			activeWeapon.actClip = activeWeapon.sizeClip;
 		}
+		return reloading;
 	}
 
+	public void checkAmmo() {
+		if(activeWeapon.actClip == 0)
+			this.reload();
+	}
+	
+	public boolean getReloading() {
+		return this.reloading;
+	}
+	public void setReloading(boolean bool) {
+		this.reloading = bool;
+	}
+	
 	public LinkedList<Bullet> getBullets() {
 		return b;
 	}
-
 	public void setBullets(LinkedList<Bullet> _b) {
 		this.b = _b;
 	}
-
-	public boolean isReloading(float delta) {
-		if (reloadAct > reloadTime) {
-			reloading = false;
-		} else if (reloadAct < reloadTime) {
-			reloadAct += delta;
-			reloading = true;
-		}
-
-		return reloading;
-	}
+	
 }

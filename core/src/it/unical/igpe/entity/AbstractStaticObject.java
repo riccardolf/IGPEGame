@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class AbstractStaticObject {
-	protected Vector2 pos;
 	protected Rectangle boundingBox;
 
 	@Override
@@ -14,11 +13,12 @@ public abstract class AbstractStaticObject {
 	}
 
 	public Vector2 getPos() {
-		return pos;
+		return new Vector2(this.boundingBox.x, this.boundingBox.y);
 	}
 
-	public void setPos(Vector2 pos) {
-		this.pos = pos;
+	public void setPos(Vector2 _pos) {
+		this.boundingBox.x = (int) _pos.x;
+		this.boundingBox.y = (int) _pos.y;
 	}
 
 	public Rectangle getBoundingBox() {

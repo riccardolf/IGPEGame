@@ -14,7 +14,7 @@ public class Bullet extends AbstractGameObject{
 //		pos.y =  (float) (_pos.x * Math.sin(angle) + _pos.y * Math.cos(angle));
 //		System.out.println("Player X: " + _pos.x + " Y: " + _pos.y);
 //		System.out.println("Bullet X: " + pos.x + " Y: " + pos.y);
-		this.boundingBox = new Rectangle((int)_pos.x,(int) _pos.y, 8, 8);
+		this.boundingBox = new Rectangle((int)_pos.x + 32,(int) _pos.y + 32, 8, 8);
 		this.ID = "bullet";
 		this.alive = true;
 		this.HP = 1f;

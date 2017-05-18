@@ -16,6 +16,8 @@ public class Enemy extends AbstractGameObject {
 	
 	public void hit(float dmg) {
 		this.HP -= dmg;
+		if(HP <= 0)
+			alive = false;
 	}
 	
 	public void findPathToTarget(Vector2 target) {
