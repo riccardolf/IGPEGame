@@ -1,4 +1,4 @@
-package it.unical.igpe.screens;
+package it.unical.igpe.desktop;
 
 import java.awt.Dimension;
 

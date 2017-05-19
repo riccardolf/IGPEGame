@@ -37,7 +37,7 @@ public class World {
 		state = PlayerState.IDLE;
 		wls = new LinkedList<Wall>();
 
-		map = new int[96][96];
+		map = new int[64][64];
 		try {
 			layer = layer.FromFile("map.txt");
 		} catch (IOException e) {

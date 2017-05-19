@@ -7,7 +7,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.screens.InitialPanel;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) {

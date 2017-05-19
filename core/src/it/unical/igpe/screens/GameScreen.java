@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
@@ -40,7 +39,6 @@ public class GameScreen implements Screen {
 	EnemyManager EM;
 	ShapeRenderer sr;
 	BitmapFont font;
-	Vector2 PointPos;
 
 	public GameScreen(IGPEGame _game, World _world) {
 
@@ -55,8 +53,6 @@ public class GameScreen implements Screen {
 
 		player = world.getPlayer();
 		EM = world.EM;
-		
-		PointPos = new Vector2();
 
 		bls = new LinkedList<Bullet>();
 
@@ -112,13 +108,6 @@ public class GameScreen implements Screen {
 		font.draw(batch, "Bullet Num: " + bls.size(), camera.position.x - 300, camera.position.y - 250);
 		batch.end();
 
-		// FIXME: The point should follow the player's gun
-
-		 PointPos.x = (float) (player.getPos().x + 32 * (Math.cos(rotation))
-		 - 32 * (Math.sin(rotation)));
-		 PointPos.y = (float) (player.getPos().y + 32 * (Math.sin(rotation))
-		 + 32 * (Math.cos(rotation)));
-
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.BLACK);
 		for (Bullet bullet : bls) {
@@ -129,7 +118,6 @@ public class GameScreen implements Screen {
 		for (Enemy e : EM.getList()) {
 			sr.circle(e.getPos().x, e.getPos().y, 32);
 		}
-		sr.circle(PointPos.x, PointPos.y, 4);
 		sr.end();
 
 	}
