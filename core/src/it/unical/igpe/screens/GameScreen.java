@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import it.unical.igpe.HUD.HUD;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Bullet;
@@ -39,6 +40,7 @@ public class GameScreen implements Screen {
 	EnemyManager EM;
 	ShapeRenderer sr;
 	BitmapFont font;
+	HUD hud;
 
 	public GameScreen(IGPEGame _game, World _world) {
 
@@ -47,6 +49,8 @@ public class GameScreen implements Screen {
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 600);
+		
+		hud = new HUD();
 
 		stateTime = 0f;
 		rotation = world.rotation;
@@ -59,6 +63,7 @@ public class GameScreen implements Screen {
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
 		font = new BitmapFont();
+	
 	}
 
 	@Override
@@ -91,6 +96,7 @@ public class GameScreen implements Screen {
 		rotation = world.rotation;
 
 		bls = player.getBullets();
+		
 
 		// draw map
 		batch.begin();
@@ -120,6 +126,7 @@ public class GameScreen implements Screen {
 		}
 		sr.end();
 
+		hud.stage.draw();
 	}
 
 	@Override
@@ -129,7 +136,6 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-
 	}
 
 	@Override
@@ -141,6 +147,7 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		batch.dispose();
 		sr.dispose();
+		hud.dispose();
 	}
 
 	@Override
