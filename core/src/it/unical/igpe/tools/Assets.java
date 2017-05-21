@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
 	public static Texture textureBack;
-	public static Texture textureSet;
 	public static Texture Ground;
 	public static Texture Wall;
 	
@@ -20,8 +19,7 @@ public class Assets {
 	public static TextureAtlas atlasReloadHandgun;
 	
 	public static void load() {
-		// load texture for blocks
-		textureSet = new Texture(Gdx.files.internal("tileset.png"));		
+		// load texture for blocks	
 		Ground = new Texture(Gdx.files.internal("ground.png"));
 		Wall = new Texture(Gdx.files.internal("wall.png"));
 
