@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.tools.GameConfig;
 
 public class GameOverScreen implements Screen {
 	private IGPEGame game;
@@ -24,7 +23,7 @@ public class GameOverScreen implements Screen {
 	public void show() {
 		gameOver = new Texture(Gdx.files.internal("GameOver.jpg"));
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.WIDTH, GameConfig.HEIGHT);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 360);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package it.unical.igpe.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 
@@ -34,6 +35,9 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		renderer.render(delta);
 		hud.stage.draw();
+		
+		if(Gdx.input.isKeyPressed(Keys.BACKSPACE))
+			game.setScreen(new GameOverScreen(game));
 	}
 
 	@Override
