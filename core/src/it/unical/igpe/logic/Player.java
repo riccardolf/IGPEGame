@@ -33,9 +33,10 @@ public class Player extends AbstractGameObject {
 		this.activeWeapon = pistol;
 	}
 
-	public void fire(float angle) {
+	//TODO: FireRate per single Weapon
+	public void fire(float x, float  y, float angle) {
 		if (!reloading) {
-			b.add(new Bullet(new Vector2(boundingBox.x, boundingBox.y), (float) Math.toRadians(angle)));
+			b.add(new Bullet(new Vector2(x, y), (float) Math.toRadians(angle)));
 			this.activeWeapon.actClip--;
 		}
 	}
@@ -65,6 +66,20 @@ public class Player extends AbstractGameObject {
 	public void checkAmmo() {
 		if(activeWeapon.actClip == 0)
 			this.reload();
+	}
+	
+	public String getActWeapon() {
+		return activeWeapon.ID;
+	}
+	
+	public void setActWeapon(String ID) {
+		System.out.println(ID);
+		if(ID == "pistol")
+			activeWeapon = pistol;
+		else if(ID == "shotgun")
+			activeWeapon = shotgun;
+		else if(ID == "rifle")
+			activeWeapon = rifle;
 	}
 	
 	public boolean getReloading() {

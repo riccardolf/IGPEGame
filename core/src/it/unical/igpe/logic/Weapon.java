@@ -3,6 +3,7 @@ package it.unical.igpe.logic;
 import it.unical.igpe.tools.GameConfig;
 
 public class Weapon {
+	protected float fireRate;
 	protected int sizeClip;
 	protected int actClip;
 	protected int actAmmo;
@@ -21,6 +22,7 @@ public class Weapon {
 	}
 	
 	public void createPistol() {
+		fireRate = 0.1f;
 		sizeClip = 10;
 		actClip = 10;
 		actAmmo = 100;
@@ -33,6 +35,7 @@ public class Weapon {
 	}
 	
 	public void createRifle() {
+		fireRate = 0.2f;
 		sizeClip = 5;
 		actClip = 5;
 		actAmmo = 20;
@@ -44,6 +47,7 @@ public class Weapon {
 		ID = "rifle";
 	}
 	public void createShotgun() {
+		fireRate = 0.3f;
 		sizeClip = 10;
 		actClip = 10;
 		actAmmo = 25;

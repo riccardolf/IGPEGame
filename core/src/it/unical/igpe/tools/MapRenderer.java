@@ -23,6 +23,7 @@ public class MapRenderer {
 	ShapeRenderer sr;
 	TextureRegion currentFrame;
 
+	
 	float rotation;
 	float stateTime;
 	Player player;
@@ -51,17 +52,42 @@ public class MapRenderer {
 		camera.position.y = world.getPlayer().getBoundingBox().y;
 		camera.update();
 
-		// TODO: StateManager
-		switch (world.state) {
-		case IDLE:
-			currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
-			break;
-		case RUNNING:
-			currentFrame = Assets.runningPistolAnimation.getKeyFrame(stateTime, true);
-			break;
-		case RELOADING:
-			currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
-			break;
+		//Rendering different weapons
+		if(world.getPlayer().getActWeapon() == "pistol")
+			switch (world.state) {
+			case IDLE:
+				currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
+				break;
+			case RUNNING:
+				currentFrame = Assets.runningPistolAnimation.getKeyFrame(stateTime, true);
+				break;
+			case RELOADING:
+				currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
+				break;
+		}
+		else if (world.getPlayer().getActWeapon() == "shotgun")
+			switch (world.state) {
+			case IDLE:
+				currentFrame = Assets.idleShotgunAnimation.getKeyFrame(stateTime, true);
+				break;
+			case RUNNING:
+				currentFrame = Assets.runningShotgunAnimation.getKeyFrame(stateTime, true);
+				break;
+			case RELOADING:
+				currentFrame = Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true);
+				break;
+		}
+		else if (world.getPlayer().getActWeapon() == "rifle")
+			switch (world.state) {
+			case IDLE:
+				currentFrame = Assets.idleRifleAnimation.getKeyFrame(stateTime, true);
+				break;
+			case RUNNING:
+				currentFrame = Assets.runningRifleAnimation.getKeyFrame(stateTime, true);
+				break;
+			case RELOADING:
+				currentFrame = Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true);
+				break;
 		}
 
 		rotation = world.rotation;

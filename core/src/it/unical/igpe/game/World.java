@@ -25,6 +25,7 @@ public class World {
 	public EnemyManager EM;
 	private int[][] map;
 	public float rotation;
+	public Vector2 dir;
 	private Rectangle box;
 	TileLayer layer;
 	public PlayerState state;
@@ -49,7 +50,8 @@ public class World {
 			for (int y = 0; y < map.length; y++)
 				if (map[x][y] == 1)
 					wls.add(new Wall(new Vector2(x * 64, y * 64)));
-
+		
+		dir = new Vector2();
 	}
 
 	public void updateWorld(float delta) {
@@ -58,7 +60,14 @@ public class World {
 		if (player.getReloading())
 			state = PlayerState.RELOADING;
 		// Angle for player and bullets
-		rotation = calculateAngle((float) Gdx.input.getX(), (float) Gdx.input.getY());
+		float midX = Gdx.graphics.getWidth() / 2;
+		float midY = Gdx.graphics.getHeight() / 2;
+		float mouseX = Gdx.input.getX();
+		float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		dir = new Vector2(mouseX - midX, mouseY - midY);
+		dir.rotate90(-1);
+		rotation = dir.angle();
+		//rotation = calculateAngle((float) Gdx.input.getX(), (float) Gdx.input.getY());
 
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -125,12 +134,28 @@ public class World {
 
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched()) {
-			player.fire(rotation + 90f);
+			float px = (float) (player.getPos().x + 32);
+			float py = (float) (player.getPos().y + 32);
+			
+			px -= Math.sin(Math.toRadians((int)rotation));
+			py += Math.cos(Math.toRadians((int)rotation));
+			
+			player.fire(px, py ,rotation + 90f);
 			player.checkAmmo();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.R) && !player.getReloading()) {
 			player.reload();
 		}
+		else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+			player.setActWeapon("pistol");
+		}
+		else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+			player.setActWeapon("shotgun");
+		}
+		else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+			player.setActWeapon("rifle");
+		}
+		
 		player.isReloading(delta);
 	
 
