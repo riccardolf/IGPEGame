@@ -1,12 +1,15 @@
 package it.unical.igpe.tools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
+	// TODO: ASSETMANAGER
+	public static AssetManager manager = new AssetManager();
 	public static Texture textureBack;
 	public static Texture Ground;
 	public static Texture Wall;

@@ -9,7 +9,6 @@ public class IGPEGame extends Game {
 	
 	@Override
 	public void create() {
-		Assets.load();
 		//this.setScreen(new GameScreen(this, new World()));
 		this.setScreen(new MainMenuScreen(this));
 	}

@@ -2,23 +2,23 @@ package it.unical.igpe.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
-import it.unical.igpe.tools.Assets;
 
-public class MainMenuScreen implements Screen {
+public class LoadingScreen implements Screen {
 	private IGPEGame game;
 	
 	private Skin skin;
@@ -28,11 +28,9 @@ public class MainMenuScreen implements Screen {
 	private Stage stage;
 	private Table table;
 	private Label title;
-	private TextButton startButton;
-	private TextButton quitButton;
+	private ProgressBar loadingBar;
 	
-	
-	public MainMenuScreen(IGPEGame _game) {
+	public LoadingScreen(IGPEGame _game) {
 		game = _game;
 	}
 	
@@ -52,67 +50,45 @@ public class MainMenuScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		title = new Label("DIOCANE'S GAME", skin);
-		
-		startButton = new TextButton("Start", skin);
-		startButton.addListener(new ChangeListener() {
-			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				Assets.load();
-				game.setScreen(new GameScreen(game, new World()));
-			}
-		});
-		
-		quitButton = new TextButton("Quit", skin);
-		quitButton.addListener(new ChangeListener() {
-			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.exit();
-			}
-		});
+		title = new Label("Loading", skin);
+		loadingBar = new ProgressBar(0, 100, 1, false, skin);
 		table.add(title);
 		table.row();
-		table.add(startButton);
-		table.row();
-		table.add(quitButton);
-	
+		
+		
+		
+		stage = new Stage();
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		// TODO Auto-generated method stub
 		
-		batch.begin();
-		batch.draw(mainMenu, 0, 0);
-		batch.end();
-		
-		stage.act(Gdx.graphics.getDeltaTime());
-		stage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height);
+		// TODO Auto-generated method stub
+		
 	}
 
-
 	@Override
-	public void hide() {
+	public void pause() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void dispose() {
-		stage.dispose();
+		
 	}
 
-	@Override
-	public void pause() {}
 	
 	@Override
-	public void resume() {}
+	public void resume() {
+	}
+	
+	@Override
+	public void hide() {
+	}
 }
