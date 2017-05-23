@@ -52,7 +52,7 @@ public class MainMenuScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		title = new Label("DIOCANE'S GAME", skin);
+		title = new Label("NOT ANOTHER TOP DOWN SHOOTER", skin);
 		
 		startButton = new TextButton("Start", skin);
 		startButton.addListener(new ChangeListener() {
@@ -108,6 +108,7 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
+		skin.dispose();
 	}
 
 	@Override

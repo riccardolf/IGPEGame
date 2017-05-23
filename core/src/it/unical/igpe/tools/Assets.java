@@ -1,15 +1,12 @@
 package it.unical.igpe.tools;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
-	// TODO: ASSETMANAGER
-	public static AssetManager manager = new AssetManager();
 	public static Texture textureBack;
 	public static Texture Ground;
 	public static Texture Wall;
@@ -26,10 +23,11 @@ public class Assets {
 	public static Animation<TextureRegion> reloadingRifleAnimation;
 	
 	public static void load() {
+		
 		// load texture for blocks	
 		Ground = new Texture(Gdx.files.internal("ground.png"));
 		Wall = new Texture(Gdx.files.internal("wall.png"));
-
+		
 		// load character's texture
 		atlas = new TextureAtlas(Gdx.files.internal("handgun_move.atlas"));
 		runningPistolAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("handgun_move"));
@@ -51,5 +49,6 @@ public class Assets {
 		idleShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_idle"));
 		atlas = new TextureAtlas(Gdx.files.internal("shotgun_reload.atlas"));
 		reloadingShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_reload"));
+		
 	}
 }

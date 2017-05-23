@@ -16,7 +16,7 @@ import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Wall;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.PlayerState;
-import it.unical.igpe.tools.TileLayer;
+import it.unical.igpe.tools.WorldLoader;
 
 public class World {
 	private Player player;
@@ -27,7 +27,7 @@ public class World {
 	public float rotation;
 	public Vector2 dir;
 	private Rectangle box;
-	TileLayer layer;
+	WorldLoader loader;
 	public PlayerState state;
 
 	@SuppressWarnings("static-access")
@@ -40,12 +40,12 @@ public class World {
 
 		map = new int[64][64];
 		try {
-			layer = layer.FromFile("map.txt");
+			loader = loader.FromFile("map.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		map = layer.map;
+		map = loader.map;
 		for (int x = 0; x < map.length; x++)
 			for (int y = 0; y < map.length; y++)
 				if (map[x][y] == 1)
