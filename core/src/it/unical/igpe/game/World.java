@@ -24,7 +24,7 @@ public class World {
 	private LinkedList<Bullet> bls;
 	private LinkedList<Tile> tiles;
 	public LinkedList<Enemy> ens;
-	public Thread EM;
+	public EnemyManager EM;
 	public float rotation;
 	public Vector2 dir;
 	private Rectangle box;
@@ -182,8 +182,7 @@ public class World {
 		player.setBullets(bls);
 		
 		//Enemies
-		EM.run();
-		ens = ((EnemyManager) EM).getList();
+		EM.update(delta);
 	}
 
 	public float calculateAngle(float x, float y) {

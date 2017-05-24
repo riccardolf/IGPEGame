@@ -26,7 +26,6 @@ public class MapRenderer {
 	float stateTime;
 	Player player;
 	LinkedList<Bullet> bls;
-	LinkedList<Enemy> ens;
 
 	public MapRenderer(World _world) {
 		this.world = _world;
@@ -38,7 +37,6 @@ public class MapRenderer {
 
 		this.player = world.getPlayer();
 		this.bls = world.getPlayer().getBullets();
-		this.ens = world.ens;
 	}
 
 	public void render(float deltaTime) {
@@ -89,7 +87,6 @@ public class MapRenderer {
 			}
 
 		rotation = world.rotation;
-		ens = world.ens;
 
 		bls = player.getBullets();
 
@@ -114,8 +111,7 @@ public class MapRenderer {
 					bullet.getBoundingBox().height);
 		}
 		sr.setColor(Color.RED);
-		for (Enemy e : ens) {
-			System.out.println(e.getPos().x);
+		for (Enemy e : world.EM.getList()) {
 			sr.circle(e.getPos().x, e.getPos().y, 32);
 		}
 		sr.end();

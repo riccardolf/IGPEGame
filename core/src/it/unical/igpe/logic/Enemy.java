@@ -14,13 +14,14 @@ public class Enemy extends AbstractGameObject implements Updatable {
 	private LinkedList<Player> players;
 	private Vector2 target;
 	private int targetDistance;
+	
 
 	public Enemy(Vector2 _pos, Player _player) {
 		boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 64, 64);
 		ID = "enemy";
 		alive = true;
 		HP = 100f;
-		speed = GameConfig.MOVESPEED * 0.5f;
+		speed = GameConfig.MOVESPEED + 40;
 		ChaseObj = false;
 		players = new LinkedList<Player>();
 		players.add(_player);
@@ -30,8 +31,7 @@ public class Enemy extends AbstractGameObject implements Updatable {
 	public boolean update() {
 		if(this.HP <= 0)
 			return false;
-		
-		if(ChaseObj != false) {
+		if(!ChaseObj) {
 			Random r = new Random();
 			int i = r.nextInt(4);
 			switch (i) {
@@ -45,13 +45,13 @@ public class Enemy extends AbstractGameObject implements Updatable {
 				this.MoveRight();
 				break;
 			case 3:
-				this.MoveUp();
+				this.MoveDown();
 				break;
 			default:
 				break;
 			}
 		}
-		else {
+		else if(ChaseObj) {
 			target = players.getFirst().getPos();
 			//Enemy choose closest player (multiplayer)
 			targetDistance = (int) Math.sqrt(Math.pow((players.getFirst().getPos().x - this.getBoundingBox().x), 2)

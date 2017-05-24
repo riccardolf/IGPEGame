@@ -61,6 +61,7 @@ public class HelpScreen implements Screen {
 				game.setScreen(prevScreen);
 			}
 		});
+		table.bottom();
 		table.add(title);
 		table.row();
 		table.add(returnButton);
@@ -73,7 +74,7 @@ public class HelpScreen implements Screen {
 
 		batch.begin();
 		batch.draw(mainMenu, 0, 0);
-		batch.draw(WASD, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		batch.draw(WASD, 100, 100);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());

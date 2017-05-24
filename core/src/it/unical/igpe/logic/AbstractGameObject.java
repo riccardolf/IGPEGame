@@ -14,19 +14,19 @@ public abstract class AbstractGameObject {
 	protected float speed;
 
 	public void MoveUp() {
-		this.boundingBox.y += GameConfig.MOVESPEED;
+		this.boundingBox.y += this.speed;
 	}
 
 	public void MoveDown() {
-		this.boundingBox.y -= GameConfig.MOVESPEED;
+		this.boundingBox.y -= this.speed;
 	}
 
 	public void MoveRight() {
-		this.boundingBox.x += GameConfig.MOVESPEED;
+		this.boundingBox.x += this.speed;
 	}
 
 	public void MoveLeft() {
-		this.boundingBox.x -= GameConfig.MOVESPEED;
+		this.boundingBox.x -= this.speed;
 	}
 
 	public void MoveUpLeft() {
