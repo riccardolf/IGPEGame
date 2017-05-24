@@ -33,8 +33,8 @@ public class Player extends AbstractGameObject {
 		this.activeWeapon = pistol;
 	}
 
-	//TODO: FireRate per single Weapon
-	public void fire(float x, float  y, float angle) {
+	// TODO: FireRate per single Weapon
+	public void fire(float x, float y, float angle) {
 		if (!reloading) {
 			b.add(new Bullet(new Vector2(x, y), (float) Math.toRadians(angle)));
 			this.activeWeapon.actClip--;
@@ -42,7 +42,7 @@ public class Player extends AbstractGameObject {
 	}
 
 	public void reload() {
-		if(!(activeWeapon.actClip == activeWeapon.sizeClip)) {
+		if (!(activeWeapon.actClip == activeWeapon.sizeClip)) {
 			activeWeapon.reloadAct = 0;
 			reloading = true;
 		}
@@ -64,36 +64,39 @@ public class Player extends AbstractGameObject {
 	}
 
 	public void checkAmmo() {
-		if(activeWeapon.actClip == 0)
+		if (activeWeapon.actClip == 0)
 			this.reload();
 	}
-	
+
 	public String getActWeapon() {
 		return activeWeapon.ID;
 	}
-	
+
 	public void setActWeapon(String ID) {
 		System.out.println(ID);
-		if(ID == "pistol")
+		if (ID == "pistol")
 			activeWeapon = pistol;
-		else if(ID == "shotgun")
+		else if (ID == "shotgun")
 			activeWeapon = shotgun;
-		else if(ID == "rifle")
+		else if (ID == "rifle")
 			activeWeapon = rifle;
 	}
-	
+
 	public boolean getReloading() {
 		return this.reloading;
 	}
+
 	public void setReloading(boolean bool) {
 		this.reloading = bool;
 	}
-	
+
 	public LinkedList<Bullet> getBullets() {
 		return b;
 	}
+
 	public void setBullets(LinkedList<Bullet> _b) {
 		this.b = _b;
 	}
-	
+
+
 }

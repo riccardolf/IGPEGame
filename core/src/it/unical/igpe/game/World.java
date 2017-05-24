@@ -13,17 +13,18 @@ import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.EnemyManager;
 import it.unical.igpe.logic.Player;
-import it.unical.igpe.logic.Wall;
+import it.unical.igpe.logic.Tile;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.PlayerState;
 import it.unical.igpe.tools.TileLayer;
+import it.unical.igpe.tools.TileType;
 
 public class World {
 	private Player player;
 	private LinkedList<Bullet> bls;
-	private LinkedList<Wall> wls;
-	public EnemyManager EM;
-	private int[][] map;
+	private LinkedList<Tile> tiles;
+	public LinkedList<Enemy> ens;
+	public Thread EM;
 	public float rotation;
 	public Vector2 dir;
 	private Rectangle box;
@@ -34,23 +35,24 @@ public class World {
 	public World() {
 		player = new Player(new Vector2(100, 100));
 		EM = new EnemyManager(player);
-		EM.add(new Enemy(new Vector2(300, 300)));
+		
 		state = PlayerState.IDLE;
-		wls = new LinkedList<Wall>();
-
-		map = new int[64][64];
+		tiles = new LinkedList<Tile>();
+		
 		try {
 			layer = layer.FromFile("map.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		map = layer.map;
-		for (int x = 0; x < map.length; x++)
-			for (int y = 0; y < map.length; y++)
-				if (map[x][y] == 1)
-					wls.add(new Wall(new Vector2(x * 64, y * 64)));
-		
+		for (int x = 0; x < layer.map.length; x++)
+			for (int y = 0; y < layer.map.length; y++) {
+				if (layer.map[x][y] == 0)
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+				else if (layer.map[x][y] == 1)
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
+			}
+					
 		dir = new Vector2();
 	}
 
@@ -163,7 +165,7 @@ public class World {
 
 		bls = player.getBullets();
 		Iterator<Bullet> it = bls.listIterator();
-		Iterator<Enemy> iter = EM.getList().listIterator();
+		Iterator<Enemy> iter = ((EnemyManager) EM).getList().listIterator();
 		while (it.hasNext()) {
 			Bullet b = it.next();
 			while(iter.hasNext()) {
@@ -182,7 +184,7 @@ public class World {
 		
 		//Enemies
 		EM.run();
-		EM.checkEnemies();
+		ens = ((EnemyManager) EM).getList();
 	}
 
 	public float calculateAngle(float x, float y) {
@@ -190,10 +192,10 @@ public class World {
 	}
 
 	public boolean checkCollisionWall(Rectangle _box) {
-		for (Wall wall : wls) {
-			if (Math.sqrt(Math.pow((_box.x - wall.getBoundingBox().x), 2)
-					+ Math.pow(_box.y - wall.getBoundingBox().y, 2)) < 128) {
-				if (_box.intersects(wall.getBoundingBox())) {
+		for (Tile tile : tiles) {
+			if (Math.sqrt(Math.pow((_box.x - tile.getBoundingBox().x), 2)
+					+ Math.pow(_box.y - tile.getBoundingBox().y, 2)) < 128) {
+				if (tile.getType() == TileType.WALL && _box.intersects(tile.getBoundingBox())) {
 					return true;
 				}
 			}
@@ -209,11 +211,7 @@ public class World {
 		return bls;
 	}
 
-	public LinkedList<Wall> getWls() {
-		return wls;
-	}
-
-	public int[][] getMap() {
-		return map;
+	public LinkedList<Tile> getTiles() {
+		return tiles;
 	}
 }

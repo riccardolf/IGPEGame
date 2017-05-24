@@ -12,9 +12,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
-import it.unical.igpe.logic.EnemyManager;
 import it.unical.igpe.logic.Player;
-import it.unical.igpe.logic.Wall;
+import it.unical.igpe.logic.Tile;
 
 public class MapRenderer {
 	World world;
@@ -23,12 +22,11 @@ public class MapRenderer {
 	ShapeRenderer sr;
 	TextureRegion currentFrame;
 
-	
 	float rotation;
 	float stateTime;
 	Player player;
 	LinkedList<Bullet> bls;
-	EnemyManager ens;
+	LinkedList<Enemy> ens;
 
 	public MapRenderer(World _world) {
 		this.world = _world;
@@ -37,23 +35,23 @@ public class MapRenderer {
 		this.camera.position.set(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0);
 		this.batch = new SpriteBatch();
 		this.sr = new ShapeRenderer();
-		
+
 		this.player = world.getPlayer();
 		this.bls = world.getPlayer().getBullets();
-		this.ens = new EnemyManager(player);
+		this.ens = world.ens;
 	}
 
 	public void render(float deltaTime) {
 		stateTime += deltaTime;
 		batch.setProjectionMatrix(camera.combined);
 		sr.setProjectionMatrix(camera.combined);
-		
+
 		camera.position.x = world.getPlayer().getBoundingBox().x;
 		camera.position.y = world.getPlayer().getBoundingBox().y;
 		camera.update();
 
-		//Rendering different weapons
-		if(world.getPlayer().getActWeapon() == "pistol")
+		// Rendering different weapons
+		if (world.getPlayer().getActWeapon() == "pistol")
 			switch (world.state) {
 			case IDLE:
 				currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
@@ -64,7 +62,7 @@ public class MapRenderer {
 			case RELOADING:
 				currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
 				break;
-		}
+			}
 		else if (world.getPlayer().getActWeapon() == "shotgun")
 			switch (world.state) {
 			case IDLE:
@@ -76,7 +74,7 @@ public class MapRenderer {
 			case RELOADING:
 				currentFrame = Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true);
 				break;
-		}
+			}
 		else if (world.getPlayer().getActWeapon() == "rifle")
 			switch (world.state) {
 			case IDLE:
@@ -88,39 +86,41 @@ public class MapRenderer {
 			case RELOADING:
 				currentFrame = Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true);
 				break;
-		}
+			}
 
 		rotation = world.rotation;
+		ens = world.ens;
 
 		bls = player.getBullets();
 
 		// draw map
 		batch.begin();
-		for (int x = 0; x < world.getMap().length; x++)
-			for (int y = 0; y < world.getMap().length; y++)
-				if (world.getMap()[x][y] == 0)
-					batch.draw(Assets.Ground, x * 64, y * 64);
-		for (Wall wall : world.getWls()) {
-			batch.draw(Assets.Wall, wall.getPos().x, wall.getPos().y);
+		for (Tile tile : world.getTiles()) {
+			if (tile.getType() == TileType.GROUND)
+				batch.draw(Assets.Ground, tile.getBoundingBox().x, tile.getBoundingBox().y);
+			else if (tile.getType() == TileType.WALL)
+				batch.draw(Assets.Wall, tile.getBoundingBox().x, tile.getBoundingBox().y);
 		}
-
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
 				64, 1f, 1f, rotation);
 		batch.end();
 
 		sr.begin(ShapeType.Filled);
-		sr.setColor(Color.BLACK);
-		for (Bullet bullet : bls) {
+		sr.setColor(Color.RED);
+		for (
+
+		Bullet bullet : bls) {
 			sr.rect(bullet.getPos().x, bullet.getPos().y, bullet.getBoundingBox().width,
 					bullet.getBoundingBox().height);
 		}
 		sr.setColor(Color.RED);
-		for (Enemy e : ens.getList()) {
+		for (Enemy e : ens) {
+			System.out.println(e.getPos().x);
 			sr.circle(e.getPos().x, e.getPos().y, 32);
 		}
 		sr.end();
 	}
-	
+
 	public void dispose() {
 		batch.dispose();
 		sr.dispose();
