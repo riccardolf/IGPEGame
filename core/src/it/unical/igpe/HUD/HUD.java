@@ -18,7 +18,7 @@ public class HUD implements Disposable {
 		table.top();
 		table.setFillParent(true);
 		
-		bulletsCount = new Label("Clip: ", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+		bulletsCount = new Label("Ammo: ", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 		table.add(bulletsCount);
 		
 		stage.addActor(table);
