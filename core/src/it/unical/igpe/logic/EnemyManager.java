@@ -7,6 +7,7 @@ public class EnemyManager extends Thread {
 	LinkedList<Enemy> ens;
 	Player target;
 	public LinkedList<Bullet> bls;
+	@SuppressWarnings("unused")
 	private Player player;
 
 	public EnemyManager(Player _player) {
@@ -26,11 +27,6 @@ public class EnemyManager extends Thread {
 			e.toString();
 			if (!e.update())
 				iter.remove();
-			try {
-				this.sleep(100);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
 		}
 	}
 

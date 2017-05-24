@@ -29,11 +29,17 @@ public class MainMenuScreen implements Screen {
 	private Table table;
 	private Label title;
 	private TextButton startButton;
+	private TextButton optionButton;
+	private TextButton helpButton;
 	private TextButton quitButton;
+	private OptionScreen optionScreen;
+	private HelpScreen helpScreen;
 	
 	
 	public MainMenuScreen(IGPEGame _game) {
 		game = _game;
+		optionScreen = new OptionScreen(game, this);
+		helpScreen  = new HelpScreen(game, this);
 	}
 	
 	@Override
@@ -64,6 +70,24 @@ public class MainMenuScreen implements Screen {
 			}
 		});
 		
+		optionButton = new TextButton("Option", skin);
+		optionButton.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.setScreen(optionScreen);
+			}
+		});
+		
+		helpButton = new TextButton("Help", skin);
+		helpButton.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.setScreen(helpScreen);
+			}
+		});
+		
 		quitButton = new TextButton("Quit", skin);
 		quitButton.addListener(new ChangeListener() {
 			
@@ -75,6 +99,10 @@ public class MainMenuScreen implements Screen {
 		table.add(title);
 		table.row();
 		table.add(startButton);
+		table.row();
+		table.add(optionButton);
+		table.row();
+		table.add(helpButton);
 		table.row();
 		table.add(quitButton);
 	
@@ -108,7 +136,9 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
+		mainMenu.dispose();
 		skin.dispose();
+		atlas.dispose();
 	}
 
 	@Override
