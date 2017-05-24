@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
 	public void show() {
 		this.renderer = new MapRenderer(world);
 		this.hud = new HUD();
+		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override
