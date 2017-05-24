@@ -16,8 +16,12 @@ import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.PlayerState;
+<<<<<<< HEAD
 import it.unical.igpe.tools.TileLayer;
 import it.unical.igpe.tools.TileType;
+=======
+import it.unical.igpe.tools.WorldLoader;
+>>>>>>> origin/master
 
 public class World {
 	private Player player;
@@ -28,7 +32,7 @@ public class World {
 	public float rotation;
 	public Vector2 dir;
 	private Rectangle box;
-	TileLayer layer;
+	WorldLoader loader;
 	public PlayerState state;
 
 	@SuppressWarnings("static-access")
@@ -40,11 +44,12 @@ public class World {
 		tiles = new LinkedList<Tile>();
 		
 		try {
-			layer = layer.FromFile("map.txt");
+			loader = loader.FromFile("map.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+<<<<<<< HEAD
 		for (int x = 0; x < layer.map.length; x++)
 			for (int y = 0; y < layer.map.length; y++) {
 				if (layer.map[x][y] == 0)
@@ -53,6 +58,14 @@ public class World {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
 			}
 					
+=======
+		map = loader.map;
+		for (int x = 0; x < map.length; x++)
+			for (int y = 0; y < map.length; y++)
+				if (map[x][y] == 1)
+					wls.add(new Wall(new Vector2(x * 64, y * 64)));
+		
+>>>>>>> origin/master
 		dir = new Vector2();
 	}
 

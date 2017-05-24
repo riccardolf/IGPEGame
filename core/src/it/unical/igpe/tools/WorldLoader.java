@@ -5,10 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TileLayer {
+public class WorldLoader {
 	public int[][] map;
 	
-	public TileLayer (int[][] existingMap) {
+	public WorldLoader (int[][] existingMap) {
 		map = new int[existingMap.length][existingMap[0].length];
 		
 		for (int x = 0; x < map.length; x++)
@@ -16,12 +16,12 @@ public class TileLayer {
 				map[x][y] = existingMap[x][y];
 	}
 	
-	public TileLayer(int width, int height) {
+	public WorldLoader(int width, int height) {
 		map = new int[height][width];
 	}
 	
-	public static TileLayer FromFile(String fileHandle) throws IOException {
-		TileLayer layer = null;
+	public static WorldLoader FromFile(String fileHandle) throws IOException {
+		WorldLoader layer = null;
 		
 		ArrayList<ArrayList<Integer>> tempLayout = new ArrayList<ArrayList<Integer>>();
 		@SuppressWarnings("resource")
@@ -49,7 +49,7 @@ public class TileLayer {
 		int width = tempLayout.get(0).size();
 		int height = tempLayout.size();
 		
-		layer = new TileLayer(width, height);
+		layer = new WorldLoader(width, height);
 		
 		for(int x = 0; x < height; x++) {
 			for(int y = 0; y < width; y++) {
