@@ -16,12 +16,8 @@ import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.PlayerState;
-<<<<<<< HEAD
-import it.unical.igpe.tools.TileLayer;
 import it.unical.igpe.tools.TileType;
-=======
 import it.unical.igpe.tools.WorldLoader;
->>>>>>> origin/master
 
 public class World {
 	private Player player;
@@ -48,24 +44,14 @@ public class World {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-<<<<<<< HEAD
-		for (int x = 0; x < layer.map.length; x++)
-			for (int y = 0; y < layer.map.length; y++) {
-				if (layer.map[x][y] == 0)
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				else if (layer.map[x][y] == 1)
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
-			}
-					
-=======
-		map = loader.map;
-		for (int x = 0; x < map.length; x++)
-			for (int y = 0; y < map.length; y++)
-				if (map[x][y] == 1)
-					wls.add(new Wall(new Vector2(x * 64, y * 64)));
 		
->>>>>>> origin/master
+		for (int x = 0; x < loader.map.length; x++)
+			for (int y = 0; y < loader.map.length; y++) {
+				if (loader.map[x][y] == 0)
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+				else if (loader.map[x][y] == 1)
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
+			}		
 		dir = new Vector2();
 	}
 
