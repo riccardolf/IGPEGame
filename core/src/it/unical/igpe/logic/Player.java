@@ -16,7 +16,7 @@ public class Player extends AbstractGameObject {
 	private Weapon shotgun;
 
 	public Player(Vector2 _pos) {
-		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 64, 64);
+		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 48, 48);
 		this.reloading = false;
 		this.ID = "player";
 		this.alive = true;

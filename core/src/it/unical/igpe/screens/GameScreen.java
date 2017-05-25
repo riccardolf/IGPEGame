@@ -39,6 +39,8 @@ public class GameScreen implements Screen {
 		
 		if(Gdx.input.isKeyPressed(Keys.BACKSPACE))
 			game.setScreen(new GameOverScreen(game));
+		if(world.isLevelFinished())
+			game.setScreen(new LevelCompletedScreen(game));
 	}
 
 	@Override

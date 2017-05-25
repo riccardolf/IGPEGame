@@ -37,7 +37,7 @@ public class HelpScreen implements Screen {
 	@Override
 	public void show() {
 		mainMenu = new Texture(Gdx.files.internal("MainMenu.jpg"));
-		WASD = new Texture(Gdx.files.internal("WASD.jpg"));
+		WASD = new Texture(Gdx.files.internal("WASD.png"));
 		atlas = new TextureAtlas(Gdx.files.internal("skin/star-soldier-ui.atlas"));
 		skin = new Skin(Gdx.files.internal("skin/star-soldier-ui.json"), atlas);
 

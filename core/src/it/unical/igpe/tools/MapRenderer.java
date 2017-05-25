@@ -97,6 +97,8 @@ public class MapRenderer {
 				batch.draw(Assets.Ground, tile.getBoundingBox().x, tile.getBoundingBox().y);
 			else if (tile.getType() == TileType.WALL)
 				batch.draw(Assets.Wall, tile.getBoundingBox().x, tile.getBoundingBox().y);
+			else if (tile.getType() == TileType.ENDLEVEL)
+				batch.draw(Assets.Stair, tile.getBoundingBox().x, tile.getBoundingBox().y);
 		}
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
 				64, 1f, 1f, rotation);
