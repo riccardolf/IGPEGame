@@ -249,8 +249,6 @@ public class World {
 	}
 
 	public boolean isLevelFinished() {
-		if (finished)
-			System.out.println(finished);
 		return finished;
 	}
 }

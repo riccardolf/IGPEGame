@@ -73,7 +73,6 @@ public class Player extends AbstractGameObject {
 	}
 
 	public void setActWeapon(String ID) {
-		System.out.println(ID);
 		if (ID == "pistol")
 			activeWeapon = pistol;
 		else if (ID == "shotgun")
