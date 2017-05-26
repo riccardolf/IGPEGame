@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.math.Vector2;
 
+
 public class EnemyManager {
 	LinkedList<Enemy> ens;
 	Player target;
@@ -40,5 +41,4 @@ public class EnemyManager {
 	public LinkedList<Enemy> getList() {
 		return ens;
 	}
-
 }
