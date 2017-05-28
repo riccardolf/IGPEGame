@@ -5,18 +5,22 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.ai.MapAi;
+import it.unical.igpe.game.World;
+
 
 public class EnemyManager {
 	LinkedList<Enemy> ens;
-	Player target;
 	public LinkedList<Bullet> bls;
-	private Player player;
+	private World world;
 	private float currentUpdate = 0;
+	private MapAi map;
 
-	public EnemyManager(Player _player) {
+	public EnemyManager(World _world) {
+		world = _world;
 		ens = new LinkedList<Enemy>();
-		player = _player;
-		ens.add(new Enemy(new Vector2(500, 500), player));
+		ens.add(new Enemy(new Vector2(500, 500), world.getPlayer()));
+		map = new MapAi(world);
 	}
 
 	public void update(float delta) {
@@ -25,7 +29,10 @@ public class EnemyManager {
 			Iterator<Enemy> iter = ens.iterator();
 			while (iter.hasNext()) {
 				Enemy e = iter.next();
-				e.toString();
+				System.out.println(e.toString());
+				map.init(e);
+				map.calculatePath();
+				e.setPath(map.getPath());
 				if (!e.update())
 					iter.remove();
 			}

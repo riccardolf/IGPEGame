@@ -36,7 +36,7 @@ public class World {
 	@SuppressWarnings("static-access")
 	public World() {
 		player = new Player(new Vector2(100, 100));
-		EM = new EnemyManager(player);
+		EM = new EnemyManager(this);
 
 		state = PlayerState.IDLE;
 		tiles = new LinkedList<Tile>();
