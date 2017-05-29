@@ -103,7 +103,7 @@ public class MapRenderer {
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
 				64, 1f, 1f, rotation);
 		for (Enemy e : world.EM.getList()) {
-			batch.draw(Assets.Enemy, e.getPos().x + 32, e.getPos().y + 32);
+			batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.rotation);
 		}
 		batch.end();
 
@@ -119,6 +119,7 @@ public class MapRenderer {
 		sr.setColor(Color.BLACK);
 		for (Enemy e : world.EM.getList()) {
 			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 256);
+			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 192);
 		}
 
 		sr.end();

@@ -46,7 +46,7 @@ public class EnemyManager {
 	}
 
 	public void update(float delta) {
-		if (currentUpdate > 1f) {
+		if (currentUpdate > 0) {
 			currentUpdate = 0;
 			Iterator<Enemy> iter = ens.iterator();
 			while (iter.hasNext()) {

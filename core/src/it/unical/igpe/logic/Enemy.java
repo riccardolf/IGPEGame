@@ -7,12 +7,13 @@ import java.util.Random;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntArray;
 
-
-import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.Updatable;
 
 public class Enemy extends AbstractGameObject implements Updatable {
-	private boolean ChaseObj;
+	private boolean chaseObj;
+	private boolean shootingObj;
+	public float rotation;
+	private Vector2 dir;
 	private LinkedList<Player> players;
 	private IntArray path;
 
@@ -21,23 +22,38 @@ public class Enemy extends AbstractGameObject implements Updatable {
 		ID = "enemy";
 		alive = true;
 		HP = 100f;
-		speed = GameConfig.MOVESPEED + 32;
-		ChaseObj = true;
+		speed = 1;
+		chaseObj = true;
 		players = new LinkedList<Player>();
 		players.add(_player);
 		path = new IntArray();
+		dir = new Vector2();
 	}
 
 	@Override
 	public boolean update() {
-		if(this.HP <= 0)
+		float startx = this.getBoundingBox().x / 32;
+		float starty = this.getBoundingBox().y / 32;
+		float targetx = players.getFirst().getBoundingBox().x / 32;
+		float targety = players.getFirst().getBoundingBox().y / 32;
+		dir = new Vector2(targetx - startx, targety - starty);
+		dir.rotate90(-1);
+		rotation = dir.angle();
+		if (this.HP <= 0)
 			return false;
-		if(this.getPos().dst(players.getFirst().getPos()) < 256)
-			ChaseObj = true;
-		else
-			ChaseObj = false;
-		
-		if(!ChaseObj) {
+		if (this.getPos().dst(players.getFirst().getPos()) < 256
+				&& this.getPos().dst(players.getFirst().getPos()) > 192) {
+			chaseObj = true;
+			shootingObj = false;
+		} else if (this.getPos().dst(players.getFirst().getPos()) <= 192) {
+			chaseObj = false;
+			shootingObj = true;
+		} else {
+			chaseObj = false;
+			shootingObj = false;
+		}
+
+		if (!chaseObj && !shootingObj) {
 			Random r = new Random();
 			int i = r.nextInt(4);
 			switch (i) {
@@ -56,13 +72,14 @@ public class Enemy extends AbstractGameObject implements Updatable {
 			default:
 				break;
 			}
-		}
-		else if(ChaseObj) {
-			for(int i = 0; i < path.size; i+=2) {
+		} else if (chaseObj) {
+			for (int i = 0; i < path.size; i += 2) {
 				float x = path.get(i);
-				float y = path.get(i+1);
-				this.setPos(new Vector2(x * 64, y * 64));
+				float y = path.get(i + 1);
+				this.followPath(new Vector2(x * 64, y * 64));
 			}
+		} else if (shootingObj) {
+			
 		}
 		return true;
 	}
@@ -80,11 +97,11 @@ public class Enemy extends AbstractGameObject implements Updatable {
 	public void followPath(Vector2 pos) {
 		if (this.boundingBox.x < pos.x)
 			this.MoveRight();
-		else if (this.boundingBox.x > pos.x)
+		if (this.boundingBox.x > pos.x)
 			this.MoveLeft();
-		else if (this.boundingBox.y < pos.y)
+		if (this.boundingBox.y < pos.y)
 			this.MoveUp();
-		else if (this.boundingBox.y > pos.y)
+		if (this.boundingBox.y > pos.y)
 			this.MoveDown();
 	}
 

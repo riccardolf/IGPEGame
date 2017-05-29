@@ -72,8 +72,6 @@ public class World {
 		dir = new Vector2(mouseX - midX, mouseY - midY);
 		dir.rotate90(-1);
 		rotation = dir.angle();
-		// rotation = calculateAngle((float) Gdx.input.getX(), (float)
-		// Gdx.input.getY());
 
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
