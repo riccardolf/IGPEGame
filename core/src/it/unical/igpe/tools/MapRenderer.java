@@ -102,21 +102,27 @@ public class MapRenderer {
 		}
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
 				64, 1f, 1f, rotation);
+		for (Enemy e : world.EM.getList()) {
+			batch.draw(Assets.Enemy, e.getPos().x + 32, e.getPos().y + 32);
+		}
 		batch.end();
 
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.RED);
-		for (
-
-		Bullet bullet : bls) {
+		for (Bullet bullet : bls) {
 			sr.rect(bullet.getPos().x, bullet.getPos().y, bullet.getBoundingBox().width,
 					bullet.getBoundingBox().height);
 		}
-		sr.setColor(Color.RED);
-		for (Enemy e : world.EM.getList()) {
-			sr.circle(e.getPos().x, e.getPos().y, 32);
-		}
 		sr.end();
+
+		sr.begin(ShapeType.Line);
+		sr.setColor(Color.BLACK);
+		for (Enemy e : world.EM.getList()) {
+			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 256);
+		}
+
+		sr.end();
+
 	}
 
 	public void dispose() {

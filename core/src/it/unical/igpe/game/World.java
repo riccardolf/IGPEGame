@@ -9,9 +9,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.ai.EnemyManager;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
-import it.unical.igpe.logic.EnemyManager;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.tools.GameConfig;
@@ -36,7 +36,6 @@ public class World {
 	@SuppressWarnings("static-access")
 	public World() {
 		player = new Player(new Vector2(100, 100));
-		EM = new EnemyManager(this);
 
 		state = PlayerState.IDLE;
 		tiles = new LinkedList<Tile>();
@@ -57,6 +56,7 @@ public class World {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
 			}
 		dir = new Vector2();
+		EM = new EnemyManager(this);
 	}
 
 	public void updateWorld(float delta) {
