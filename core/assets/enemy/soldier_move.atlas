@@ -1,0 +1,62 @@
+
+soldier_move.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+soldier_move
+  rotate: false
+  xy: 2, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 0
+soldier_move
+  rotate: false
+  xy: 54, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 1
+soldier_move
+  rotate: false
+  xy: 106, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 2
+soldier_move
+  rotate: false
+  xy: 158, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 3
+soldier_move
+  rotate: false
+  xy: 210, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 4
+soldier_move
+  rotate: false
+  xy: 262, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 5
+soldier_move
+  rotate: false
+  xy: 314, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 6
+soldier_move
+  rotate: false
+  xy: 366, 2
+  size: 50, 86
+  orig: 50, 86
+  offset: 0, 0
+  index: 7

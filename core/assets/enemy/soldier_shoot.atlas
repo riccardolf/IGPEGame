@@ -1,0 +1,48 @@
+
+soldier_shoot.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+soldier_shoot
+  rotate: false
+  xy: 2, 2
+  size: 61, 102
+  orig: 61, 102
+  offset: 0, 0
+  index: 16
+soldier_shoot
+  rotate: false
+  xy: 65, 2
+  size: 61, 102
+  orig: 61, 102
+  offset: 0, 0
+  index: 18
+soldier_shoot
+  rotate: false
+  xy: 128, 2
+  size: 60, 102
+  orig: 60, 102
+  offset: 0, 0
+  index: 14
+soldier_shoot
+  rotate: false
+  xy: 190, 2
+  size: 60, 102
+  orig: 60, 102
+  offset: 0, 0
+  index: 15
+soldier_shoot
+  rotate: false
+  xy: 252, 2
+  size: 59, 102
+  orig: 59, 102
+  offset: 0, 0
+  index: 17
+soldier_shoot
+  rotate: false
+  xy: 313, 2
+  size: 59, 102
+  orig: 59, 102
+  offset: 0, 0
+  index: 19
