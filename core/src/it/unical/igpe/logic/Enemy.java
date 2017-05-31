@@ -95,13 +95,13 @@ public class Enemy extends AbstractGameObject implements Updatable {
 	}
 
 	public void followPath(Vector2 pos) {
-		if (this.boundingBox.x < pos.x)
+		if (this.boundingBox.x < pos.x + 32)
 			this.MoveRight();
-		if (this.boundingBox.x > pos.x)
+		if (this.boundingBox.x > pos.x + 32)
 			this.MoveLeft();
-		if (this.boundingBox.y < pos.y)
+		if (this.boundingBox.y < pos.y + 32)
 			this.MoveUp();
-		if (this.boundingBox.y > pos.y)
+		if (this.boundingBox.y > pos.y + 32)
 			this.MoveDown();
 	}
 

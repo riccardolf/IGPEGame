@@ -18,29 +18,29 @@ public class EnemyManager {
 	private World world;
 	private float currentUpdate = 0;
 	private Astar astar;
-	private boolean[] map;
+	private boolean[][] map;
 
 	public EnemyManager(World _world) {
 		world = _world;
 		ens = new LinkedList<Enemy>();
 		ens.add(new Enemy(new Vector2(500, 500), world.getPlayer()));
-		map = new boolean[16 * 16];
+		map = new boolean[16][16];
 		for (Tile tile : world.getTiles()) {
 			if(tile.getType() == TileType.WALL) {
-				map[(int) (tile.getPos().x / 64 * 16 + tile.getPos().y / 64)] = true;
+				map[(int) (tile.getPos().x / 64)][(int) (tile.getPos().y / 64)] = true;
 			}
 		}
 		
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < 16; j++) {
-				System.out.print(map[i + j * 16] ? " 1 " : " 0 ");
+				System.out.print(map[i][j] ? " 1 " : " 0 ");
 			}
 			System.out.println();
 		}
 		
 		astar = new Astar(16, 16) {
 			protected boolean isValid(int x, int y) {
-				return !map[x + y * 16];
+				return !map[x][y];
 			}
 		};
 	}
