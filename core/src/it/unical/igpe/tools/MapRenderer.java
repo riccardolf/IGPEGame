@@ -22,7 +22,6 @@ public class MapRenderer {
 	ShapeRenderer sr;
 	TextureRegion currentFrame;
 
-	float rotation;
 	float stateTime;
 	Player player;
 	LinkedList<Bullet> bls;
@@ -86,8 +85,6 @@ public class MapRenderer {
 				break;
 			}
 
-		rotation = world.rotation;
-
 		bls = player.getBullets();
 
 		// draw map
@@ -101,9 +98,9 @@ public class MapRenderer {
 				batch.draw(Assets.Stair, tile.getBoundingBox().x, tile.getBoundingBox().y);
 		}
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
-				64, 1f, 1f, rotation);
+				64, 1f, 1f, player.angle);
 		for (Enemy e : world.EM.getList()) {
-			batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.rotation);
+			batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 		}
 		batch.end();
 
