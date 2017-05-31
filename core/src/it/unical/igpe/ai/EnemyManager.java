@@ -27,7 +27,7 @@ public class EnemyManager {
 		map = new boolean[16][16];
 		for (Tile tile : world.getTiles()) {
 			if(tile.getType() == TileType.WALL) {
-				map[(int) (tile.getPos().x / 64)][(int) (tile.getPos().y / 64)] = true;
+				map[(int) (tile.getPos().y / 64)][(int) (tile.getPos().x / 64)] = true;
 			}
 		}
 		
@@ -46,7 +46,7 @@ public class EnemyManager {
 	}
 
 	public void update(float delta) {
-		if (currentUpdate > 0) {
+		if (currentUpdate > 1f) {
 			currentUpdate = 0;
 			Iterator<Enemy> iter = ens.iterator();
 			while (iter.hasNext()) {

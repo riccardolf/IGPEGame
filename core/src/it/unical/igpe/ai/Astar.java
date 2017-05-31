@@ -62,9 +62,7 @@ public class Astar {
 			if (x < lastColumn) {
 				addNode(node, x + 1, y, 10);
 				if (y < lastRow)
-					addNode(node, x + 1, y + 1, 14); // Diagonals cost more,
-														// roughly equivalent to
-														// sqrt(2).
+					addNode(node, x + 1, y + 1, 14);
 				if (y > 0)
 					addNode(node, x + 1, y - 1, 14);
 			}
@@ -85,7 +83,7 @@ public class Astar {
 	}
 
 	private void addNode(PathNode parent, int x, int y, int cost) {
-		if (!isValid((int)x,(int) y))
+		if (!isValid((int) x, (int) y))
 			return;
 
 		int pathCost = parent.pathCost + cost;
@@ -103,7 +101,7 @@ public class Astar {
 				node.pathCost = pathCost;
 			}
 		} else {
-			// Use node from the cache or create a new one.
+			// Use node from the cache or create a new one
 			if (node == null) {
 				node = new PathNode(0);
 				node.x = x;

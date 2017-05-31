@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.tools.GameConfig;
 
 public abstract class AbstractGameObject {
-	protected float angle;
+	public float angle;
 	protected Rectangle boundingBox;
 	protected String ID;
 	protected boolean alive;

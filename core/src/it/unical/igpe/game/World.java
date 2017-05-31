@@ -27,7 +27,6 @@ public class World {
 	private boolean finished = false;
 	public LinkedList<Enemy> ens;
 	public EnemyManager EM;
-	public float rotation;
 	public Vector2 dir;
 	private Rectangle box;
 	WorldLoader loader;
@@ -71,7 +70,7 @@ public class World {
 		float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 		dir = new Vector2(mouseX - midX, mouseY - midY);
 		dir.rotate90(-1);
-		rotation = dir.angle();
+		player.angle = dir.angle();
 
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -174,10 +173,10 @@ public class World {
 			float px = (float) (player.getPos().x + 32);
 			float py = (float) (player.getPos().y + 32);
 
-			px -= Math.sin(Math.toRadians((int) rotation));
-			py += Math.cos(Math.toRadians((int) rotation));
+			px -= Math.sin(Math.toRadians((int) player.angle));
+			py += Math.cos(Math.toRadians((int) player.angle));
 
-			player.fire(px, py, rotation + 90f);
+			player.fire(px, py, player.angle + 90f);
 			player.checkAmmo();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.R) && !player.getReloading()) {

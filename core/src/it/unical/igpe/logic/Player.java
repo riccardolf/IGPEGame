@@ -96,6 +96,4 @@ public class Player extends AbstractGameObject {
 	public void setBullets(LinkedList<Bullet> _b) {
 		this.b = _b;
 	}
-
-
 }

@@ -12,7 +12,6 @@ import it.unical.igpe.tools.Updatable;
 public class Enemy extends AbstractGameObject implements Updatable {
 	private boolean chaseObj;
 	private boolean shootingObj;
-	public float rotation;
 	private Vector2 dir;
 	private LinkedList<Player> players;
 	private IntArray path;
@@ -38,7 +37,7 @@ public class Enemy extends AbstractGameObject implements Updatable {
 		float targety = players.getFirst().getBoundingBox().y / 32;
 		dir = new Vector2(targetx - startx, targety - starty);
 		dir.rotate90(-1);
-		rotation = dir.angle();
+		angle = dir.angle();
 		if (this.HP <= 0)
 			return false;
 		if (this.getPos().dst(players.getFirst().getPos()) < 256
@@ -76,7 +75,7 @@ public class Enemy extends AbstractGameObject implements Updatable {
 			for (int i = 0; i < path.size; i += 2) {
 				float x = path.get(i);
 				float y = path.get(i + 1);
-				this.followPath(new Vector2(x * 64, y * 64));
+				this.setPos(new Vector2(x * 64, y * 64));
 			}
 		} else if (shootingObj) {
 			
@@ -103,13 +102,5 @@ public class Enemy extends AbstractGameObject implements Updatable {
 			this.MoveUp();
 		if (this.boundingBox.y > pos.y + 32)
 			this.MoveDown();
-	}
-
-	public boolean canShoot(Vector2 target) {
-		if (Math.sqrt(Math.pow((target.x - this.getBoundingBox().x), 2)
-				+ Math.pow(target.y - this.getBoundingBox().y, 2)) < 128) {
-			return true;
-		}
-		return false;
 	}
 }
