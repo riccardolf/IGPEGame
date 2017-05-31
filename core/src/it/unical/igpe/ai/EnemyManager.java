@@ -3,8 +3,6 @@ package it.unical.igpe.ai;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.badlogic.gdx.math.Vector2;
-
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
@@ -46,11 +44,7 @@ public class EnemyManager {
 	}
 
 	public void update(float delta) {
-<<<<<<< HEAD
 		if (currentUpdate > 0.3f) {
-=======
-		if (currentUpdate > 1f) {
->>>>>>> origin/master
 			currentUpdate = 0;
 			Iterator<Enemy> iter = ens.iterator();
 			while (iter.hasNext()) {
