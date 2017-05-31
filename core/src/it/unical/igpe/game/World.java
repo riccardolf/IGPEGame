@@ -39,6 +39,7 @@ public class World {
 
 		state = PlayerState.IDLE;
 		tiles = new LinkedList<Tile>();
+		ens = new LinkedList<Enemy>();
 
 		try {
 			loader = loader.FromFile("map.txt");
@@ -52,8 +53,16 @@ public class World {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				else if (loader.map[x][y] == 1)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
-				else if (loader.map[x][y] == 2)
+				else if (loader.map[x][y] == 9)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
+				else if (loader.map[x][y] == 18) {	//Enemy
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					ens.add(new Enemy(new Vector2(x * 64, y * 64), player));
+				}
+				else if (loader.map[x][y] == 17) {	//Player
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					player.setPos(new Vector2(x * 64, y * 64));
+				}
 			}
 		dir = new Vector2();
 		EM = new EnemyManager(this);

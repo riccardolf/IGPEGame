@@ -76,7 +76,7 @@ public class Enemy extends AbstractGameObject implements Updatable {
 			for (int i = 0; i < path.size; i += 2) {
 				float x = path.get(i);
 				float y = path.get(i + 1);
-				this.followPath(new Vector2(x * 64, y * 64));
+				this.setPos(new Vector2(x * 64, y * 64));
 			}
 		} else if (shootingObj) {
 			

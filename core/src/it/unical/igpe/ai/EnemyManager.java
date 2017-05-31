@@ -23,22 +23,22 @@ public class EnemyManager {
 	public EnemyManager(World _world) {
 		world = _world;
 		ens = new LinkedList<Enemy>();
-		ens.add(new Enemy(new Vector2(500, 500), world.getPlayer()));
-		map = new boolean[16][16];
+		ens = world.ens;
+		map = new boolean[64][64];
 		for (Tile tile : world.getTiles()) {
 			if(tile.getType() == TileType.WALL) {
 				map[(int) (tile.getPos().x / 64)][(int) (tile.getPos().y / 64)] = true;
 			}
 		}
 		
-		for(int i = 0; i < 16; i++) {
-			for(int j = 0; j < 16; j++) {
+		for(int i = 0; i < 64; i++) {
+			for(int j = 0; j < 64; j++) {
 				System.out.print(map[i][j] ? " 1 " : " 0 ");
 			}
 			System.out.println();
 		}
 		
-		astar = new Astar(16, 16) {
+		astar = new Astar(64, 64) {
 			protected boolean isValid(int x, int y) {
 				return !map[x][y];
 			}
@@ -46,7 +46,7 @@ public class EnemyManager {
 	}
 
 	public void update(float delta) {
-		if (currentUpdate > 0) {
+		if (currentUpdate > 0.3f) {
 			currentUpdate = 0;
 			Iterator<Enemy> iter = ens.iterator();
 			while (iter.hasNext()) {
