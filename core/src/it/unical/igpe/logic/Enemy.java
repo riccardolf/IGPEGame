@@ -7,11 +7,12 @@ import java.util.Random;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntArray;
 
+import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.Updatable;
 
 public class Enemy extends AbstractGameObject implements Updatable {
-	private boolean chaseObj;
-	private boolean shootingObj;
+	public boolean chaseObj;
+	public boolean shootingObj;
 	private Vector2 dir;
 	private LinkedList<Player> players;
 	private IntArray path;
@@ -31,20 +32,20 @@ public class Enemy extends AbstractGameObject implements Updatable {
 
 	@Override
 	public boolean update() {
-		float startx = this.getBoundingBox().x / 32;
-		float starty = this.getBoundingBox().y / 32;
-		float targetx = players.getFirst().getBoundingBox().x / 32;
-		float targety = players.getFirst().getBoundingBox().y / 32;
+		float startx = this.getBoundingBox().x;
+		float starty = this.getBoundingBox().y;
+		float targetx = players.getFirst().getBoundingBox().x;
+		float targety = players.getFirst().getBoundingBox().y;
 		dir = new Vector2(targetx - startx, targety - starty);
 		dir.rotate90(-1);
 		angle = dir.angle();
 		if (this.HP <= 0)
 			return false;
-		if (this.getPos().dst(players.getFirst().getPos()) < 256
-				&& this.getPos().dst(players.getFirst().getPos()) > 192) {
+		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
+				&& this.getPos().dst(players.getFirst().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
 			chaseObj = true;
 			shootingObj = false;
-		} else if (this.getPos().dst(players.getFirst().getPos()) <= 192) {
+		} else if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS) {
 			chaseObj = false;
 			shootingObj = true;
 		} else {
@@ -54,23 +55,7 @@ public class Enemy extends AbstractGameObject implements Updatable {
 
 		if (!chaseObj && !shootingObj) {
 			Random r = new Random();
-			int i = r.nextInt(4);
-			switch (i) {
-			case 0:
-				this.MoveLeft();
-				break;
-			case 1:
-				this.MoveUp();
-				break;
-			case 2:
-				this.MoveRight();
-				break;
-			case 3:
-				this.MoveDown();
-				break;
-			default:
-				break;
-			}
+			r.nextInt(256);
 		} else if (chaseObj) {
 			for (int i = 0; i < path.size; i += 2) {
 				float x = path.get(i);

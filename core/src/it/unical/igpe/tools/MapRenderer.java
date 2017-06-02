@@ -29,7 +29,7 @@ public class MapRenderer {
 	public MapRenderer(World _world) {
 		this.world = _world;
 		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(false, 800, 600);
+		this.camera.setToOrtho(true, 800, 800);
 		this.camera.position.set(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0);
 		this.batch = new SpriteBatch();
 		this.sr = new ShapeRenderer();

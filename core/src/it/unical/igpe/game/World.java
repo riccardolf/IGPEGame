@@ -17,7 +17,7 @@ import it.unical.igpe.logic.Tile;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.PlayerState;
 import it.unical.igpe.tools.TileType;
-import it.unical.igpe.tools.WorldLoader;
+import it.unical.igpe.tools.MapManager;
 
 public class World {
 	private Player player;
@@ -29,36 +29,36 @@ public class World {
 	public EnemyManager EM;
 	public Vector2 dir;
 	private Rectangle box;
-	WorldLoader loader;
+	private MapManager manager;
 	public PlayerState state;
 
-	@SuppressWarnings("static-access")
-	public World() {
+	public World(String path) {
 		player = new Player(new Vector2(100, 100));
 
 		state = PlayerState.IDLE;
 		tiles = new LinkedList<Tile>();
 		ens = new LinkedList<Enemy>();
-
+		
+		manager = new MapManager(64, 64);
 		try {
-			loader = loader.FromFile("map.txt");
+			manager.LoadMap(path);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Map not found");
 		}
-
-		for (int x = 0; x < loader.map.length; x++)
-			for (int y = 0; y < loader.map.length; y++) {
-				if (loader.map[x][y] == 0)
+		
+		for (int x = 0; x < manager.map.length; x++)
+			for (int y = 0; y < manager.map.length; y++) {
+				if (manager.map[x][y] == 0)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				else if (loader.map[x][y] == 1)
+				else if (manager.map[x][y] == 1)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
-				else if (loader.map[x][y] == 9)
+				else if (manager.map[x][y] == 9)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
-				else if (loader.map[x][y] == 18) {	//Enemy
+				else if (manager.map[x][y] == 18) {	//Enemy
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					ens.add(new Enemy(new Vector2(x * 64, y * 64), player));
 				}
-				else if (loader.map[x][y] == 17) {	//Player
+				else if (manager.map[x][y] == 17) {	//Player
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					player.setPos(new Vector2(x * 64, y * 64));
 				}
@@ -86,7 +86,7 @@ public class World {
 			if (!player.getReloading())
 				state = PlayerState.RUNNING;
 			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
-					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
 			if (nextTile == TileType.ENDLEVEL) {
@@ -99,7 +99,7 @@ public class World {
 			if (!player.getReloading())
 				state = PlayerState.RUNNING;
 			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
-					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
 			if (nextTile == TileType.ENDLEVEL) {
@@ -111,7 +111,7 @@ public class World {
 			if (!player.getReloading())
 				state = PlayerState.RUNNING;
 			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
-					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
 			if (nextTile == TileType.ENDLEVEL) {
@@ -123,7 +123,7 @@ public class World {
 			if (!player.getReloading())
 				state = PlayerState.RUNNING;
 			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
-					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
+					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
 			if (nextTile == TileType.ENDLEVEL) {
@@ -134,7 +134,7 @@ public class World {
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			if (!player.getReloading())
 				state = PlayerState.RUNNING;
-			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y + GameConfig.MOVESPEED,
+			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y - GameConfig.MOVESPEED,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
 			if (nextTile == TileType.ENDLEVEL) {
@@ -156,7 +156,7 @@ public class World {
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 			if (!player.getReloading())
 				state = PlayerState.RUNNING;
-			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y - GameConfig.MOVESPEED,
+			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y + GameConfig.MOVESPEED,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
 			if (nextTile == TileType.ENDLEVEL) {

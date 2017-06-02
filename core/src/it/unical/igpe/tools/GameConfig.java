@@ -9,5 +9,6 @@ public class GameConfig {
 	public static final int BULLETSPEED = 8;
 	public static final int MAGCAP = 7;
 	public static final int TILEDIM = 64;	
-	public static final int REGENERATION = 50;
+	public static final int ENEMY_RADIUS = 256;
+	public static final int ENEMY_SHOOT_RADIUS = 192;
 }
