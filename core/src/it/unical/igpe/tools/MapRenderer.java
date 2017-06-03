@@ -97,7 +97,7 @@ public class MapRenderer {
 			else if (tile.getType() == TileType.ENDLEVEL)
 				batch.draw(Assets.Stair, tile.getBoundingBox().x, tile.getBoundingBox().y);
 		}
-		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
+		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x , world.getPlayer().getBoundingBox().y , 32, 32, 64,
 				64, 1f, 1f, player.angle);
 		for (Enemy e : world.EM.getList()) {
 			batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
@@ -109,6 +109,11 @@ public class MapRenderer {
 		for (Bullet bullet : bls) {
 			sr.rect(bullet.getPos().x, bullet.getPos().y, bullet.getBoundingBox().width,
 					bullet.getBoundingBox().height);
+		}
+		for (Enemy e : world.EM.getEnemies()) {
+			for(int i = 0; i < e.getPath().size; i+= 2) {
+				sr.circle(e.getPath().get(i) * 64, e.getPath().get(i + 1) * 64, 2);
+			}
 		}
 		sr.end();
 

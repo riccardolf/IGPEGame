@@ -22,7 +22,7 @@ import it.unical.igpe.tools.MapManager;
 public class World {
 	private Player player;
 	private LinkedList<Bullet> bls;
-	private LinkedList<Tile> tiles;
+	private static LinkedList<Tile> tiles;
 	private TileType nextTile;
 	private boolean finished = false;
 	public LinkedList<Enemy> ens;
@@ -76,7 +76,7 @@ public class World {
 		float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
 		float mouseX = Gdx.input.getX();
-		float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		float mouseY = Gdx.input.getY();
 		dir = new Vector2(mouseX - midX, mouseY - midY);
 		dir.rotate90(-1);
 		player.angle = dir.angle();
@@ -203,16 +203,21 @@ public class World {
 		// Bullet update and Collision
 
 		bls = player.getBullets();
+		bls.addAll(EM.getBullets());
 		Iterator<Bullet> it = bls.listIterator();
 		Iterator<Enemy> iter = ((EnemyManager) EM).getList().listIterator();
 		while (it.hasNext()) {
 			Bullet b = it.next();
 			while (iter.hasNext()) {
 				Enemy e = iter.next();
-				if (b.getBoundingBox().intersects(e.getBoundingBox())) {
+				if (b.getBoundingBox().intersects(e.getBoundingBox()) && b.getID() == "player") {
 					it.remove();
 					e.hit(25);
 				}
+			}
+			if(b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
+				it.remove();
+				player.hit(15);
 			}
 			if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
 				it.remove();
@@ -229,7 +234,7 @@ public class World {
 		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
 	}
 
-	public TileType getNextTile(Rectangle _box) {
+	public static TileType getNextTile(Rectangle _box) {
 		for (Tile tile : tiles) {
 			if (Math.sqrt(Math.pow((_box.x - tile.getBoundingBox().x), 2)
 					+ Math.pow(_box.y - tile.getBoundingBox().y, 2)) < 128) {
@@ -256,5 +261,11 @@ public class World {
 
 	public boolean isLevelFinished() {
 		return finished;
+	}
+	
+	public boolean isGameOver() {
+		if(player.getHP() <= 0)
+			return true;
+		return false;
 	}
 }

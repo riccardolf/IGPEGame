@@ -2,17 +2,21 @@ package it.unical.igpe.logic;
 
 import java.awt.Rectangle;
 import java.util.LinkedList;
-import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntArray;
 
+import it.unical.igpe.game.World;
 import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.Updatable;
+import it.unical.igpe.tools.TileType;
 
-public class Enemy extends AbstractGameObject implements Updatable {
+public class Enemy extends AbstractGameObject {
 	public boolean chaseObj;
 	public boolean shootingObj;
+	public Bullet singleBullet;
+	private float shootDelay;
+	private TileType nextTile;
+	private Rectangle box;
 	private Vector2 dir;
 	private LinkedList<Player> players;
 	private IntArray path;
@@ -22,7 +26,7 @@ public class Enemy extends AbstractGameObject implements Updatable {
 		ID = "enemy";
 		alive = true;
 		HP = 100f;
-		speed = 1;
+		speed = 4;
 		chaseObj = true;
 		players = new LinkedList<Player>();
 		players.add(_player);
@@ -30,8 +34,8 @@ public class Enemy extends AbstractGameObject implements Updatable {
 		dir = new Vector2();
 	}
 
-	@Override
-	public boolean update() {
+	public boolean update(float delta) {
+		// TODO: get closer player from the list
 		float startx = this.getBoundingBox().x;
 		float starty = this.getBoundingBox().y;
 		float targetx = players.getFirst().getBoundingBox().x;
@@ -45,27 +49,28 @@ public class Enemy extends AbstractGameObject implements Updatable {
 				&& this.getPos().dst(players.getFirst().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
 			chaseObj = true;
 			shootingObj = false;
-		} else if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS) {
+		} else if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS && shootDelay > 1) {
 			chaseObj = false;
+			this.shoot(new Vector2(startx + 32, starty + 32));
+			shootDelay = 0;
 			shootingObj = true;
-		} else {
+		} else if (path.size == 0) {
 			chaseObj = false;
 			shootingObj = false;
 		}
 
-		if (!chaseObj && !shootingObj) {
-			Random r = new Random();
-			r.nextInt(256);
-		} else if (chaseObj) {
-			for (int i = 0; i < path.size; i += 2) {
-				float x = path.get(i);
-				float y = path.get(i + 1);
-				this.setPos(new Vector2(x * 64, y * 64));
-			}
-		} else if (shootingObj) {
-			
+		if (chaseObj) {
+			float y = path.pop();
+			float x = path.pop();
+			this.followPath(new Vector2(x * 64, y * 64));
 		}
+		
+		shootDelay += delta;
 		return true;
+	}
+
+	private void shoot(Vector2 v) {
+		singleBullet = new Bullet(v, (float) Math.toRadians(angle) + 90, "enemy");
 	}
 
 	public void hit(float dmg) {
@@ -78,14 +83,39 @@ public class Enemy extends AbstractGameObject implements Updatable {
 		path = intArray;
 	}
 
+	public IntArray getPath() {
+		return path;
+	}
+	
 	public void followPath(Vector2 pos) {
-		if (this.boundingBox.x < pos.x + 32)
-			this.MoveRight();
-		if (this.boundingBox.x > pos.x + 32)
-			this.MoveLeft();
-		if (this.boundingBox.y < pos.y + 32)
-			this.MoveUp();
-		if (this.boundingBox.y > pos.y + 32)
-			this.MoveDown();
+
+		if (this.boundingBox.y > pos.y) {
+			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y - GameConfig.MOVESPEED,
+					this.getBoundingBox().width, this.getBoundingBox().height);
+			nextTile = World.getNextTile(box);
+			if (nextTile != TileType.WALL)
+				this.MoveUp();
+		}
+		if (this.boundingBox.x > pos.x) {
+			box = new Rectangle(this.getBoundingBox().x - GameConfig.MOVESPEED, this.getBoundingBox().y,
+					this.getBoundingBox().width, this.getBoundingBox().height);
+			nextTile = World.getNextTile(box);
+			if (nextTile != TileType.WALL)
+				this.MoveLeft();
+		}
+		if (this.boundingBox.y < pos.y) {
+			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y + GameConfig.MOVESPEED,
+					this.getBoundingBox().width, this.getBoundingBox().height);
+			nextTile = World.getNextTile(box);
+			if (nextTile != TileType.WALL)
+				this.MoveDown();
+		}
+		if (this.boundingBox.x < pos.x) {
+			box = new Rectangle(this.getBoundingBox().x + GameConfig.MOVESPEED, this.getBoundingBox().y,
+					this.getBoundingBox().width, this.getBoundingBox().height);
+			nextTile = World.getNextTile(box);
+			if (nextTile != TileType.WALL)
+				this.MoveRight();
+		}
 	}
 }

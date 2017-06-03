@@ -45,8 +45,8 @@ public class LevelChooseScreen implements Screen {
 	@Override
 	public void show() {
 		mainMenu = new Texture(Gdx.files.internal("MainMenu.jpg"));
-		atlas = new TextureAtlas(Gdx.files.internal("skin/star-soldier-ui.atlas"));
-		skin = new Skin(Gdx.files.internal("skin/star-soldier-ui.json"), atlas);
+		atlas = new TextureAtlas(Gdx.files.internal("skin/starsoldier/star-soldier-ui.atlas"));
+		skin = new Skin(Gdx.files.internal("skin/starsoldier/star-soldier-ui.json"), atlas);
 
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
