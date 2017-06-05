@@ -179,13 +179,7 @@ public class World {
 
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched()) {
-			float px = (float) (player.getPos().x + 32);
-			float py = (float) (player.getPos().y + 32);
-
-			px -= Math.sin(Math.toRadians((int) player.angle));
-			py += Math.cos(Math.toRadians((int) player.angle));
-
-			player.fire(px, py, player.angle + 90f);
+			player.fire();
 			player.checkAmmo();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.R) && !player.getReloading()) {
@@ -212,12 +206,12 @@ public class World {
 				Enemy e = iter.next();
 				if (b.getBoundingBox().intersects(e.getBoundingBox()) && b.getID() == "player") {
 					it.remove();
-					e.hit(25);
+					e.hit(b.getHP());
 				}
 			}
 			if(b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
 				it.remove();
-				player.hit(15);
+				player.hit(b.getHP());
 			}
 			if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
 				it.remove();

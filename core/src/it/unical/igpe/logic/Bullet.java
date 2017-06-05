@@ -8,12 +8,12 @@ import it.unical.igpe.tools.Updatable;
 
 public class Bullet extends AbstractGameObject implements Updatable {
 
-	public Bullet(Vector2 _pos, float _angle, String _ID) {
+	public Bullet(Vector2 _pos, float _angle, String _ID, float dmg) {
 		this.angle = _angle;
 		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 8, 8);
 		this.ID = _ID;
 		this.alive = true;
-		this.HP = 1f;
+		this.HP = dmg;
 		this.speed = GameConfig.BULLETSPEED;
 	}
 

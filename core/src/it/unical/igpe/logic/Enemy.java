@@ -70,7 +70,7 @@ public class Enemy extends AbstractGameObject {
 	}
 
 	private void shoot(Vector2 v) {
-		singleBullet = new Bullet(v, (float) Math.toRadians(angle) + 90, "enemy");
+		singleBullet = new Bullet(v, (float) Math.toRadians(angle + 90f), "enemy", 15);
 	}
 
 	public void hit(float dmg) {

@@ -125,7 +125,6 @@ public class MapRenderer {
 		}
 
 		sr.end();
-
 	}
 
 	public void dispose() {

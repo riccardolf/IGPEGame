@@ -26,13 +26,6 @@ public class EnemyManager {
 			if (tile.getType() == TileType.WALL)
 				map[(int) (tile.getPos().x / 64)][(int) (tile.getPos().y / 64)] = true;
 
-		for (int i = 0; i < 64; i++) {
-			for (int j = 0; j < 64; j++) {
-				System.out.print(map[i][j] ? " 1 " : " 0 ");
-			}
-			System.out.println();
-		}
-
 		astar = new Astar(64, 64) {
 			protected boolean isValid(int x, int y) {
 				return !map[x][y];

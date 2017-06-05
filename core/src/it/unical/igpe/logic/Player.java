@@ -34,10 +34,14 @@ public class Player extends AbstractGameObject {
 	}
 
 	// TODO: FireRate per single Weapon
-	public void fire(float x, float y, float angle) {
+	public void fire() {
 		if (!reloading) {
-			b.add(new Bullet(new Vector2(x, y), (float) Math.toRadians(angle), "player"));
+			b.add(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 90f), "player", activeWeapon.damage));
 			this.activeWeapon.actClip--;
+		}
+		if (!reloading && activeWeapon.ID == "shotgun") {
+			b.add(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 100f), "player",activeWeapon.damage));
+			b.add(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 80f), "player",activeWeapon.damage));
 		}
 	}
 

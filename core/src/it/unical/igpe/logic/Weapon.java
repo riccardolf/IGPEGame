@@ -48,7 +48,7 @@ public class Weapon {
 	}
 	public void createShotgun() {
 		fireRate = 0.3f;
-		sizeClip = 10;
+		sizeClip = 3;
 		actClip = 10;
 		actAmmo = 25;
 		maxAmmo = 50;
