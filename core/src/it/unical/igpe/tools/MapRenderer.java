@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
+import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 
@@ -37,7 +38,7 @@ public class MapRenderer {
 		this.camera.setToOrtho(true, 800, 800);
 		this.camera.position.set(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0);
 		this.batch = new SpriteBatch();
-		this.batch.setColor(1, 1, 1, 0.5f);
+		//this.batch.setColor(1, 1, 1, 0.5f);
 		fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		this.sr = new ShapeRenderer();
 
@@ -106,12 +107,28 @@ public class MapRenderer {
 		
 		batch.begin();
 		for (Tile tile : world.getTiles()) {
+			if(tile.getType() == TileType.ENDLEVEL && player.keys == 4)
+				tile.closed = false;
 			if (tile.getType() == TileType.GROUND)
 				batch.draw(Assets.Ground, tile.getBoundingBox().x, tile.getBoundingBox().y);
 			else if (tile.getType() == TileType.WALL)
 				batch.draw(Assets.Wall, tile.getBoundingBox().x, tile.getBoundingBox().y);
-			else if (tile.getType() == TileType.ENDLEVEL)
-				batch.draw(Assets.Stair, tile.getBoundingBox().x, tile.getBoundingBox().y);
+			else if (tile.getType() == TileType.ENDLEVEL) {
+				if(tile.closed)
+					batch.draw(Assets.StairClosed, tile.getBoundingBox().x, tile.getBoundingBox().y);
+				else
+					batch.draw(Assets.Stair, tile.getBoundingBox().x, tile.getBoundingBox().y);
+			}
+		}
+		for (Lootable loot : world.getLootables()) {
+			if(loot.getType() == LootableType.HEALTPACK)
+				batch.draw(Assets.HealthPack, loot.getBoundingBox().x, loot.getBoundingBox().y);
+			else if (loot.getType() == LootableType.TRAP) {
+				if(loot.closed)
+					batch.draw(Assets.TrapClosed, loot.getBoundingBox().x, loot.getBoundingBox().y);
+				else
+					batch.draw(Assets.TrapOpen, loot.getBoundingBox().x, loot.getBoundingBox().y);
+			}
 		}
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x , world.getPlayer().getBoundingBox().y , 32, 32, 64,
 				64, 1f, 1f, player.angle);

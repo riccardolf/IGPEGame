@@ -1,6 +1,7 @@
 package it.unical.igpe.logic;
 
-import com.badlogic.gdx.math.Rectangle;
+import java.awt.Rectangle;
+
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.tools.LootableType;
@@ -9,12 +10,12 @@ public class Lootable {
 	private Rectangle boundingBox;
 	private LootableType type;
 	private float HP;
-	private boolean looted;
+	public boolean closed;
 	
 	public Lootable(Vector2 v, LootableType t) {
 		this.boundingBox = new Rectangle((int) v.x, (int) v.y, 32, 32);
 		this.type = t;
-		this.looted = false;
+		this.closed = false;
 	}
 
 	@Override
@@ -50,8 +51,5 @@ public class Lootable {
 	public void setHP(float hP) {
 		HP = hP;
 	}
-	
-	public boolean wasLooted() {
-		return looted;
-	}
+
 }

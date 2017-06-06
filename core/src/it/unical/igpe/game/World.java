@@ -12,9 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.ai.EnemyManager;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
+import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.tools.LootableType;
 import it.unical.igpe.tools.PlayerState;
 import it.unical.igpe.tools.TileType;
 import it.unical.igpe.tools.MapManager;
@@ -23,6 +25,7 @@ public class World {
 	private Player player;
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
+	private static LinkedList<Lootable> lootables;
 	private TileType nextTile;
 	private boolean finished = false;
 	public LinkedList<Enemy> ens;
@@ -31,13 +34,17 @@ public class World {
 	private Rectangle box;
 	private MapManager manager;
 	public PlayerState state;
+	private static boolean keys;
 
 	public World(String path) {
 		player = new Player(new Vector2(100, 100));
 
 		state = PlayerState.IDLE;
 		tiles = new LinkedList<Tile>();
+		lootables = new LinkedList<Lootable>();
 		ens = new LinkedList<Enemy>();
+		
+		keys = false;
 
 		manager = new MapManager(64, 64);
 		try {
@@ -60,12 +67,24 @@ public class World {
 				} else if (manager.map[x][y] == 17) { // Player
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					player.setPos(new Vector2(x * 64, y * 64));
-				} else if (manager.map[x][y] == 17) { // Player
+				} else if (manager.map[x][y] == 13) { // Player
+					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYY));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-					player.setPos(new Vector2(x * 64, y * 64));
-				} else if (manager.map[x][y] == 17) { // Player
+				} else if (manager.map[x][y] == 14) { // Player
+					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYR));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-					player.setPos(new Vector2(x * 64, y * 64));
+				} else if (manager.map[x][y] == 15) { // Player
+					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYB));
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+				} else if (manager.map[x][y] == 16) { // Player
+					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYG));
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+				} else if (manager.map[x][y] == 12) { // Player
+					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.HEALTPACK));
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+				} else if (manager.map[x][y] == 22) { // Player
+					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.TRAP));
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				}
 			}
 		dir = new Vector2();
@@ -227,6 +246,24 @@ public class World {
 
 		// Enemies
 		EM.update(delta);
+		
+		// Checking lootable items
+		Iterator<Lootable> itl = lootables.iterator();
+		while(itl.hasNext()) {
+			Lootable l = itl.next();
+			if(l.getBoundingBox().intersects(player.getBoundingBox())) {
+				if(l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
+					player.setHP(player.getHP() + 25);
+					itl.remove();
+					break;
+				}
+				else if (l.getType() == LootableType.TRAP && l.closed == false) {
+					player.setHP(player.getHP() - 50);
+					l.closed = true;
+					break;
+				}
+			}		
+		}	
 	}
 
 	public float calculateAngle(float x, float y) {
@@ -239,7 +276,7 @@ public class World {
 					+ Math.pow(_box.y - tile.getBoundingBox().y, 2)) < 128) {
 				if (tile.getType() == TileType.WALL && _box.intersects(tile.getBoundingBox()))
 					return TileType.WALL;
-				else if (tile.getType() == TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
+				else if (tile.getType() == TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()) && keys )
 					return TileType.ENDLEVEL;
 			}
 		}
@@ -256,6 +293,10 @@ public class World {
 
 	public LinkedList<Tile> getTiles() {
 		return tiles;
+	}
+	
+	public LinkedList<Lootable> getLootables() {
+		return lootables;
 	}
 
 	public boolean isLevelFinished() {

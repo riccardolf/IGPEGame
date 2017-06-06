@@ -4,5 +4,8 @@ public enum LootableType {
 	AMMOPACK,
 	HEALTPACK,	//12
 	TRAP,		//22
-	KEY;		//13 14 15 16
+	KEYR,		//14
+	KEYG,		//16
+	KEYB,		//15
+	KEYY;		//13
 }

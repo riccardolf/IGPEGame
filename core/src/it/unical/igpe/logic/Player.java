@@ -14,6 +14,7 @@ public class Player extends AbstractGameObject {
 	private Weapon pistol;
 	private Weapon rifle;
 	private Weapon shotgun;
+	public int keys;
 
 	public Player(Vector2 _pos) {
 		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 48, 48);
@@ -31,6 +32,7 @@ public class Player extends AbstractGameObject {
 		this.rifle.createRifle();
 		this.shotgun.createShotgun();
 		this.activeWeapon = pistol;
+		this.keys = 0;
 	}
 
 	// TODO: FireRate per single Weapon

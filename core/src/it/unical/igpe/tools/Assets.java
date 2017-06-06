@@ -11,7 +11,11 @@ public class Assets {
 	public static Texture Ground;
 	public static Texture Wall;
 	public static Texture Stair;
+	public static Texture StairClosed;
 	public static Texture Light;
+	public static Texture HealthPack;
+	public static Texture TrapOpen;
+	public static Texture TrapClosed;
 	
 	public static TextureRegion Enemy;
 	
@@ -31,9 +35,13 @@ public class Assets {
 		// load texture for blocks	
 		Ground = new Texture(Gdx.files.internal("ground.png"));
 		Wall = new Texture(Gdx.files.internal("wall.png"));
-		Stair = new Texture(Gdx.files.internal("stair.png"));
+		Stair = new Texture(Gdx.files.internal("stairO.png"));
+		StairClosed = new Texture(Gdx.files.internal("stairC.png"));
 		Enemy = new TextureRegion(new Texture(Gdx.files.internal("idle.png")));
 		Light = new Texture(Gdx.files.internal("light.png"));
+		HealthPack = new Texture(Gdx.files.internal("hp.png"));
+		TrapOpen = new Texture(Gdx.files.internal("trapO.png"));
+		TrapClosed = new Texture(Gdx.files.internal("trapC.png"));
 		
 		// load character's texture
 		atlas = new TextureAtlas(Gdx.files.internal("handgun_move.atlas"));
