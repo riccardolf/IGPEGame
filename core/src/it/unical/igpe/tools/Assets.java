@@ -11,6 +11,7 @@ public class Assets {
 	public static Texture Ground;
 	public static Texture Wall;
 	public static Texture Stair;
+	public static Texture Light;
 	
 	public static TextureRegion Enemy;
 	
@@ -32,6 +33,7 @@ public class Assets {
 		Wall = new Texture(Gdx.files.internal("wall.png"));
 		Stair = new Texture(Gdx.files.internal("stair.png"));
 		Enemy = new TextureRegion(new Texture(Gdx.files.internal("idle.png")));
+		Light = new Texture(Gdx.files.internal("light.png"));
 		
 		// load character's texture
 		atlas = new TextureAtlas(Gdx.files.internal("handgun_move.atlas"));

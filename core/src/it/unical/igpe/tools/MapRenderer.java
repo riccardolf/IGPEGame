@@ -2,10 +2,13 @@ package it.unical.igpe.tools;
 
 import java.util.LinkedList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
@@ -21,6 +24,8 @@ public class MapRenderer {
 	SpriteBatch batch;
 	ShapeRenderer sr;
 	TextureRegion currentFrame;
+	FrameBuffer fbo;
+	
 
 	float stateTime;
 	Player player;
@@ -32,6 +37,8 @@ public class MapRenderer {
 		this.camera.setToOrtho(true, 800, 800);
 		this.camera.position.set(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0);
 		this.batch = new SpriteBatch();
+		this.batch.setColor(1, 1, 1, 0.5f);
+		fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		this.sr = new ShapeRenderer();
 
 		this.player = world.getPlayer();
@@ -88,6 +95,15 @@ public class MapRenderer {
 		bls = player.getBullets();
 
 		// draw map
+		
+		fbo.begin();
+		batch.begin();
+		for (Enemy e : world.EM.getList()) {
+			batch.draw(Assets.Light, e.getPos().x - 50,e.getPos().y - 50, 200, 200);
+		}
+		batch.end();
+		fbo.end();
+		
 		batch.begin();
 		for (Tile tile : world.getTiles()) {
 			if (tile.getType() == TileType.GROUND)
@@ -103,6 +119,7 @@ public class MapRenderer {
 			batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 		}
 		batch.end();
+		
 
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.RED);
@@ -123,7 +140,7 @@ public class MapRenderer {
 			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 256);
 			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 192);
 		}
-
+		
 		sr.end();
 	}
 

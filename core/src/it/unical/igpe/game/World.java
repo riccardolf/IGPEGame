@@ -38,14 +38,14 @@ public class World {
 		state = PlayerState.IDLE;
 		tiles = new LinkedList<Tile>();
 		ens = new LinkedList<Enemy>();
-		
+
 		manager = new MapManager(64, 64);
 		try {
 			manager.LoadMap(path);
 		} catch (IOException e) {
 			System.out.println("Map not found");
 		}
-		
+
 		for (int x = 0; x < manager.map.length; x++)
 			for (int y = 0; y < manager.map.length; y++) {
 				if (manager.map[x][y] == 0)
@@ -54,11 +54,16 @@ public class World {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
 				else if (manager.map[x][y] == 9)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
-				else if (manager.map[x][y] == 18) {	//Enemy
+				else if (manager.map[x][y] == 18) { // Enemy
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					ens.add(new Enemy(new Vector2(x * 64, y * 64), player));
-				}
-				else if (manager.map[x][y] == 17) {	//Player
+				} else if (manager.map[x][y] == 17) { // Player
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					player.setPos(new Vector2(x * 64, y * 64));
+				} else if (manager.map[x][y] == 17) { // Player
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					player.setPos(new Vector2(x * 64, y * 64));
+				} else if (manager.map[x][y] == 17) { // Player
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					player.setPos(new Vector2(x * 64, y * 64));
 				}
@@ -209,7 +214,7 @@ public class World {
 					e.hit(b.getHP());
 				}
 			}
-			if(b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
+			if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
 				it.remove();
 				player.hit(b.getHP());
 			}
@@ -256,9 +261,9 @@ public class World {
 	public boolean isLevelFinished() {
 		return finished;
 	}
-	
+
 	public boolean isGameOver() {
-		if(player.getHP() <= 0)
+		if (player.getHP() <= 0)
 			return true;
 		return false;
 	}
