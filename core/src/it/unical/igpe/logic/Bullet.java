@@ -26,6 +26,6 @@ public class Bullet extends AbstractGameObject implements Updatable {
 
 	@Override
 	public String toString() {
-		return "X: " + boundingBox.x + " Y:" + boundingBox.y;
+		return "X: " + this.boundingBox.x + " Y:" + this.boundingBox.y + " " + this.ID;
 	}
 }

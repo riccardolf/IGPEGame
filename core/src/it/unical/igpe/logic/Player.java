@@ -1,10 +1,12 @@
 package it.unical.igpe.logic;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.game.World;
 import it.unical.igpe.tools.GameConfig;
 
 public class Player extends AbstractGameObject {
@@ -14,9 +16,11 @@ public class Player extends AbstractGameObject {
 	private Weapon pistol;
 	private Weapon rifle;
 	private Weapon shotgun;
+	private World world;
 	public int keys;
 
-	public Player(Vector2 _pos) {
+	public Player(Vector2 _pos, World _world) {
+		this.world = _world;
 		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 48, 48);
 		this.reloading = false;
 		this.ID = "player";
@@ -38,12 +42,12 @@ public class Player extends AbstractGameObject {
 	// TODO: FireRate per single Weapon
 	public void fire() {
 		if (!reloading) {
-			b.add(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 90f), "player", activeWeapon.damage));
+			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 90f), "player", activeWeapon.damage));
 			this.activeWeapon.actClip--;
 		}
 		if (!reloading && activeWeapon.ID == "shotgun") {
-			b.add(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 100f), "player",activeWeapon.damage));
-			b.add(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 80f), "player",activeWeapon.damage));
+			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 100f), "player",activeWeapon.damage));
+			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 80f), "player",activeWeapon.damage));
 		}
 	}
 
@@ -96,7 +100,15 @@ public class Player extends AbstractGameObject {
 	}
 
 	public LinkedList<Bullet> getBullets() {
-		return b;
+		if(b.isEmpty())
+			return null;
+		LinkedList<Bullet> bls = new LinkedList<Bullet>();
+		Iterator<Bullet> iter = b.iterator();
+		while(iter.hasNext()) {
+			bls.add(iter.next());
+		}
+		b.clear();
+		return bls;
 	}
 
 	public void setBullets(LinkedList<Bullet> _b) {

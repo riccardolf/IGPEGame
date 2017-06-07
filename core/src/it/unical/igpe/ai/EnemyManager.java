@@ -48,6 +48,8 @@ public class EnemyManager {
 			}
 			if (!e.update(delta))
 				iter.remove();
+			if (e.canShoot)
+				world.addBullet(e.fire());
 		}
 	}
 
@@ -62,16 +64,5 @@ public class EnemyManager {
 	public LinkedList<Enemy> getList() {
 		return ens;
 	}
-	
-	public LinkedList<Bullet> getBullets() {
-		LinkedList<Bullet> bls = new LinkedList<Bullet>();
-		Iterator<Enemy> iter = ens.iterator();
-		while(iter.hasNext()) {
-			Enemy e = iter.next();
-			if(e.singleBullet != null)
-				bls.add(e.singleBullet);
-			e.singleBullet = null;
-		}
-		return bls;
-	}
+
 }

@@ -9,12 +9,10 @@ import it.unical.igpe.tools.TileType;
 public class Tile {
 	private Rectangle boundingBox;
 	private TileType type;
-	public boolean closed;
 
 	public Tile(Vector2 v, TileType t) {
 		this.boundingBox = new Rectangle((int) v.x, (int) v.y, 64, 64);
 		this.type = t;
-		this.closed = true;
 	}
 
 	@Override

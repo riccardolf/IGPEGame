@@ -26,7 +26,6 @@ public class MapRenderer {
 	ShapeRenderer sr;
 	TextureRegion currentFrame;
 	FrameBuffer fbo;
-	
 
 	float stateTime;
 	Player player;
@@ -38,7 +37,7 @@ public class MapRenderer {
 		this.camera.setToOrtho(true, 800, 800);
 		this.camera.position.set(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0);
 		this.batch = new SpriteBatch();
-		//this.batch.setColor(1, 1, 1, 0.5f);
+		// this.batch.setColor(1, 1, 1, 0.5f);
 		fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		this.sr = new ShapeRenderer();
 
@@ -96,56 +95,61 @@ public class MapRenderer {
 		bls = player.getBullets();
 
 		// draw map
-		
+
 		fbo.begin();
 		batch.begin();
 		for (Enemy e : world.EM.getList()) {
-			batch.draw(Assets.Light, e.getPos().x - 50,e.getPos().y - 50, 200, 200);
+			batch.draw(Assets.Light, e.getPos().x - 50, e.getPos().y - 50, 200, 200);
 		}
 		batch.end();
 		fbo.end();
-		
+
 		batch.begin();
 		for (Tile tile : world.getTiles()) {
-			if(tile.getType() == TileType.ENDLEVEL && player.keys == 4)
-				tile.closed = false;
 			if (tile.getType() == TileType.GROUND)
 				batch.draw(Assets.Ground, tile.getBoundingBox().x, tile.getBoundingBox().y);
 			else if (tile.getType() == TileType.WALL)
 				batch.draw(Assets.Wall, tile.getBoundingBox().x, tile.getBoundingBox().y);
 			else if (tile.getType() == TileType.ENDLEVEL) {
-				if(tile.closed)
+				if (!world.isDoorUnlocked())
 					batch.draw(Assets.StairClosed, tile.getBoundingBox().x, tile.getBoundingBox().y);
 				else
 					batch.draw(Assets.Stair, tile.getBoundingBox().x, tile.getBoundingBox().y);
 			}
 		}
 		for (Lootable loot : world.getLootables()) {
-			if(loot.getType() == LootableType.HEALTPACK)
+			if (loot.getType() == LootableType.HEALTPACK)
 				batch.draw(Assets.HealthPack, loot.getBoundingBox().x, loot.getBoundingBox().y);
 			else if (loot.getType() == LootableType.TRAP) {
-				if(loot.closed)
+				if (loot.closed)
 					batch.draw(Assets.TrapClosed, loot.getBoundingBox().x, loot.getBoundingBox().y);
 				else
 					batch.draw(Assets.TrapOpen, loot.getBoundingBox().x, loot.getBoundingBox().y);
+			} else if (loot.getType() == LootableType.KEYY) {
+				batch.draw(Assets.KeyY, loot.getBoundingBox().x, loot.getBoundingBox().y);
+			} else if (loot.getType() == LootableType.KEYR) {
+				batch.draw(Assets.KeyR, loot.getBoundingBox().x, loot.getBoundingBox().y);
+			} else if (loot.getType() == LootableType.KEYG) {
+				batch.draw(Assets.KeyG, loot.getBoundingBox().x, loot.getBoundingBox().y);
+			} else if (loot.getType() == LootableType.KEYB) {
+				batch.draw(Assets.KeyB, loot.getBoundingBox().x, loot.getBoundingBox().y);
 			}
 		}
-		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x , world.getPlayer().getBoundingBox().y , 32, 32, 64,
+		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
 				64, 1f, 1f, player.angle);
 		for (Enemy e : world.EM.getList()) {
 			batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 		}
 		batch.end();
-		
 
 		sr.begin(ShapeType.Filled);
 		sr.setColor(Color.RED);
-		for (Bullet bullet : bls) {
+		for (Bullet bullet : world.getBls()) {
 			sr.rect(bullet.getPos().x, bullet.getPos().y, bullet.getBoundingBox().width,
 					bullet.getBoundingBox().height);
 		}
 		for (Enemy e : world.EM.getEnemies()) {
-			for(int i = 0; i < e.getPath().size; i+= 2) {
+			for (int i = 0; i < e.getPath().size; i += 2) {
 				sr.circle(e.getPath().get(i) * 64, e.getPath().get(i + 1) * 64, 2);
 			}
 		}
@@ -157,7 +161,7 @@ public class MapRenderer {
 			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 256);
 			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 192);
 		}
-		
+
 		sr.end();
 	}
 

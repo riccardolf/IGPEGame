@@ -12,8 +12,7 @@ import it.unical.igpe.tools.TileType;
 
 public class Enemy extends AbstractGameObject {
 	public boolean chaseObj;
-	public boolean shootingObj;
-	public Bullet singleBullet;
+	public boolean canShoot;
 	private float shootDelay;
 	private TileType nextTile;
 	private Rectangle box;
@@ -26,8 +25,9 @@ public class Enemy extends AbstractGameObject {
 		ID = "enemy";
 		alive = true;
 		HP = 100f;
-		speed = 4;
+		speed = 1;
 		chaseObj = true;
+		canShoot = true;
 		players = new LinkedList<Player>();
 		players.add(_player);
 		path = new IntArray();
@@ -48,15 +48,14 @@ public class Enemy extends AbstractGameObject {
 		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
 				&& this.getPos().dst(players.getFirst().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
 			chaseObj = true;
-			shootingObj = false;
+			canShoot = false;
 		} else if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS && shootDelay > 1) {
 			chaseObj = false;
-			this.shoot(new Vector2(startx + 32, starty + 32));
 			shootDelay = 0;
-			shootingObj = true;
+			canShoot = true;
 		} else if (path.size == 0) {
 			chaseObj = false;
-			shootingObj = false;
+			canShoot = false;
 		}
 
 		if (chaseObj) {
@@ -69,8 +68,9 @@ public class Enemy extends AbstractGameObject {
 		return true;
 	}
 
-	private void shoot(Vector2 v) {
-		singleBullet = new Bullet(v, (float) Math.toRadians(angle + 90f), "enemy", 15);
+	public Bullet fire() {
+		this.canShoot = false;
+		return new Bullet(new Vector2( this.getBoundingBox().x + 32, this.getBoundingBox().y + 32), (float) Math.toRadians(angle + 90f), "enemy", 15);
 	}
 
 	public void hit(float dmg) {

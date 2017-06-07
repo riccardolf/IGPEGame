@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -34,17 +35,14 @@ public class World {
 	private Rectangle box;
 	private MapManager manager;
 	public PlayerState state;
-	private static boolean keys;
 
 	public World(String path) {
-		player = new Player(new Vector2(100, 100));
-
+		player = new Player(new Vector2(), this);
 		state = PlayerState.IDLE;
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		ens = new LinkedList<Enemy>();
-		
-		keys = false;
+		bls = new LinkedList<Bullet>();
 
 		manager = new MapManager(64, 64);
 		try {
@@ -67,22 +65,22 @@ public class World {
 				} else if (manager.map[x][y] == 17) { // Player
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					player.setPos(new Vector2(x * 64, y * 64));
-				} else if (manager.map[x][y] == 13) { // Player
+				} else if (manager.map[x][y] == 13) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYY));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 14) { // Player
+				} else if (manager.map[x][y] == 14) { // Red Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYR));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 15) { // Player
+				} else if (manager.map[x][y] == 15) { // Blue Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYB));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 16) { // Player
+				} else if (manager.map[x][y] == 16) { // Green Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYG));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 12) { // Player
+				} else if (manager.map[x][y] == 12) { // HealthPack
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.HEALTPACK));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 22) { // Player
+				} else if (manager.map[x][y] == 22) { // Trap
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.TRAP));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				}
@@ -113,7 +111,7 @@ public class World {
 					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
 				finished = true;
 				player.MoveUpLeft();
 			} else if (nextTile != TileType.WALL)
@@ -126,7 +124,7 @@ public class World {
 					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
 				finished = true;
 				player.MoveUpRight();
 			} else if (nextTile != TileType.WALL)
@@ -138,7 +136,7 @@ public class World {
 					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
 				finished = true;
 				player.MoveDownLeft();
 			} else if (nextTile != TileType.WALL)
@@ -150,7 +148,7 @@ public class World {
 					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
 				finished = true;
 				player.MoveDownRight();
 			} else if (nextTile != TileType.WALL)
@@ -161,7 +159,8 @@ public class World {
 			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y - GameConfig.MOVESPEED,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
+				System.out.println("FINISHED");
 				finished = true;
 				player.MoveUp();
 			} else if (nextTile != TileType.WALL)
@@ -172,7 +171,7 @@ public class World {
 			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED, player.getBoundingBox().y,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
 				finished = true;
 				player.MoveLeft();
 			} else if (nextTile != TileType.WALL)
@@ -183,7 +182,7 @@ public class World {
 			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y + GameConfig.MOVESPEED,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
 				finished = true;
 				player.MoveDown();
 			} else if (nextTile != TileType.WALL)
@@ -194,7 +193,7 @@ public class World {
 			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED, player.getBoundingBox().y,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL) {
+			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
 				finished = true;
 				player.MoveRight();
 			} else if (nextTile != TileType.WALL)
@@ -218,52 +217,58 @@ public class World {
 
 		player.isReloading(delta);
 
-		// Bullet update and Collision
-
-		bls = player.getBullets();
-		bls.addAll(EM.getBullets());
-		Iterator<Bullet> it = bls.listIterator();
-		Iterator<Enemy> iter = ((EnemyManager) EM).getList().listIterator();
-		while (it.hasNext()) {
-			Bullet b = it.next();
-			while (iter.hasNext()) {
-				Enemy e = iter.next();
-				if (b.getBoundingBox().intersects(e.getBoundingBox()) && b.getID() == "player") {
-					it.remove();
-					e.hit(b.getHP());
-				}
-			}
-			if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
-				it.remove();
-				player.hit(b.getHP());
-			}
-			if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
-				it.remove();
-			}
-			b.update();
-		}
-		player.setBullets(bls);
-
 		// Enemies
 		EM.update(delta);
-		
+
+		// Bullet update and Collision
+		if (!bls.isEmpty()) {
+			ListIterator<Bullet> it = bls.listIterator();
+			ListIterator<Enemy> iter = EM.getList().listIterator();
+			while (it.hasNext()) {
+				boolean removed = false;
+				Bullet b = it.next();
+				b.update();
+				System.out.println(b.toString());
+				while (iter.hasNext()) {
+					Enemy e = iter.next();
+					if (b.getBoundingBox().intersects(e.getBoundingBox()) && b.getID() == "player") {
+						it.remove();
+						e.hit(b.getHP());
+						removed = true;
+					}
+				}
+				if (removed)
+					continue;
+				if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
+					it.remove();
+					player.hit(b.getHP());
+					continue;
+				}
+				if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
+					it.remove();
+				}
+			}
+		}
+
 		// Checking lootable items
 		Iterator<Lootable> itl = lootables.iterator();
-		while(itl.hasNext()) {
+		while (itl.hasNext()) {
 			Lootable l = itl.next();
-			if(l.getBoundingBox().intersects(player.getBoundingBox())) {
-				if(l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
+			if (l.getBoundingBox().intersects(player.getBoundingBox())) {
+				if (l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
 					player.setHP(player.getHP() + 25);
 					itl.remove();
 					break;
-				}
-				else if (l.getType() == LootableType.TRAP && l.closed == false) {
+				} else if (l.getType() == LootableType.TRAP && l.closed == false) {
 					player.setHP(player.getHP() - 50);
 					l.closed = true;
 					break;
+				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR || l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
+					player.keys++;
+					itl.remove();
 				}
-			}		
-		}	
+			}
+		}
 	}
 
 	public float calculateAngle(float x, float y) {
@@ -276,11 +281,18 @@ public class World {
 					+ Math.pow(_box.y - tile.getBoundingBox().y, 2)) < 128) {
 				if (tile.getType() == TileType.WALL && _box.intersects(tile.getBoundingBox()))
 					return TileType.WALL;
-				else if (tile.getType() == TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()) && keys )
+				else if (tile.getType() == TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
 					return TileType.ENDLEVEL;
 			}
 		}
 		return TileType.GROUND;
+	}
+	
+	public boolean isDoorUnlocked() {
+		if(player.keys == 4) {
+			return true;
+		}
+		return false;
 	}
 
 	public Player getPlayer() {
@@ -291,10 +303,14 @@ public class World {
 		return bls;
 	}
 
+	public void addBullet(Bullet _bullet) {
+		bls.add(_bullet);
+	}
+
 	public LinkedList<Tile> getTiles() {
 		return tiles;
 	}
-	
+
 	public LinkedList<Lootable> getLootables() {
 		return lootables;
 	}
