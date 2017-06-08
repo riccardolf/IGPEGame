@@ -7,7 +7,6 @@ import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Tile;
-import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.TileType;
 
 public class EnemyManager {
@@ -37,19 +36,11 @@ public class EnemyManager {
 		Iterator<Enemy> iter = ens.iterator();
 		while (iter.hasNext()) {
 			Enemy e = iter.next();
-			// Call getPath only when the player is < 256 pixels away
-			int startx = e.getBoundingBox().x + 32;
-			int starty = e.getBoundingBox().y + 32;
-			if (e.getPos().dst(world.getPlayer().getPos()) < GameConfig.ENEMY_RADIUS
-					&& e.getPos().dst(world.getPlayer().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
-				int targetx = world.getPlayer().getBoundingBox().x + 32;
-				int targety = world.getPlayer().getBoundingBox().y + 32;
-				e.setPath(astar.getPath(startx / 64, starty / 64, targetx / 64, targety / 64));
-			}
-			if (!e.update(delta))
-				iter.remove();
+			e.setPath(astar.getPath(e.startx / 64, e.starty / 64, e.targetx / 64, e.targety / 64));
 			if (e.canShoot)
 				world.addBullet(e.fire());
+			if (!e.update(delta))
+				e.setAlive(false);
 		}
 	}
 

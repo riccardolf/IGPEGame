@@ -18,10 +18,9 @@ public class Bullet extends AbstractGameObject implements Updatable {
 	}
 
 	@Override
-	public boolean update() {
+	public void update() {
 		boundingBox.x += Math.cos(angle) * speed;
 		boundingBox.y += Math.sin(angle) * speed;
-		return true;
 	}
 
 	@Override

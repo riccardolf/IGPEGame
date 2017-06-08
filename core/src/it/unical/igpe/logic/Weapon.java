@@ -5,14 +5,14 @@ import it.unical.igpe.tools.GameConfig;
 public class Weapon {
 	protected float fireRate;
 	protected int sizeClip;
-	protected int actClip;
-	protected int actAmmo;
+	public int actClip;
+	public int actAmmo;
 	protected int maxAmmo;
 	protected int damage;
 	protected int bulletSpeed;
 	protected float reloadAct;
 	protected float reloadTime;
-	protected String ID;
+	public String ID;
 	
 	public void reload() {
 		while(actClip <= sizeClip) {
@@ -36,13 +36,13 @@ public class Weapon {
 	
 	public void createRifle() {
 		fireRate = 0.2f;
-		sizeClip = 5;
+		sizeClip = 1;
 		actClip = 5;
 		actAmmo = 20;
 		maxAmmo = 50;
 		reloadAct = 0;
 		reloadTime = 1;
-		damage = 55;
+		damage = 50;
 		bulletSpeed = GameConfig.BULLETSPEED;
 		ID = "rifle";
 	}

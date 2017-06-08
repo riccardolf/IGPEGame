@@ -12,7 +12,7 @@ import it.unical.igpe.tools.GameConfig;
 public class Player extends AbstractGameObject {
 	private LinkedList<Bullet> b;
 	private boolean reloading;
-	private Weapon activeWeapon;
+	public Weapon activeWeapon;
 	private Weapon pistol;
 	private Weapon rifle;
 	private Weapon shotgun;
@@ -46,8 +46,8 @@ public class Player extends AbstractGameObject {
 			this.activeWeapon.actClip--;
 		}
 		if (!reloading && activeWeapon.ID == "shotgun") {
-			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 100f), "player",activeWeapon.damage));
-			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 80f), "player",activeWeapon.damage));
+			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 100f), "player", activeWeapon.damage));
+			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 80f), "player", activeWeapon.damage));
 		}
 	}
 
@@ -70,6 +70,10 @@ public class Player extends AbstractGameObject {
 			reloading = true;
 			activeWeapon.actClip = activeWeapon.sizeClip;
 		}
+		return reloading;
+	}
+	
+	public boolean isReloading() {
 		return reloading;
 	}
 

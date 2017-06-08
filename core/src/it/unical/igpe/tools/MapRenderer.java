@@ -37,7 +37,7 @@ public class MapRenderer {
 		this.camera.setToOrtho(true, 800, 800);
 		this.camera.position.set(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0);
 		this.batch = new SpriteBatch();
-		// this.batch.setColor(1, 1, 1, 0.5f);
+		//this.batch.setColor(1, 1, 1, 0.5f);
 		fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		this.sr = new ShapeRenderer();
 
@@ -138,7 +138,10 @@ public class MapRenderer {
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
 				64, 1f, 1f, player.angle);
 		for (Enemy e : world.EM.getList()) {
-			batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			if(e.Alive())
+				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			else
+				batch.draw(Assets.Skull, e.getPos().x, e.getPos().y, 48, 48);
 		}
 		batch.end();
 
@@ -148,18 +151,13 @@ public class MapRenderer {
 			sr.rect(bullet.getPos().x, bullet.getPos().y, bullet.getBoundingBox().width,
 					bullet.getBoundingBox().height);
 		}
-		for (Enemy e : world.EM.getEnemies()) {
-			for (int i = 0; i < e.getPath().size; i += 2) {
-				sr.circle(e.getPath().get(i) * 64, e.getPath().get(i + 1) * 64, 2);
-			}
-		}
 		sr.end();
 
 		sr.begin(ShapeType.Line);
 		sr.setColor(Color.BLACK);
 		for (Enemy e : world.EM.getList()) {
-			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 256);
-			sr.circle(e.getPos().x + 32, e.getPos().y + 32, 192);
+			sr.circle(e.getPos().x + 32, e.getPos().y + 32, GameConfig.ENEMY_RADIUS);
+			sr.circle(e.getPos().x + 32, e.getPos().y + 32, GameConfig.ENEMY_SHOOT_RADIUS);
 		}
 
 		sr.end();

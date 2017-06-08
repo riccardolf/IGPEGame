@@ -20,6 +20,7 @@ public class Assets {
 	public static Texture KeyR;
 	public static Texture KeyG;
 	public static Texture KeyB;
+	public static Texture Skull;
 
 	public static TextureRegion Enemy;
 
@@ -50,7 +51,8 @@ public class Assets {
 		KeyR = new Texture(Gdx.files.internal("keyR.png"));
 		KeyG = new Texture(Gdx.files.internal("keyG.png"));
 		KeyB = new Texture(Gdx.files.internal("keyB.png"));
-
+		Skull = new Texture(Gdx.files.internal("skull.png"));
+		
 		// load character's texture
 		atlas = new TextureAtlas(Gdx.files.internal("handgun_move.atlas"));
 		runningPistolAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("handgun_move"));

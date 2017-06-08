@@ -2,6 +2,7 @@ package it.unical.igpe.logic;
 
 import java.awt.Rectangle;
 import java.util.LinkedList;
+import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntArray;
@@ -13,7 +14,14 @@ import it.unical.igpe.tools.TileType;
 public class Enemy extends AbstractGameObject {
 	public boolean chaseObj;
 	public boolean canShoot;
+	public int startx;
+	public int starty;
+	public int targetx;
+	public int targety;
 	private float shootDelay;
+	private float followDelay;
+	private float followTimer;
+	private float lastMovement;
 	private TileType nextTile;
 	private Rectangle box;
 	private Vector2 dir;
@@ -27,50 +35,63 @@ public class Enemy extends AbstractGameObject {
 		HP = 100f;
 		speed = 1;
 		chaseObj = true;
-		canShoot = true;
+		canShoot = false;
 		players = new LinkedList<Player>();
 		players.add(_player);
 		path = new IntArray();
 		dir = new Vector2();
+		Random random = new Random();
+		followTimer = random.nextFloat() + 6f;
+		startx = this.getBoundingBox().x + 32;
+		starty = this.getBoundingBox().y + 32;
+		targetx = startx;
+		targety = starty;
+		lastMovement = 0;
 	}
 
 	public boolean update(float delta) {
-		// TODO: get closer player from the list
-		float startx = this.getBoundingBox().x;
-		float starty = this.getBoundingBox().y;
-		float targetx = players.getFirst().getBoundingBox().x;
-		float targety = players.getFirst().getBoundingBox().y;
+		if (this.HP <= 0)
+			return false;
+		
+		startx = this.getBoundingBox().x + 32;
+		starty = this.getBoundingBox().y + 32;
+		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
+				&& this.getPos().dst(players.getFirst().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
+			targetx = players.getFirst().getBoundingBox().x + 32;
+			targety = players.getFirst().getBoundingBox().y + 32;
+			followDelay = 0;
+		} else if (followDelay > followTimer) {
+			Random r = new Random();
+			targetx = startx + (r.nextInt(16) - 8) * 32;
+			targety = starty + (r.nextInt(16) - 8) * 32;
+			followDelay = 0;
+		}
+		
 		dir = new Vector2(targetx - startx, targety - starty);
 		dir.rotate90(-1);
 		angle = dir.angle();
-		if (this.HP <= 0)
-			return false;
-		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
-				&& this.getPos().dst(players.getFirst().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
-			chaseObj = true;
-			canShoot = false;
-		} else if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS && shootDelay > 1) {
-			chaseObj = false;
+
+		if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS && shootDelay > 1) {
 			shootDelay = 0;
 			canShoot = true;
-		} else if (path.size == 0) {
-			chaseObj = false;
-			canShoot = false;
 		}
 
-		if (chaseObj) {
+		if(path.size != 0 && lastMovement > 0.5f) {
 			float y = path.pop();
 			float x = path.pop();
 			this.followPath(new Vector2(x * 64, y * 64));
 		}
-		
+
 		shootDelay += delta;
+		followDelay += delta;
+		lastMovement += delta;
 		return true;
 	}
 
 	public Bullet fire() {
 		this.canShoot = false;
-		return new Bullet(new Vector2( this.getBoundingBox().x + 32, this.getBoundingBox().y + 32), (float) Math.toRadians(angle + 90f), "enemy", 15);
+		return new Bullet(new Vector2(this.getBoundingBox().x + 32, this.getBoundingBox().y + 32),
+				(float) Math.toRadians(angle + 90f), "enemy", 15);
 	}
 
 	public void hit(float dmg) {
@@ -86,9 +107,8 @@ public class Enemy extends AbstractGameObject {
 	public IntArray getPath() {
 		return path;
 	}
-	
-	public void followPath(Vector2 pos) {
 
+	public void followPath(Vector2 pos) {
 		if (this.boundingBox.y > pos.y) {
 			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y - GameConfig.MOVESPEED,
 					this.getBoundingBox().width, this.getBoundingBox().height);

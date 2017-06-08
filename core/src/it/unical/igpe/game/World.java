@@ -216,19 +216,16 @@ public class World {
 		}
 
 		player.isReloading(delta);
-
+		
 		// Enemies
 		EM.update(delta);
-
-		// Bullet update and Collision
 		if (!bls.isEmpty()) {
+			boolean removed = false;
 			ListIterator<Bullet> it = bls.listIterator();
-			ListIterator<Enemy> iter = EM.getList().listIterator();
 			while (it.hasNext()) {
-				boolean removed = false;
+				ListIterator<Enemy> iter = EM.getList().listIterator();
 				Bullet b = it.next();
 				b.update();
-				System.out.println(b.toString());
 				while (iter.hasNext()) {
 					Enemy e = iter.next();
 					if (b.getBoundingBox().intersects(e.getBoundingBox()) && b.getID() == "player") {
@@ -237,7 +234,7 @@ public class World {
 						removed = true;
 					}
 				}
-				if (removed)
+				if(removed)
 					continue;
 				if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
 					it.remove();
@@ -246,6 +243,7 @@ public class World {
 				}
 				if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
 					it.remove();
+					continue;
 				}
 			}
 		}
@@ -263,7 +261,8 @@ public class World {
 					player.setHP(player.getHP() - 50);
 					l.closed = true;
 					break;
-				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR || l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
+				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR
+						|| l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
 					player.keys++;
 					itl.remove();
 				}
@@ -287,9 +286,9 @@ public class World {
 		}
 		return TileType.GROUND;
 	}
-	
+
 	public boolean isDoorUnlocked() {
-		if(player.keys == 4) {
+		if (player.keys == 4) {
 			return true;
 		}
 		return false;
