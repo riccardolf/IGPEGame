@@ -2,6 +2,7 @@ package it.unical.igpe.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 
 import it.unical.igpe.HUD.HUD;
@@ -14,10 +15,12 @@ public class GameScreen implements Screen {
 	IGPEGame game;
 	HUD hud;
 	MapRenderer renderer;
-
+	private PauseScreen pauseScreen;
+	
 	public GameScreen(IGPEGame _game, World _world) {
 		this.game = _game;
 		this.world = _world;
+		this.pauseScreen = new PauseScreen(game, this);
 	}
 
 	@Override
@@ -29,13 +32,15 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		delta = Math.min(0.06f, Gdx.graphics.getDeltaTime());
+		delta = 0.01f;
 		world.updateWorld(delta);
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		renderer.render(delta);
 		hud.render(world.getPlayer());
 		
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+			game.setScreen(pauseScreen);
 		if(world.isGameOver())
 			game.setScreen(new GameOverScreen(game));
 		if(world.isLevelFinished())
@@ -50,6 +55,7 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		hud.dispose();
 		renderer.dispose();
+		pauseScreen.dispose();
 	}
 
 	@Override

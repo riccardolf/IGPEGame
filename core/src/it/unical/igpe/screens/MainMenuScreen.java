@@ -28,19 +28,15 @@ public class MainMenuScreen implements Screen {
 	private Label title;
 	private TextButton startButton;
 	private TextButton optionButton;
-	private TextButton helpButton;
 	private TextButton quitButton;
 	private LevelChooseScreen chooseScreen;
 	private OptionScreen optionScreen;
-	private HelpScreen helpScreen;
 	
 	
 	public MainMenuScreen(IGPEGame _game) {
 		game = _game;
 		optionScreen = new OptionScreen(game, this);
-		helpScreen  = new HelpScreen(game, this);
 		chooseScreen = new LevelChooseScreen(game, this);
-		
 	}
 	
 	@Override
@@ -79,15 +75,6 @@ public class MainMenuScreen implements Screen {
 			}
 		});
 		
-		helpButton = new TextButton("Help", skin);
-		helpButton.addListener(new ChangeListener() {
-			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(helpScreen);
-			}
-		});
-		
 		quitButton = new TextButton("Quit", skin);
 		quitButton.addListener(new ChangeListener() {
 			
@@ -102,10 +89,7 @@ public class MainMenuScreen implements Screen {
 		table.row();
 		table.add(optionButton);
 		table.row();
-		table.add(helpButton);
-		table.row();
 		table.add(quitButton);
-	
 	}
 
 	@Override

@@ -228,7 +228,7 @@ public class World {
 				b.update();
 				while (iter.hasNext()) {
 					Enemy e = iter.next();
-					if (b.getBoundingBox().intersects(e.getBoundingBox()) && b.getID() == "player") {
+					if (b.getBoundingBox().intersects(e.getBoundingBox()) && e.Alive() && b.getID() == "player") {
 						it.remove();
 						e.hit(b.getHP());
 						removed = true;

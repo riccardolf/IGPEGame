@@ -36,6 +36,8 @@ public class EnemyManager {
 		Iterator<Enemy> iter = ens.iterator();
 		while (iter.hasNext()) {
 			Enemy e = iter.next();
+			if(!e.Alive())
+				continue;
 			e.setPath(astar.getPath(e.startx / 64, e.starty / 64, e.targetx / 64, e.targety / 64));
 			if (e.canShoot)
 				world.addBullet(e.fire());

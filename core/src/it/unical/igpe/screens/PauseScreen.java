@@ -10,34 +10,39 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.tools.GameConfig;
 
-public class HelpScreen implements Screen {
-	private IGPEGame game;	
+public class PauseScreen implements Screen{
+	private IGPEGame game;
+
 	private Skin skin;
 	private TextureAtlas atlas;
 	private Texture mainMenu;
-	private Texture WASD;
 	private SpriteBatch batch;
-	private Stage stage;
+	public Stage stage;
 	private Table table;
 	private Label title;
+	private Label music;
+	private Label sound;
+	private Slider musicVolume;
+	private Slider soundVolume;
 	private TextButton returnButton;
-	private MainMenuScreen prevScreen;
-	
-	public HelpScreen(IGPEGame _game, MainMenuScreen _prevScreen){
-		game = _game;
-		prevScreen = _prevScreen;
+	private Screen prevScreen;
+
+	public PauseScreen(IGPEGame _game, Screen _prevScreen) {
+		this.game = _game;
+		this.prevScreen = _prevScreen;
 	}
 
 	@Override
 	public void show() {
 		mainMenu = new Texture(Gdx.files.internal("MainMenu.jpg"));
-		WASD = new Texture(Gdx.files.internal("WASD.png"));
 		atlas = new TextureAtlas(Gdx.files.internal("skin/starsoldier/star-soldier-ui.atlas"));
 		skin = new Skin(Gdx.files.internal("skin/starsoldier/star-soldier-ui.json"), atlas);
 
@@ -51,7 +56,28 @@ public class HelpScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		title = new Label("Help", skin);
+		title = new Label("PAUSE", skin);
+		music = new Label("MUSIC", skin);
+		sound = new Label("SOUND EFFECTS", skin);
+		musicVolume = new Slider(0.0f, 1.0f, 0.1f, false, skin);
+		musicVolume.setValue(GameConfig.MUSIC_VOLUME);
+		musicVolume.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameConfig.MUSIC_VOLUME = musicVolume.getValue();
+			}
+		});
+
+		soundVolume = new Slider(0.0f, 1.0f, 0.1f, false, skin);
+		soundVolume.setValue(GameConfig.SOUND_VOLUME);
+		soundVolume.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameConfig.SOUND_VOLUME = soundVolume.getValue();
+			}
+		});
 
 		returnButton = new TextButton("Return", skin);
 		returnButton.addListener(new ChangeListener() {
@@ -61,8 +87,15 @@ public class HelpScreen implements Screen {
 				game.setScreen(prevScreen);
 			}
 		});
-		table.bottom();
 		table.add(title);
+		table.row();
+		table.add(music);
+		table.row();
+		table.add(musicVolume);
+		table.row();
+		table.add(sound);
+		table.row();
+		table.add(soundVolume);
 		table.row();
 		table.add(returnButton);
 	}
@@ -74,7 +107,6 @@ public class HelpScreen implements Screen {
 
 		batch.begin();
 		batch.draw(mainMenu, 0, 0);
-		batch.draw(WASD, 100, 100);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());
@@ -84,9 +116,15 @@ public class HelpScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	public void dispose() {
 		stage.dispose();
@@ -98,14 +136,8 @@ public class HelpScreen implements Screen {
 	@Override
 	public void pause() {
 	}
-	
+
 	@Override
 	public void resume() {
-		
-	}
-	
-	@Override
-	public void hide() {
-		
 	}
 }

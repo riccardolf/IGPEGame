@@ -33,7 +33,7 @@ public class Enemy extends AbstractGameObject {
 		ID = "enemy";
 		alive = true;
 		HP = 100f;
-		speed = 1;
+		speed = 1.5f;
 		chaseObj = true;
 		canShoot = false;
 		players = new LinkedList<Player>();
@@ -44,15 +44,15 @@ public class Enemy extends AbstractGameObject {
 		followTimer = random.nextFloat() + 6f;
 		startx = this.getBoundingBox().x + 32;
 		starty = this.getBoundingBox().y + 32;
-		targetx = startx;
-		targety = starty;
+		targetx = players.getFirst().getBoundingBox().x + 32;
+		targety = players.getFirst().getBoundingBox().y + 32;
 		lastMovement = 0;
 	}
 
 	public boolean update(float delta) {
 		if (this.HP <= 0)
 			return false;
-		
+
 		startx = this.getBoundingBox().x + 32;
 		starty = this.getBoundingBox().y + 32;
 		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
@@ -66,17 +66,22 @@ public class Enemy extends AbstractGameObject {
 			targety = starty + (r.nextInt(16) - 8) * 32;
 			followDelay = 0;
 		}
-		
+
 		dir = new Vector2(targetx - startx, targety - starty);
 		dir.rotate90(-1);
 		angle = dir.angle();
 
-		if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS && shootDelay > 1) {
-			shootDelay = 0;
-			canShoot = true;
+		if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS) {
+			targetx = players.getFirst().getBoundingBox().x + 32;
+			targety = players.getFirst().getBoundingBox().y + 32;
+			followDelay = 0;
+			if (shootDelay > 1) {
+				shootDelay = 0;
+				canShoot = true;
+			}
 		}
 
-		if(path.size != 0 && lastMovement > 0.5f) {
+		if (path.size != 0 && lastMovement > 0.3f) {
 			float y = path.pop();
 			float x = path.pop();
 			this.followPath(new Vector2(x * 64, y * 64));
