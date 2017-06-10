@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -98,32 +99,32 @@ public class MapRenderer {
 		batch.begin();
 		for (Tile tile : world.getTiles()) {
 			if (tile.getType() == TileType.GROUND)
-				batch.draw(Assets.Ground, tile.getBoundingBox().x, tile.getBoundingBox().y);
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getBoundingBox().x, tile.getBoundingBox().y);
 			else if (tile.getType() == TileType.WALL)
-				batch.draw(Assets.Wall, tile.getBoundingBox().x, tile.getBoundingBox().y);
+				batch.draw(Assets.manager.get(Assets.Wall, Texture.class), tile.getBoundingBox().x, tile.getBoundingBox().y);
 			else if (tile.getType() == TileType.ENDLEVEL) {
 				if (!world.isDoorUnlocked())
-					batch.draw(Assets.StairClosed, tile.getBoundingBox().x, tile.getBoundingBox().y);
+					batch.draw(Assets.manager.get(Assets.StairClosed, Texture.class), tile.getBoundingBox().x, tile.getBoundingBox().y);
 				else
-					batch.draw(Assets.Stair, tile.getBoundingBox().x, tile.getBoundingBox().y);
+					batch.draw(Assets.manager.get(Assets.Stair, Texture.class), tile.getBoundingBox().x, tile.getBoundingBox().y);
 			}
 		}
 		for (Lootable loot : world.getLootables()) {
 			if (loot.getType() == LootableType.HEALTPACK)
-				batch.draw(Assets.HealthPack, loot.getBoundingBox().x, loot.getBoundingBox().y);
+				batch.draw(Assets.manager.get(Assets.HealthPack, Texture.class), loot.getBoundingBox().x, loot.getBoundingBox().y);
 			else if (loot.getType() == LootableType.TRAP) {
 				if (loot.closed)
-					batch.draw(Assets.TrapClosed, loot.getBoundingBox().x, loot.getBoundingBox().y);
+					batch.draw(Assets.manager.get(Assets.TrapClosed, Texture.class), loot.getBoundingBox().x, loot.getBoundingBox().y);
 				else
-					batch.draw(Assets.TrapOpen, loot.getBoundingBox().x, loot.getBoundingBox().y);
+					batch.draw(Assets.manager.get(Assets.TrapOpen, Texture.class), loot.getBoundingBox().x, loot.getBoundingBox().y);
 			} else if (loot.getType() == LootableType.KEYY) {
-				batch.draw(Assets.KeyY, loot.getBoundingBox().x, loot.getBoundingBox().y);
+				batch.draw(Assets.manager.get(Assets.KeyY, Texture.class), loot.getBoundingBox().x, loot.getBoundingBox().y);
 			} else if (loot.getType() == LootableType.KEYR) {
-				batch.draw(Assets.KeyR, loot.getBoundingBox().x, loot.getBoundingBox().y);
+				batch.draw(Assets.manager.get(Assets.KeyR, Texture.class), loot.getBoundingBox().x, loot.getBoundingBox().y);
 			} else if (loot.getType() == LootableType.KEYG) {
-				batch.draw(Assets.KeyG, loot.getBoundingBox().x, loot.getBoundingBox().y);
+				batch.draw(Assets.manager.get(Assets.KeyG, Texture.class), loot.getBoundingBox().x, loot.getBoundingBox().y);
 			} else if (loot.getType() == LootableType.KEYB) {
-				batch.draw(Assets.KeyB, loot.getBoundingBox().x, loot.getBoundingBox().y);
+				batch.draw(Assets.manager.get(Assets.KeyB, Texture.class), loot.getBoundingBox().x, loot.getBoundingBox().y);
 			}
 		}
 		batch.setColor(1, 1, 1, 1);
@@ -131,12 +132,12 @@ public class MapRenderer {
 				64, 1f, 1f, player.angle);
 		for (Enemy e : world.EM.getList()) {
 			batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
-			batch.draw(Assets.Light, e.getBoundingBox().x - 320 + 32, e.getBoundingBox().y - 320 + 32, 640, 640);
+			batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32, e.getBoundingBox().y - 320 + 32, 640, 640);
 			batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 			if(e.Alive())
 				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 			else
-				batch.draw(Assets.Skull, e.getPos().x, e.getPos().y, 48, 48);
+				batch.draw(Assets.manager.get(Assets.Skull, Texture.class), e.getPos().x, e.getPos().y, 48, 48);
 		}
 		batch.setColor(1, 1, 1, 0.5f);
 		batch.end();

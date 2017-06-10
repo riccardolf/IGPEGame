@@ -3,13 +3,10 @@ package it.unical.igpe.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -21,9 +18,6 @@ import it.unical.igpe.tools.GameConfig;
 public class OptionScreen implements Screen {
 	private IGPEGame game;
 
-	private Skin skin;
-	private TextureAtlas atlas;
-	private Texture mainMenu;
 	private SpriteBatch batch;
 	private Stage stage;
 	private Table table;
@@ -42,10 +36,6 @@ public class OptionScreen implements Screen {
 
 	@Override
 	public void show() {
-		mainMenu = new Texture(Gdx.files.internal("MainMenu.jpg"));
-		atlas = new TextureAtlas(Gdx.files.internal("skin/starsoldier/star-soldier-ui.atlas"));
-		skin = new Skin(Gdx.files.internal("skin/starsoldier/star-soldier-ui.json"), atlas);
-
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
@@ -56,10 +46,10 @@ public class OptionScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		title = new Label("OPTIONS", skin);
-		music = new Label("MUSIC", skin);
-		sound = new Label("SOUND EFFECTS", skin);
-		musicVolume = new Slider(0.0f, 1.0f, 0.1f, false, skin);
+		title = new Label("OPTIONS", IGPEGame.skinsoldier);
+		music = new Label("MUSIC", IGPEGame.skinsoldier);
+		sound = new Label("SOUND EFFECTS", IGPEGame.skinsoldier);
+		musicVolume = new Slider(0.0f, 1.0f, 0.1f, false, IGPEGame.skinsoldier);
 		musicVolume.setValue(GameConfig.MUSIC_VOLUME);
 		musicVolume.addListener(new ChangeListener() {
 
@@ -69,7 +59,7 @@ public class OptionScreen implements Screen {
 			}
 		});
 
-		soundVolume = new Slider(0.0f, 1.0f, 0.1f, false, skin);
+		soundVolume = new Slider(0.0f, 1.0f, 0.1f, false, IGPEGame.skinsoldier);
 		soundVolume.setValue(GameConfig.SOUND_VOLUME);
 		soundVolume.addListener(new ChangeListener() {
 
@@ -79,7 +69,7 @@ public class OptionScreen implements Screen {
 			}
 		});
 
-		returnButton = new TextButton("Return", skin);
+		returnButton = new TextButton("Return", IGPEGame.skinsoldier);
 		returnButton.addListener(new ChangeListener() {
 
 			@Override
@@ -106,7 +96,7 @@ public class OptionScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-		batch.draw(mainMenu, 0, 0);
+		batch.draw(IGPEGame.background, 0, 0);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());
@@ -128,9 +118,7 @@ public class OptionScreen implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
-		mainMenu.dispose();
-		skin.dispose();
-		atlas.dispose();
+		batch.dispose();
 	}
 
 	@Override

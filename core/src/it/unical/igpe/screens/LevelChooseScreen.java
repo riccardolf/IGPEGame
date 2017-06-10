@@ -7,27 +7,19 @@ import javax.swing.JFileChooser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.game.World;
-import it.unical.igpe.tools.Assets;
 
 public class LevelChooseScreen implements Screen {
 	private IGPEGame game;
 
-	private Skin skin;
-	private TextureAtlas atlas;
-	private Texture mainMenu;
 	private SpriteBatch batch;
 	private Stage stage;
 	private Table table;
@@ -35,20 +27,14 @@ public class LevelChooseScreen implements Screen {
 	private TextButton defaultLevel;
 	private TextButton chooseLevel;
 	private TextButton returnButton;
-	private Screen prevScreen;
 	public String world;
 
 	public LevelChooseScreen(IGPEGame _game, Screen _prevScreen) {
 		this.game = _game;
-		this.prevScreen = _prevScreen;
 	}
 
 	@Override
 	public void show() {
-		mainMenu = new Texture(Gdx.files.internal("MainMenu.jpg"));
-		atlas = new TextureAtlas(Gdx.files.internal("skin/starsoldier/star-soldier-ui.atlas"));
-		skin = new Skin(Gdx.files.internal("skin/starsoldier/star-soldier-ui.json"), atlas);
-
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
@@ -59,19 +45,19 @@ public class LevelChooseScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		title = new Label("Choose Level", skin);
+		title = new Label("Choose Level", IGPEGame.skinsoldier);
 
-		defaultLevel = new TextButton("Default Level", skin);
+		defaultLevel = new TextButton("Default Level", IGPEGame.skinsoldier);
 		defaultLevel.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				Assets.load();
-				game.setScreen(new GameScreen(game, new World("map.txt")));
+				ScreenManager.CreateGameScreen("map.txt");
+				game.setScreen(ScreenManager.LS);
 			}
 		});
 
-		chooseLevel = new TextButton("Choose Level", skin);
+		chooseLevel = new TextButton("Choose Level", IGPEGame.skinsoldier);
 		chooseLevel.addListener(new ChangeListener() {
 
 			@Override
@@ -82,18 +68,18 @@ public class LevelChooseScreen implements Screen {
 				fileChooser.showOpenDialog(fileChooser);
 				File file = fileChooser.getSelectedFile();
 				if (file != null) {
-					Assets.load();
-					game.setScreen(new GameScreen(game, new World(file.getPath())));
+					ScreenManager.CreateGameScreen(file.getPath());
+					game.setScreen(ScreenManager.LS);
 				}
 			}
 		});
 
-		returnButton = new TextButton("Return", skin);
+		returnButton = new TextButton("Return", IGPEGame.skinsoldier);
 		returnButton.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(prevScreen);
+				game.setScreen(ScreenManager.MMS);
 			}
 		});
 		table.add(title);
@@ -111,7 +97,7 @@ public class LevelChooseScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-		batch.draw(mainMenu, 0, 0);
+		batch.draw(IGPEGame.background, 0, 0);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());
@@ -133,9 +119,7 @@ public class LevelChooseScreen implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
-		mainMenu.dispose();
-		skin.dispose();
-		atlas.dispose();
+		batch.dispose();
 	}
 
 	@Override

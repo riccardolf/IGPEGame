@@ -15,12 +15,10 @@ public class GameScreen implements Screen {
 	IGPEGame game;
 	HUD hud;
 	MapRenderer renderer;
-	private PauseScreen pauseScreen;
 	
 	public GameScreen(IGPEGame _game, World _world) {
 		this.game = _game;
 		this.world = _world;
-		this.pauseScreen = new PauseScreen(game, this);
 	}
 
 	@Override
@@ -40,11 +38,9 @@ public class GameScreen implements Screen {
 		hud.render(world.getPlayer());
 		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-			game.setScreen(pauseScreen);
-		if(world.isGameOver())
-			game.setScreen(new GameOverScreen(game));
-		if(world.isLevelFinished())
-			game.setScreen(new LevelCompletedScreen(game));
+			game.setScreen(ScreenManager.PS);
+		if(world.isLevelFinished() || world.isGameOver())
+			game.setScreen(ScreenManager.LCompletedS);
 	}
 
 	@Override
@@ -56,7 +52,6 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		hud.dispose();
 		renderer.dispose();
-		pauseScreen.dispose();
 	}
 
 	@Override

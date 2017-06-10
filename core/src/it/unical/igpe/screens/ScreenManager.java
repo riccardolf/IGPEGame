@@ -10,6 +10,7 @@ public class ScreenManager {
 	public static LevelCompletedScreen LCompletedS;
 	public static OptionScreen OS;
 	public static PauseScreen PS;
+	public static LoadingScreen LS;
 	
 	private static IGPEGame game;
 	
@@ -20,10 +21,11 @@ public class ScreenManager {
 		LCompletedS = new LevelCompletedScreen(game);
 		OS = new OptionScreen(game, MMS);
 		PS = new PauseScreen(game, GS);
+		LS = new LoadingScreen(game);
 		game.setScreen(MMS);
 	}
 	
-	public static void CreateGameScreen() {
-		GS = new GameScreen(game, new World(ScreenManager.LCS.world));
+	public static void CreateGameScreen(String path) {
+		GS = new GameScreen(game, new World(path));
 	}
 }

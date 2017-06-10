@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.tools.Assets;
 
 public class LevelCompletedScreen implements Screen {
 	private IGPEGame game;
@@ -36,7 +37,9 @@ public class LevelCompletedScreen implements Screen {
 		time += delta;
 		if (time > 1) {
 			if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || Gdx.input.justTouched()) {
-				game.setScreen(new MainMenuScreen(game));
+				time = 0;
+				Assets.manager.clear();
+				game.setScreen(ScreenManager.MMS);
 			}
 		}
 	}

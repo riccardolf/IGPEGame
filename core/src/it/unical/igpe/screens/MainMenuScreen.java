@@ -3,12 +3,9 @@ package it.unical.igpe.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -19,9 +16,6 @@ import it.unical.igpe.game.IGPEGame;
 public class MainMenuScreen implements Screen {
 	private IGPEGame game;
 	
-	private Skin skin;
-	private TextureAtlas atlas;
-	private Texture mainMenu;
 	private SpriteBatch batch;
 	private Stage stage;
 	private Table table;
@@ -29,22 +23,13 @@ public class MainMenuScreen implements Screen {
 	private TextButton startButton;
 	private TextButton optionButton;
 	private TextButton quitButton;
-	private LevelChooseScreen chooseScreen;
-	private OptionScreen optionScreen;
-	
 	
 	public MainMenuScreen(IGPEGame _game) {
 		game = _game;
-		optionScreen = new OptionScreen(game, this);
-		chooseScreen = new LevelChooseScreen(game, this);
 	}
 	
 	@Override
-	public void show() {
-		mainMenu = new Texture(Gdx.files.internal("MainMenu.jpg"));
-		atlas = new TextureAtlas(Gdx.files.internal("skin/starsoldier/star-soldier-ui.atlas"));
-		skin = new Skin(Gdx.files.internal("skin/starsoldier/star-soldier-ui.json"), atlas);
-		
+	public void show() {		
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 		
@@ -55,27 +40,27 @@ public class MainMenuScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		title = new Label("NOT ANOTHER TOP DOWN SHOOTER", skin);
+		title = new Label("NOT ANOTHER TOP DOWN SHOOTER", IGPEGame.skinsoldier);
 		
-		startButton = new TextButton("Start", skin);
+		startButton = new TextButton("Start", IGPEGame.skinsoldier);
 		startButton.addListener(new ChangeListener() {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(chooseScreen);
+				game.setScreen(ScreenManager.LCS);
 			}
 		});
 		
-		optionButton = new TextButton("Option", skin);
+		optionButton = new TextButton("Option", IGPEGame.skinsoldier);
 		optionButton.addListener(new ChangeListener() {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(optionScreen);
+				game.setScreen(ScreenManager.OS);
 			}
 		});
 		
-		quitButton = new TextButton("Quit", skin);
+		quitButton = new TextButton("Quit", IGPEGame.skinsoldier);
 		quitButton.addListener(new ChangeListener() {
 			
 			@Override
@@ -98,7 +83,7 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
-		batch.draw(mainMenu, 0, 0);
+		batch.draw(IGPEGame.background, 0, 0);
 		batch.end();
 		
 		stage.act(Gdx.graphics.getDeltaTime());
@@ -120,9 +105,6 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
-		mainMenu.dispose();
-		skin.dispose();
-		atlas.dispose();
 	}
 
 	@Override
