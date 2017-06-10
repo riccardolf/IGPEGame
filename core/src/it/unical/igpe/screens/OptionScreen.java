@@ -33,9 +33,9 @@ public class OptionScreen implements Screen {
 	private Slider musicVolume;
 	private Slider soundVolume;
 	private TextButton returnButton;
-	private MainMenuScreen prevScreen;
+	private Screen prevScreen;
 
-	public OptionScreen(IGPEGame _game, MainMenuScreen _prevScreen) {
+	public OptionScreen(IGPEGame _game, Screen _prevScreen) {
 		this.game = _game;
 		this.prevScreen = _prevScreen;
 	}

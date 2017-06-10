@@ -35,9 +35,10 @@ public class LevelChooseScreen implements Screen {
 	private TextButton defaultLevel;
 	private TextButton chooseLevel;
 	private TextButton returnButton;
-	private MainMenuScreen prevScreen;
+	private Screen prevScreen;
+	public String world;
 
-	public LevelChooseScreen(IGPEGame _game, MainMenuScreen _prevScreen) {
+	public LevelChooseScreen(IGPEGame _game, Screen _prevScreen) {
 		this.game = _game;
 		this.prevScreen = _prevScreen;
 	}

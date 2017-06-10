@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Bullet;
@@ -20,6 +22,7 @@ import it.unical.igpe.logic.Tile;
 public class MapRenderer {
 	World world;
 	OrthographicCamera camera;
+	public Viewport viewport;
 	SpriteBatch batch;
 	ShapeRenderer sr;
 	TextureRegion currentFrame;
@@ -31,7 +34,8 @@ public class MapRenderer {
 	public MapRenderer(World _world) {
 		this.world = _world;
 		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(true, 800, 800);
+		this.camera.setToOrtho(true, GameConfig.WIDTH, GameConfig.HEIGHT);
+		this.viewport = new ExtendViewport(GameConfig.WIDTH, GameConfig.HEIGHT, camera);
 		this.camera.position.set(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0);
 		this.batch = new SpriteBatch();
 		this.batch.setColor(1, 1, 1, 0.5f);

@@ -271,7 +271,7 @@ public class World {
 	}
 
 	public float calculateAngle(float x, float y) {
-		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.HEIGHT / 2 - y, GameConfig.WIDTH / 2 - x)));
+		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.WIDTH / 2 - x, GameConfig.HEIGHT / 2 - y)) + 85f);
 	}
 
 	public static TileType getNextTile(Rectangle _box) {

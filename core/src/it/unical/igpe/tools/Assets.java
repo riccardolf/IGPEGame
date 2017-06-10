@@ -1,6 +1,7 @@
 package it.unical.igpe.tools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -34,6 +35,8 @@ public class Assets {
 	public static Animation<TextureRegion> runningRifleAnimation;
 	public static Animation<TextureRegion> idleRifleAnimation;
 	public static Animation<TextureRegion> reloadingRifleAnimation;
+	
+	public static Sound footstep;
 
 	public static void load() {
 
@@ -75,5 +78,8 @@ public class Assets {
 		atlas = new TextureAtlas(Gdx.files.internal("shotgun_reload.atlas"));
 		reloadingShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_reload"));
 
+		// load sound effects
+		footstep = Gdx.audio.newSound(Gdx.files.internal("Audio/footstep.ogg"));
+		
 	}
 }

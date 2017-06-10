@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
-import it.unical.igpe.screens.MainMenuScreen;
+import it.unical.igpe.screens.ScreenManager;
 import it.unical.igpe.tools.GameConfig;
 
 public class IGPEGame extends Game {
@@ -13,10 +13,11 @@ public class IGPEGame extends Game {
 	
 	@Override
 	public void create() {
+		new ScreenManager(this);
 		music = Gdx.audio.newMusic(Gdx.files.internal("Audio/music.mp3"));
 		music.play();
 		music.setLooping(true);
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(ScreenManager.MMS);
 	}
 
 	@Override

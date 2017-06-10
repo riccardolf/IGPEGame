@@ -13,7 +13,6 @@ public class DesktopLauncher {
 		cfg.title = GameConfig.GAMENAME;
 		cfg.width = GameConfig.WIDTH;
 		cfg.height = GameConfig.HEIGHT;
-		cfg.resizable = false;
 		
 		new LwjglApplication(new IGPEGame(), cfg);
 	}
