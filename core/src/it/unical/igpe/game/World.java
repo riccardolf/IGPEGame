@@ -8,6 +8,7 @@ import java.util.ListIterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.ai.EnemyManager;
@@ -16,9 +17,9 @@ import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
+import it.unical.igpe.tools.Assets;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.LootableType;
-import it.unical.igpe.tools.PlayerState;
 import it.unical.igpe.tools.TileType;
 import it.unical.igpe.tools.MapManager;
 
@@ -34,11 +35,15 @@ public class World {
 	public Vector2 dir;
 	private Rectangle box;
 	private MapManager manager;
-	public PlayerState state;
+	public boolean idle;
+	public boolean running;
+	public boolean reloading;
 
 	public World(String path) {
 		player = new Player(new Vector2(), this);
-		state = PlayerState.IDLE;
+		idle = false;
+		running = false;
+		reloading = false;
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		ens = new LinkedList<Enemy>();
@@ -90,10 +95,9 @@ public class World {
 	}
 
 	public void updateWorld(float delta) {
-		if (!(state == PlayerState.RELOADING && player.getReloading()))
-			state = PlayerState.IDLE;
-		if (player.getReloading())
-			state = PlayerState.RELOADING;
+		idle = false;
+		running = false;
+		reloading = false;
 		// Angle for player and bullets
 		float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
@@ -106,7 +110,7 @@ public class World {
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
 					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
@@ -119,7 +123,7 @@ public class World {
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
 					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
@@ -131,7 +135,7 @@ public class World {
 				player.MoveUpRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
 					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
@@ -143,7 +147,7 @@ public class World {
 				player.MoveDownLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
 					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
 					player.getBoundingBox().height);
@@ -155,7 +159,7 @@ public class World {
 				player.MoveDownRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y - GameConfig.MOVESPEED,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
@@ -167,7 +171,7 @@ public class World {
 				player.MoveUp();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED, player.getBoundingBox().y,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
@@ -178,7 +182,7 @@ public class World {
 				player.MoveLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y + GameConfig.MOVESPEED,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
@@ -189,7 +193,7 @@ public class World {
 				player.MoveDown();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!player.getReloading())
-				state = PlayerState.RUNNING;
+				running = true;
 			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED, player.getBoundingBox().y,
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
@@ -201,8 +205,23 @@ public class World {
 		}
 
 		// Fire and Reloading action of the player
-		if (Gdx.input.justTouched()) {
-			player.fire();
+		if (Gdx.input.justTouched() && player.activeWeapon.lastFired > player.activeWeapon.fireRate) {
+			if (player.getActWeapon() == "pistol" && !player.isReloading()) {
+				player.activeWeapon.lastFired = 0;
+				Assets.manager.get(Assets.PistolFire, Sound.class).setVolume(0, GameConfig.SOUND_VOLUME);
+				Assets.manager.get(Assets.PistolFire, Sound.class).play();
+				player.fire();
+			} else if (player.getActWeapon() == "shotgun" && !player.isReloading()) {
+				player.activeWeapon.lastFired = 0;
+				Assets.manager.get(Assets.ShotgunFire, Sound.class).setVolume(0, GameConfig.SOUND_VOLUME);
+				Assets.manager.get(Assets.ShotgunFire, Sound.class).play();
+				player.fire();
+			} else if (player.getActWeapon() == "rifle" && !player.isReloading()) {
+				player.activeWeapon.lastFired = 0;
+				Assets.manager.get(Assets.RifleFire, Sound.class).setVolume(0, GameConfig.SOUND_VOLUME);
+				Assets.manager.get(Assets.RifleFire, Sound.class).play();
+				player.fire();
+			}
 			player.checkAmmo();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.R) && !player.getReloading()) {
@@ -215,8 +234,12 @@ public class World {
 			player.setActWeapon("rifle");
 		}
 
-		player.isReloading(delta);
-		
+		if (player.isReloading(delta))
+			reloading = true;
+		if (!reloading && !running)
+			idle = true;
+		player.activeWeapon.lastFired += delta;
+
 		// Enemies
 		EM.update(delta);
 		if (!bls.isEmpty()) {
@@ -234,7 +257,7 @@ public class World {
 						removed = true;
 					}
 				}
-				if(removed)
+				if (removed)
 					continue;
 				if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
 					it.remove();
@@ -271,7 +294,8 @@ public class World {
 	}
 
 	public float calculateAngle(float x, float y) {
-		return (float) Math.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.WIDTH / 2 - x, GameConfig.HEIGHT / 2 - y)) + 85f);
+		return (float) Math
+				.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.WIDTH / 2 - x, GameConfig.HEIGHT / 2 - y)) + 85f);
 	}
 
 	public static TileType getNextTile(Rectangle _box) {

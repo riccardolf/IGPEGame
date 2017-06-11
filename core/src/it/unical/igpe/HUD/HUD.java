@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.Player;
+import it.unical.igpe.tools.Assets;
 
 public class HUD implements Disposable {
 	private Stage stage;
@@ -21,7 +22,6 @@ public class HUD implements Disposable {
 	private Texture pistol;
 	private Texture shotgun;
 	private Texture rifle;
-	private Texture bullet;
 	private BitmapFont font;
 
 	public HUD() {
@@ -29,7 +29,6 @@ public class HUD implements Disposable {
 		pistol = new Texture(Gdx.files.internal("pistol.png"));
 		rifle = new Texture(Gdx.files.internal("rifle.png"));
 		shotgun = new Texture(Gdx.files.internal("shotgun.png"));
-		bullet = new Texture(Gdx.files.internal("bullet.png"));
 		font = new BitmapFont();
 		font.setColor(Color.BLACK);
 
@@ -66,7 +65,10 @@ public class HUD implements Disposable {
 			font.draw(batch, "RELOADING", 5, 15);
 		else
 			for (int i = 0; i < player.activeWeapon.actClip; i++)
-				batch.draw(bullet, i * 10, 5, 32, 32);
+				batch.draw(Assets.Bullet, i * 10, 5, 8, 8, 32, 32, 1f, 1f, 0);
+		
+		for(int i = 0; i < player.keys; i++)
+			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32 , 5, 32, 32);
 		batch.end();
 		stage.draw();
 	}

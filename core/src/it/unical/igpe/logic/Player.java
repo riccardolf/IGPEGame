@@ -5,11 +5,9 @@ import java.util.LinkedList;
 
 import java.awt.Rectangle;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.game.World;
-import it.unical.igpe.tools.Assets;
 import it.unical.igpe.tools.GameConfig;
 
 public class Player extends AbstractGameObject {
@@ -47,12 +45,10 @@ public class Player extends AbstractGameObject {
 		if (!reloading) {
 			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 90f), "player", activeWeapon.damage));
 			this.activeWeapon.actClip--;
-			Assets.manager.get(Assets.PistolFire, Sound.class).play();
 		}
 		if (!reloading && activeWeapon.ID == "shotgun") {
 			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 100f), "player", activeWeapon.damage));
 			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 80f), "player", activeWeapon.damage));
-			Assets.manager.get(Assets.ShotgunFire, Sound.class).play();
 		}
 	}
 

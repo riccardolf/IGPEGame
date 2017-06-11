@@ -2,6 +2,7 @@ package it.unical.igpe.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,19 +11,20 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
 	public static AssetManager manager = new AssetManager();
-	static String Ground = "ground.png";
-	static String Wall = "wall.png";
-	static String Stair = "stairO.png";
-	static String StairClosed = "stairC.png";
-	static String Light = "light.png";
-	static String HealthPack = "hp.png";
-	static String TrapOpen = "trapO.png";
-	static String TrapClosed = "trapC.png";
-	static String KeyY = "keyY.png";
-	static String KeyR = "keyR.png";
-	static String KeyG = "keyG.png";
-	static String KeyB = "keyB.png";
-	static String Skull = "skull.png";
+	public static String Ground = "ground.png";
+	public static String Wall = "wall.png";
+	public static String Stair = "stairO.png";
+	public static String StairClosed = "stairC.png";
+	public static String Light = "light.png";
+	public static String HealthPack = "hp.png";
+	public static String TrapOpen = "trapO.png";
+	public static String TrapClosed = "trapC.png";
+	public static String KeyY = "keyY.png";
+	public static String KeyR = "keyR.png";
+	public static String KeyG = "keyG.png";
+	public static String KeyB = "keyB.png";
+	public static String Skull = "skull.png";
+	public static String Key = "key.png";
 
 	public static String FootStep = "Audio/footstep.ogg";
 	public static String PistolFire = "Audio/pistol_fire.wav";
@@ -31,6 +33,7 @@ public class Assets {
 
 	public static TextureAtlas atlas;
 	public static TextureRegion Enemy;
+	public static TextureRegion Bullet;
 	public static Animation<TextureRegion> runningPistolAnimation;
 	public static Animation<TextureRegion> idlePistolAnimation;
 	public static Animation<TextureRegion> reloadingPistolAnimation;
@@ -40,8 +43,6 @@ public class Assets {
 	public static Animation<TextureRegion> runningRifleAnimation;
 	public static Animation<TextureRegion> idleRifleAnimation;
 	public static Animation<TextureRegion> reloadingRifleAnimation;
-
-	public static Sound footstep;
 
 	public static void load() {
 
@@ -59,8 +60,10 @@ public class Assets {
 		manager.load(KeyG, Texture.class);
 		manager.load(KeyB, Texture.class);
 		manager.load(Skull, Texture.class);
+		manager.load(Key, Texture.class);
 
 		// load character's animations
+		Bullet = new TextureRegion(new Texture(Gdx.files.internal("bullet.png")));
 		Enemy = new TextureRegion(new Texture(Gdx.files.internal("idle.png")));
 		atlas = new TextureAtlas(Gdx.files.internal("handgun_move.atlas"));
 		runningPistolAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("handgun_move"));
@@ -84,7 +87,7 @@ public class Assets {
 		reloadingShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_reload"));
 
 		// load sound effects
-		manager.load(FootStep, Sound.class);
+		manager.load(FootStep, Music.class);
 		manager.load(PistolFire, Sound.class);
 		manager.load(RifleFire, Sound.class);
 		manager.load(ShotgunFire, Sound.class);
