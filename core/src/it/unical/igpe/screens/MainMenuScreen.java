@@ -40,7 +40,7 @@ public class MainMenuScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		title = new Label("NOT ANOTHER TOP DOWN SHOOTER", IGPEGame.skinsoldier);
+		title = new Label("NOT ANOTHER TOP DOWN SHOOTER 3", IGPEGame.skinsoldier);
 		
 		startButton = new TextButton("Start", IGPEGame.skinsoldier);
 		startButton.addListener(new ChangeListener() {

@@ -3,6 +3,7 @@ package it.unical.igpe.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,6 +26,8 @@ public class LevelCompletedScreen implements Screen {
 		background = new Texture(Gdx.files.internal("levelcomplete.png"));
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 550, 301);
+		Assets.manager.get(Assets.GameMusic, Music.class).stop();
+		IGPEGame.music.play();
 	}
 
 	@Override

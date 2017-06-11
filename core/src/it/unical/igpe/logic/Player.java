@@ -119,4 +119,10 @@ public class Player extends AbstractGameObject {
 	public void setBullets(LinkedList<Bullet> _b) {
 		this.b = _b;
 	}
+
+	public boolean canReload() {
+		if(this.activeWeapon.actClip < this.activeWeapon.sizeClip)
+			return true;
+		return false;
+	}
 }

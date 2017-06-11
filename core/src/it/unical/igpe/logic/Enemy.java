@@ -10,10 +10,12 @@ import com.badlogic.gdx.utils.IntArray;
 import it.unical.igpe.game.World;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.TileType;
+import it.unical.igpe.tools.Updatable;
 
-public class Enemy extends AbstractGameObject {
+public class Enemy extends AbstractGameObject implements Updatable{
 	public boolean chaseObj;
 	public boolean canShoot;
+	public boolean canMove;
 	public int startx;
 	public int starty;
 	public int targetx;
@@ -47,12 +49,13 @@ public class Enemy extends AbstractGameObject {
 		targetx = players.getFirst().getBoundingBox().x + 32;
 		targety = players.getFirst().getBoundingBox().y + 32;
 		lastMovement = 0;
+		canMove = true;
 	}
 
-	public boolean update(float delta) {
+	public void update(float delta) {
 		if (this.HP <= 0)
-			return false;
-
+			this.alive = false;
+		canMove = true;
 		startx = this.getBoundingBox().x + 32;
 		starty = this.getBoundingBox().y + 32;
 		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
@@ -64,6 +67,9 @@ public class Enemy extends AbstractGameObject {
 			Random r = new Random();
 			targetx = startx + (r.nextInt(16) - 8) * 32;
 			targety = starty + (r.nextInt(16) - 8) * 32;
+			followDelay = 0;
+		} else if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_SHOOT_RADIUS) {
+			canMove = false;
 			followDelay = 0;
 		}
 
@@ -81,7 +87,7 @@ public class Enemy extends AbstractGameObject {
 			}
 		}
 
-		if (path.size != 0 && lastMovement > 0.3f) {
+		if (path.size != 0 && lastMovement > 0.3f && canMove) {
 			float y = path.pop();
 			float x = path.pop();
 			this.followPath(new Vector2(x * 64, y * 64));
@@ -90,7 +96,6 @@ public class Enemy extends AbstractGameObject {
 		shootDelay += delta;
 		followDelay += delta;
 		lastMovement += delta;
-		return true;
 	}
 
 	public Bullet fire() {

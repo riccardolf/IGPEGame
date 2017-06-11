@@ -8,8 +8,9 @@ import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.tools.TileType;
+import it.unical.igpe.tools.Updatable;
 
-public class EnemyManager {
+public class EnemyManager implements Updatable {
 	LinkedList<Enemy> ens;
 	public LinkedList<Bullet> bls;
 	private World world;
@@ -41,8 +42,7 @@ public class EnemyManager {
 			e.setPath(astar.getPath(e.startx / 64, e.starty / 64, e.targetx / 64, e.targety / 64));
 			if (e.canShoot)
 				world.addBullet(e.fire());
-			if (!e.update(delta))
-				e.setAlive(false);
+			e.update(delta);
 		}
 	}
 

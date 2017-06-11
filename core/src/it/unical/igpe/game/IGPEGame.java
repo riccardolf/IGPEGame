@@ -27,7 +27,7 @@ public class IGPEGame extends Game {
 		atlas = new TextureAtlas(Gdx.files.internal("skin/ui/uiskin.atlas"));
 		skinui = new Skin(Gdx.files.internal("skin/ui/uiskin.json"), atlas);
 		
-		music = Gdx.audio.newMusic(Gdx.files.internal("Audio/music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("Audio/menumusic.mp3"));
 		music.play();
 		music.setLooping(true);
 		

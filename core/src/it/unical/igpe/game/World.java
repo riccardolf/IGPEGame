@@ -21,9 +21,10 @@ import it.unical.igpe.tools.Assets;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.LootableType;
 import it.unical.igpe.tools.TileType;
+import it.unical.igpe.tools.Updatable;
 import it.unical.igpe.tools.MapManager;
 
-public class World {
+public class World implements Updatable {
 	private Player player;
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
@@ -94,7 +95,7 @@ public class World {
 		EM = new EnemyManager(this);
 	}
 
-	public void updateWorld(float delta) {
+	public void update(float delta) {
 		idle = false;
 		running = false;
 		reloading = false;
@@ -205,7 +206,8 @@ public class World {
 		}
 
 		// Fire and Reloading action of the player
-		if (Gdx.input.justTouched() && player.activeWeapon.lastFired > player.activeWeapon.fireRate) {
+		if (Gdx.input.justTouched() && player.activeWeapon.lastFired > player.activeWeapon.fireRate
+				&& player.activeWeapon.actClip > 0) {
 			if (player.getActWeapon() == "pistol" && !player.isReloading()) {
 				player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.PistolFire, Sound.class).setVolume(0, GameConfig.SOUND_VOLUME);
@@ -222,10 +224,25 @@ public class World {
 				Assets.manager.get(Assets.RifleFire, Sound.class).play();
 				player.fire();
 			}
-			player.checkAmmo();
+			// player.checkAmmo();
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.R) && !player.getReloading()) {
+		
+		if (player.isReloading(delta))
+			reloading = true;
+		if (!reloading && !running)
+			idle = true;
+		player.activeWeapon.lastFired += delta;
+		
+		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && player.canReload()) {
 			player.reload();
+			if (player.getActWeapon() == "pistol") {
+				System.out.println("pistol sound");
+				Assets.manager.get(Assets.PistolReload, Sound.class).play();
+			}
+			else if (player.getActWeapon() == "shotgun") {
+				System.out.println("shotgun sound");
+				Assets.manager.get(Assets.ShotgunReload, Sound.class).play();
+			}
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 			player.setActWeapon("pistol");
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
@@ -233,12 +250,6 @@ public class World {
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
 			player.setActWeapon("rifle");
 		}
-
-		if (player.isReloading(delta))
-			reloading = true;
-		if (!reloading && !running)
-			idle = true;
-		player.activeWeapon.lastFired += delta;
 
 		// Enemies
 		EM.update(delta);
@@ -248,7 +259,7 @@ public class World {
 			while (it.hasNext()) {
 				ListIterator<Enemy> iter = EM.getList().listIterator();
 				Bullet b = it.next();
-				b.update();
+				b.update(delta);
 				while (iter.hasNext()) {
 					Enemy e = iter.next();
 					if (b.getBoundingBox().intersects(e.getBoundingBox()) && e.Alive() && b.getID() == "player") {

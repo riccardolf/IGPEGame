@@ -30,6 +30,10 @@ public class Assets {
 	public static String PistolFire = "Audio/pistol_fire.wav";
 	public static String RifleFire = "Audio/rifle_fire.wav";
 	public static String ShotgunFire = "Audio/shotgun_fire.wav";
+	public static String PistolReload = "Audio/pistol_reload.ogg";
+	public static String ShotgunReload = "Audio/shotgun_reload.ogg";
+	
+	public static String GameMusic = "Audio/gamemusic.ogg";
 
 	public static TextureAtlas atlas;
 	public static TextureRegion Enemy;
@@ -84,12 +88,15 @@ public class Assets {
 		atlas = new TextureAtlas(Gdx.files.internal("shotgun_idle.atlas"));
 		idleShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_idle"));
 		atlas = new TextureAtlas(Gdx.files.internal("shotgun_reload.atlas"));
-		reloadingShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_reload"));
+		reloadingShotgunAnimation = new Animation<TextureRegion>(0.04f, atlas.findRegions("shotgun_reload"));
 
 		// load sound effects
 		manager.load(FootStep, Music.class);
 		manager.load(PistolFire, Sound.class);
 		manager.load(RifleFire, Sound.class);
 		manager.load(ShotgunFire, Sound.class);
+		manager.load(GameMusic, Music.class);
+		manager.load(ShotgunReload, Sound.class);
+		manager.load(PistolReload, Sound.class);
 	}
 }
