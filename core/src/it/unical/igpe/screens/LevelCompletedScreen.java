@@ -13,9 +13,11 @@ import it.unical.igpe.tools.Assets;
 
 public class LevelCompletedScreen implements Screen {
 	private IGPEGame game;
-	private Texture background;
+	private Texture levelCompleted;
+	private Texture GameOver;
 	private SpriteBatch batch;
 	private float time = 0;
+	public boolean gameOver;
 	
 	public LevelCompletedScreen(IGPEGame _game) {
 		game = _game;
@@ -23,19 +25,29 @@ public class LevelCompletedScreen implements Screen {
 
 	@Override
 	public void show() {
-		background = new Texture(Gdx.files.internal("levelcomplete.png"));
+		levelCompleted = new Texture(Gdx.files.internal("levelcomplete.png"));
+		GameOver = new Texture(Gdx.files.internal("GameOver.jpg"));
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 550, 301);
 		Assets.manager.get(Assets.GameMusic, Music.class).stop();
+		Assets.manager.get(Assets.FootStep, Music.class).stop();
 		IGPEGame.music.play();
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(background, 0, 0);
-		batch.end();
+		if(gameOver) {
+			batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 360);
+			batch.begin();
+			batch.draw(GameOver, 0, 0);
+			batch.end();
+		}
+		else {
+			batch.getProjectionMatrix().setToOrtho2D(0, 0, 550, 300);
+			batch.begin();
+			batch.draw(levelCompleted, 0, 0);
+			batch.end();
+		}
 		
 		time += delta;
 		if (time > 1) {
@@ -50,14 +62,12 @@ public class LevelCompletedScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
 	}
 
 
 	@Override
 	public void dispose() {
 		batch.dispose();
-		background.dispose();
 	}
 
 	@Override

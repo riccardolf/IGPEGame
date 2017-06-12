@@ -46,8 +46,13 @@ public class GameScreen implements Screen {
 		Assets.manager.get(Assets.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			game.setScreen(ScreenManager.PS);
-		if(world.isLevelFinished() || world.isGameOver())
+		if(world.isLevelFinished()) {
 			game.setScreen(ScreenManager.LCompletedS);
+		}
+		else if (world.isGameOver()) {
+			ScreenManager.LCompletedS.gameOver = true;
+			game.setScreen(ScreenManager.LCompletedS);
+		}
 	}
 
 	@Override

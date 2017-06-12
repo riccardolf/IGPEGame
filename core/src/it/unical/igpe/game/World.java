@@ -165,7 +165,6 @@ public class World implements Updatable {
 					player.getBoundingBox().width, player.getBoundingBox().height);
 			nextTile = getNextTile(box);
 			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				System.out.println("FINISHED");
 				finished = true;
 				player.MoveUp();
 			} else if (nextTile != TileType.WALL)
@@ -241,7 +240,7 @@ public class World implements Updatable {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && player.canReload()) {
 			player.reload();
 			if (player.getActWeapon() == "pistol") {
-				Assets.manager.get(Assets.PistolReload, Sound.class).play();
+				Assets.manager.get(Assets.PistolFire, Sound.class).setVolume(Assets.manager.get(Assets.PistolFire, Sound.class).play(), GameConfig.SOUND_VOLUME);
 			} else if (player.getActWeapon() == "shotgun") {
 				Assets.manager.get(Assets.ShotgunReload, Sound.class).play();
 			}

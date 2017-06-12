@@ -47,7 +47,6 @@ public class MapRenderer {
 		camera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
 				0.3f);
 		camera.update();
-
 		Assets.manager.get(Assets.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
 		Assets.manager.get(Assets.FootStep, Music.class).setLooping(true);
 
