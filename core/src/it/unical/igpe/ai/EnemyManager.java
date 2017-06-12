@@ -1,5 +1,6 @@
 package it.unical.igpe.ai;
 
+import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -11,7 +12,7 @@ import it.unical.igpe.tools.TileType;
 import it.unical.igpe.tools.Updatable;
 
 public class EnemyManager implements Updatable {
-	LinkedList<Enemy> ens;
+	static LinkedList<Enemy> ens;
 	public LinkedList<Bullet> bls;
 	private World world;
 	private Astar astar;
@@ -44,6 +45,14 @@ public class EnemyManager implements Updatable {
 				world.addBullet(e.fire());
 			e.update(delta);
 		}
+	}
+	
+	public static boolean collisionsEnemy(Rectangle _box, Enemy act) {
+		for (Enemy e : ens) {
+			if(e.Alive() && e != act && e.getBoundingBox().intersects(_box))
+				return true;
+		}
+		return false;
 	}
 
 	public LinkedList<Enemy> getEnemies() {

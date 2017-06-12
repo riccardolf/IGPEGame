@@ -78,9 +78,12 @@ public class Player extends AbstractGameObject {
 		return reloading;
 	}
 
-	public void checkAmmo() {
-		if (activeWeapon.actClip == 0)
+	public boolean checkAmmo() {
+		if (activeWeapon.actClip == 0) {
 			this.reload();
+			return true;
+		}
+		return false;
 	}
 
 	public String getActWeapon() {

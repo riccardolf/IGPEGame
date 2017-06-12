@@ -224,23 +224,25 @@ public class World implements Updatable {
 				Assets.manager.get(Assets.RifleFire, Sound.class).play();
 				player.fire();
 			}
-			// player.checkAmmo();
+			if (player.checkAmmo()) {
+				if (player.getActWeapon() == "pistol")
+					Assets.manager.get(Assets.PistolReload, Sound.class).play();
+				else if (player.getActWeapon() == "shotgun")
+					Assets.manager.get(Assets.ShotgunReload, Sound.class).play();
+			}
 		}
-		
+
 		if (player.isReloading(delta))
 			reloading = true;
 		if (!reloading && !running)
 			idle = true;
 		player.activeWeapon.lastFired += delta;
-		
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && player.canReload()) {
 			player.reload();
 			if (player.getActWeapon() == "pistol") {
-				System.out.println("pistol sound");
 				Assets.manager.get(Assets.PistolReload, Sound.class).play();
-			}
-			else if (player.getActWeapon() == "shotgun") {
-				System.out.println("shotgun sound");
+			} else if (player.getActWeapon() == "shotgun") {
 				Assets.manager.get(Assets.ShotgunReload, Sound.class).play();
 			}
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {

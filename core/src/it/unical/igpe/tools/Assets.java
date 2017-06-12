@@ -27,7 +27,7 @@ public class Assets {
 	public static String Key = "key.png";
 
 	public static String FootStep = "Audio/footstep.ogg";
-	public static String PistolFire = "Audio/pistol_fire.wav";
+	public static String PistolFire = "Audio/pistol_fire.ogg";
 	public static String RifleFire = "Audio/rifle_fire.wav";
 	public static String ShotgunFire = "Audio/shotgun_fire.wav";
 	public static String PistolReload = "Audio/pistol_reload.ogg";

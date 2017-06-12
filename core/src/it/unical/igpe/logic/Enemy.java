@@ -7,6 +7,7 @@ import java.util.Random;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntArray;
 
+import it.unical.igpe.ai.EnemyManager;
 import it.unical.igpe.game.World;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.TileType;
@@ -46,8 +47,8 @@ public class Enemy extends AbstractGameObject implements Updatable{
 		followTimer = random.nextFloat() + 6f;
 		startx = this.getBoundingBox().x + 32;
 		starty = this.getBoundingBox().y + 32;
-		targetx = players.getFirst().getBoundingBox().x + 32;
-		targety = players.getFirst().getBoundingBox().y + 32;
+		targetx = startx;
+		targety = starty;
 		lastMovement = 0;
 		canMove = true;
 	}
@@ -123,28 +124,28 @@ public class Enemy extends AbstractGameObject implements Updatable{
 			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y - GameConfig.MOVESPEED,
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
-			if (nextTile != TileType.WALL)
+			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
 				this.MoveUp();
 		}
 		if (this.boundingBox.x > pos.x) {
 			box = new Rectangle(this.getBoundingBox().x - GameConfig.MOVESPEED, this.getBoundingBox().y,
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
-			if (nextTile != TileType.WALL)
+			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
 				this.MoveLeft();
 		}
 		if (this.boundingBox.y < pos.y) {
 			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y + GameConfig.MOVESPEED,
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
-			if (nextTile != TileType.WALL)
+			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
 				this.MoveDown();
 		}
 		if (this.boundingBox.x < pos.x) {
 			box = new Rectangle(this.getBoundingBox().x + GameConfig.MOVESPEED, this.getBoundingBox().y,
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
-			if (nextTile != TileType.WALL)
+			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
 				this.MoveRight();
 		}
 	}
