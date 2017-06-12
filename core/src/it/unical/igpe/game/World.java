@@ -63,30 +63,30 @@ public class World implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				else if (manager.map[x][y] == 1)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
-				else if (manager.map[x][y] == 9)
+				else if (manager.map[x][y] == 2)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
-				else if (manager.map[x][y] == 18) { // Enemy
+				else if (manager.map[x][y] == 11||manager.map[x][y] == 12) { // Enemy
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					ens.add(new Enemy(new Vector2(x * 64, y * 64), player));
-				} else if (manager.map[x][y] == 17) { // Player
+				} else if (manager.map[x][y] == 10) { // Player
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					player.setPos(new Vector2(x * 64, y * 64));
-				} else if (manager.map[x][y] == 13) { // Yellow Key
+				} else if (manager.map[x][y] == 6) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYY));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 14) { // Red Key
+				} else if (manager.map[x][y] == 7) { // Red Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYR));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 15) { // Blue Key
+				} else if (manager.map[x][y] == 8) { // Blue Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYB));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 16) { // Green Key
+				} else if (manager.map[x][y] == 9) { // Green Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYG));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 12) { // HealthPack
+				} else if (manager.map[x][y] == 5) { // HealthPack
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.HEALTPACK));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 22) { // Trap
+				} else if (manager.map[x][y] == 13) { // Trap
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.TRAP));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				}
