@@ -290,10 +290,12 @@ public class World implements Updatable {
 			if (l.getBoundingBox().intersects(player.getBoundingBox())) {
 				if (l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
 					player.setHP(player.getHP() + 25);
+					Assets.manager.get(Assets.HealthRestored, Sound.class).play();
 					itl.remove();
 					break;
 				} else if (l.getType() == LootableType.TRAP && l.closed == false) {
 					player.setHP(player.getHP() - 50);
+					Assets.manager.get(Assets.TrapClosing, Sound.class).play();
 					l.closed = true;
 					break;
 				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR

@@ -33,6 +33,9 @@ public class Assets {
 	public static String PistolReload = "Audio/pistol_reload.ogg";
 	public static String ShotgunReload = "Audio/shotgun_reload.ogg";
 	
+	public static String TrapClosing = "Audio/trap.ogg";
+	public static String HealthRestored = "Audio/health.ogg";
+	
 	public static String GameMusic = "Audio/gamemusic.ogg";
 
 	public static TextureAtlas atlas;
@@ -98,5 +101,7 @@ public class Assets {
 		manager.load(GameMusic, Music.class);
 		manager.load(ShotgunReload, Sound.class);
 		manager.load(PistolReload, Sound.class);
+		manager.load(TrapClosing, Sound.class);
+		manager.load(HealthRestored, Sound.class);
 	}
 }
