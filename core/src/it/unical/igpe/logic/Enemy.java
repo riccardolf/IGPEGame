@@ -72,6 +72,8 @@ public class Enemy extends AbstractGameObject implements Updatable{
 		} else if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_SHOOT_RADIUS) {
 			canMove = false;
 			followDelay = 0;
+			targetx = players.getFirst().getBoundingBox().x + 32;
+			targety = players.getFirst().getBoundingBox().y + 32;
 		}
 
 		dir = new Vector2(targetx - startx, targety - starty);
