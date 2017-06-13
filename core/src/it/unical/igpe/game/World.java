@@ -9,7 +9,6 @@ import java.util.ListIterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.ai.EnemyManager;
@@ -94,11 +93,6 @@ public class World implements Updatable {
 			}
 		dir = new Vector2();
 		EM = new EnemyManager(this);
-	
-		//crosshair cursor
-		Pixmap pm = new Pixmap(Gdx.files.internal("crosshair2.png"));
-		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 32, 32));
-		pm.dispose();
 	}
 
 	public void update(float delta) {
@@ -215,25 +209,22 @@ public class World implements Updatable {
 				&& player.activeWeapon.actClip > 0) {
 			if (player.getActWeapon() == "pistol" && !player.isReloading()) {
 				player.activeWeapon.lastFired = 0;
-				Assets.manager.get(Assets.PistolFire, Sound.class).setVolume(0, GameConfig.SOUND_VOLUME);
-				Assets.manager.get(Assets.PistolFire, Sound.class).play();
+				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				player.fire();
 			} else if (player.getActWeapon() == "shotgun" && !player.isReloading()) {
 				player.activeWeapon.lastFired = 0;
-				Assets.manager.get(Assets.ShotgunFire, Sound.class).setVolume(0, GameConfig.SOUND_VOLUME);
-				Assets.manager.get(Assets.ShotgunFire, Sound.class).play();
+				Assets.manager.get(Assets.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				player.fire();
 			} else if (player.getActWeapon() == "rifle" && !player.isReloading()) {
 				player.activeWeapon.lastFired = 0;
-				Assets.manager.get(Assets.RifleFire, Sound.class).setVolume(0, GameConfig.SOUND_VOLUME);
-				Assets.manager.get(Assets.RifleFire, Sound.class).play();
+				Assets.manager.get(Assets.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				player.fire();
 			}
 			if (player.checkAmmo()) {
 				if (player.getActWeapon() == "pistol")
-					Assets.manager.get(Assets.PistolReload, Sound.class).play();
+					Assets.manager.get(Assets.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 				else if (player.getActWeapon() == "shotgun")
-					Assets.manager.get(Assets.ShotgunReload, Sound.class).play();
+					Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
 		}
 
@@ -246,9 +237,9 @@ public class World implements Updatable {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && player.canReload()) {
 			player.reload();
 			if (player.getActWeapon() == "pistol") {
-				Assets.manager.get(Assets.PistolFire, Sound.class).setVolume(Assets.manager.get(Assets.PistolFire, Sound.class).play(), GameConfig.SOUND_VOLUME);
+				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (player.getActWeapon() == "shotgun") {
-				Assets.manager.get(Assets.ShotgunReload, Sound.class).play();
+				Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 			player.setActWeapon("pistol");
@@ -296,12 +287,12 @@ public class World implements Updatable {
 			if (l.getBoundingBox().intersects(player.getBoundingBox())) {
 				if (l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
 					player.setHP(player.getHP() + 25);
-					Assets.manager.get(Assets.HealthRestored, Sound.class).play();
+					Assets.manager.get(Assets.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
 					itl.remove();
 					break;
 				} else if (l.getType() == LootableType.TRAP && l.closed == false) {
 					player.setHP(player.getHP() - 50);
-					Assets.manager.get(Assets.TrapClosing, Sound.class).play();
+					Assets.manager.get(Assets.TrapClosing, Sound.class).play(GameConfig.SOUND_VOLUME);
 					l.closed = true;
 					break;
 				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR

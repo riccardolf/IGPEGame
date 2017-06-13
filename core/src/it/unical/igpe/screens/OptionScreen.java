@@ -56,6 +56,7 @@ public class OptionScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.MUSIC_VOLUME = musicVolume.getValue();
+				game.setVolume();
 			}
 		});
 
@@ -66,6 +67,7 @@ public class OptionScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.SOUND_VOLUME = soundVolume.getValue();
+				game.setVolume();
 			}
 		});
 

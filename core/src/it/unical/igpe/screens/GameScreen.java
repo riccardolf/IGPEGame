@@ -32,6 +32,7 @@ public class GameScreen implements Screen {
 		IGPEGame.music.pause();
 		Assets.manager.get(Assets.GameMusic, Music.class).setLooping(true);
 		Assets.manager.get(Assets.GameMusic, Music.class).play();
+		//Gdx.graphics.setCursor(Gdx.graphics.newCursor(Assets.manager.get(Assets.Crosshair, Pixmap.class), 32, 32));
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package it.unical.igpe.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -11,6 +12,10 @@ import it.unical.igpe.screens.ScreenManager;
 import it.unical.igpe.tools.GameConfig;
 
 public class IGPEGame extends Game {
+	private static final String PREFS_NAME = "my_game";
+	private static final String MUSIC_VOLUME = "musicvolume";
+	private static final String SOUND_VOLUME = "soundvolume";
+	private Preferences prefs;
 	
 	public static Music music;
 	public static Texture background;
@@ -31,6 +36,9 @@ public class IGPEGame extends Game {
 		music.play();
 		music.setLooping(true);
 		
+		GameConfig.MUSIC_VOLUME = this.getMusicVolume();
+		GameConfig.SOUND_VOLUME = this.getSoundVolume();
+		
 		new ScreenManager(this);
 		this.setScreen(ScreenManager.MMS);
 	}
@@ -39,6 +47,25 @@ public class IGPEGame extends Game {
 	public void render() {
 		music.setVolume(GameConfig.MUSIC_VOLUME);
 		super.render();
+	}
+	
+	public void setVolume() {
+		prefs.putFloat(MUSIC_VOLUME, GameConfig.MUSIC_VOLUME);
+		prefs.putFloat(SOUND_VOLUME, GameConfig.SOUND_VOLUME);
+		prefs.flush();
+	}
+	
+	public float getMusicVolume() {
+		if(prefs==null){
+			prefs = Gdx.app.getPreferences(PREFS_NAME);
+	    }
+		return prefs.getFloat(MUSIC_VOLUME, 1.0f);
+	}
+	
+	public float getSoundVolume() {
+		if(prefs==null)
+			prefs = Gdx.app.getPreferences(PREFS_NAME);
+		return prefs.getFloat(SOUND_VOLUME, 1.0f);
 	}
 
 }

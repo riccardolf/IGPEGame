@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,6 +26,7 @@ public class Assets {
 	public static String KeyB = "keyB.png";
 	public static String Skull = "skull.png";
 	public static String Key = "key.png";
+	public static String Crosshair = "crosshair2.png";
 
 	public static String FootStep = "Audio/footstep.ogg";
 	public static String PistolFire = "Audio/pistol_fire.ogg";
@@ -68,6 +70,7 @@ public class Assets {
 		manager.load(KeyB, Texture.class);
 		manager.load(Skull, Texture.class);
 		manager.load(Key, Texture.class);
+		manager.load(Crosshair, Pixmap.class);
 
 		// load character's animations
 		Bullet = new TextureRegion(new Texture(Gdx.files.internal("bullet.png")));
