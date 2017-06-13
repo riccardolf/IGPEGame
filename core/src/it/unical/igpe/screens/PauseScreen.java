@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,6 +31,8 @@ public class PauseScreen implements Screen{
 	private Slider musicVolume;
 	private Slider soundVolume;
 	private TextButton quitButton;
+	
+	private Texture command;
 
 	public PauseScreen(IGPEGame _game, Screen _prevScreen) {
 		this.game = _game;
@@ -38,7 +41,7 @@ public class PauseScreen implements Screen{
 	@Override
 	public void show() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900,506);
 
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
@@ -83,6 +86,8 @@ public class PauseScreen implements Screen{
 				game.setScreen(ScreenManager.MMS);
 			}
 		});
+		
+		
 		table.add(title);
 		table.row();
 		table.add(music);
@@ -106,6 +111,8 @@ public class PauseScreen implements Screen{
 
 		batch.begin();
 		batch.draw(IGPEGame.background, 0, 0);
+		command=new Texture(Gdx.files.internal("command.png"));
+		batch.draw(command,0,0);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());
