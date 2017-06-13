@@ -9,6 +9,7 @@ import java.util.ListIterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.ai.EnemyManager;
@@ -93,6 +94,11 @@ public class World implements Updatable {
 			}
 		dir = new Vector2();
 		EM = new EnemyManager(this);
+	
+		//crosshair cursor
+		Pixmap pm = new Pixmap(Gdx.files.internal("crosshair2.png"));
+		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+		pm.dispose();
 	}
 
 	public void update(float delta) {
