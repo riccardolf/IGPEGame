@@ -1,8 +1,5 @@
 package it.unical.igpe.logic;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import java.awt.Rectangle;
 
 import com.badlogic.gdx.math.Vector2;
@@ -11,14 +8,16 @@ import it.unical.igpe.game.World;
 import it.unical.igpe.tools.GameConfig;
 
 public class Player extends AbstractGameObject {
-	private LinkedList<Bullet> b;
+	public static final int PLAYER_STATE_IDLE = 0;
+	public static final int PLAYER_STATE_RUNNING = 1;
+	public static final int PLAYER_STATE_RELOADING = 2;
+	public int state;
 	private boolean reloading;
 	public Weapon activeWeapon;
 	private Weapon pistol;
 	private Weapon rifle;
 	private Weapon shotgun;
-	private World world;
-	public int keys;
+	public World world;
 
 	public Player(Vector2 _pos, World _world) {
 		this.world = _world;
@@ -28,8 +27,6 @@ public class Player extends AbstractGameObject {
 		this.alive = true;
 		this.HP = 100f;
 		this.speed = GameConfig.MOVESPEED;
-		this.angle = 0f;
-		this.b = new LinkedList<Bullet>();
 		this.pistol = new Weapon();
 		this.rifle = new Weapon();
 		this.shotgun = new Weapon();
@@ -37,7 +34,6 @@ public class Player extends AbstractGameObject {
 		this.rifle.createRifle();
 		this.shotgun.createShotgun();
 		this.activeWeapon = pistol;
-		this.keys = 0;
 	}
 
 	// TODO: FireRate per single Weapon
@@ -105,22 +101,6 @@ public class Player extends AbstractGameObject {
 
 	public void setReloading(boolean bool) {
 		this.reloading = bool;
-	}
-
-	public LinkedList<Bullet> getBullets() {
-		if(b.isEmpty())
-			return null;
-		LinkedList<Bullet> bls = new LinkedList<Bullet>();
-		Iterator<Bullet> iter = b.iterator();
-		while(iter.hasNext()) {
-			bls.add(iter.next());
-		}
-		b.clear();
-		return bls;
-	}
-
-	public void setBullets(LinkedList<Bullet> _b) {
-		this.b = _b;
 	}
 
 	public boolean canReload() {

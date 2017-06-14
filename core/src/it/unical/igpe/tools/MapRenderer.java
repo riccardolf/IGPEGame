@@ -17,6 +17,7 @@ import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
+import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 
 public class MapRenderer {
@@ -52,29 +53,29 @@ public class MapRenderer {
 
 		// Rendering different weapons
 		if (world.getPlayer().getActWeapon() == "pistol") {
-			if (world.idle)
+			if (world.getPlayer().state == Player.PLAYER_STATE_IDLE)
 				currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
-			else if (world.reloading)
+			else if (world.getPlayer().state == Player.PLAYER_STATE_RELOADING)
 				currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
-			else if (world.running)
+			else if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
 				currentFrame = Assets.runningPistolAnimation.getKeyFrame(stateTime, true);
 		} else if (world.getPlayer().getActWeapon() == "shotgun") {
-			if (world.idle)
+			if (world.getPlayer().state == Player.PLAYER_STATE_IDLE)
 				currentFrame = Assets.idleShotgunAnimation.getKeyFrame(stateTime, true);
-			else if (world.reloading)
+			else if (world.getPlayer().state == Player.PLAYER_STATE_RELOADING)
 				currentFrame = Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true);
-			else if (world.running)
+			else if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
 				currentFrame = Assets.runningShotgunAnimation.getKeyFrame(stateTime, true);
 		} else if (world.getPlayer().getActWeapon() == "rifle") {
-			if (world.idle)
+			if (world.getPlayer().state == Player.PLAYER_STATE_IDLE)
 				currentFrame = Assets.idleRifleAnimation.getKeyFrame(stateTime, true);
-			else if (world.reloading)
+			else if (world.getPlayer().state == Player.PLAYER_STATE_RELOADING)
 				currentFrame = Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true);
-			else if (world.running)
+			else if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
 				currentFrame = Assets.runningRifleAnimation.getKeyFrame(stateTime, true);
 		}
 
-		if (world.running)
+		if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
 			Assets.manager.get(Assets.FootStep, Music.class).play();
 		else
 			Assets.manager.get(Assets.FootStep, Music.class).pause();
@@ -89,7 +90,7 @@ public class MapRenderer {
 				batch.draw(Assets.manager.get(Assets.Wall, Texture.class), tile.getBoundingBox().x,
 						tile.getBoundingBox().y);
 			else if (tile.getType() == TileType.ENDLEVEL) {
-				if (!world.isDoorUnlocked())
+				if (!World.isDoorUnlocked())
 					batch.draw(Assets.manager.get(Assets.StairClosed, Texture.class), tile.getBoundingBox().x,
 							tile.getBoundingBox().y);
 				else

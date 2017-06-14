@@ -67,7 +67,7 @@ public class HUD implements Disposable {
 			for (int i = 0; i < player.activeWeapon.actClip; i++)
 				batch.draw(Assets.Bullet, i * 10, 5, 8, 8, 32, 32, 1f, 1f, 0);
 		
-		for(int i = 0; i < player.keys; i++)
+		for(int i = 0; i < player.world.keyCollected; i++)
 			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32 , 5, 32, 32);
 		batch.end();
 		stage.draw();

@@ -126,7 +126,7 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				// TODO: Connection to the server
+				System.out.println(nameText.getText() + " CONNESSO PORCA MADONNA");
 			}
 		});
 		

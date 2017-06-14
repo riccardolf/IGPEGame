@@ -40,7 +40,7 @@ public class EnemyManager implements Updatable {
 			Enemy e = iter.next();
 			if(!e.Alive())
 				continue;
-			if((e.targetx / 64 < 64 && e.targetx / 64 > 0 && e.targety / 64 > 0 && e.targety / 64 < 64) && astar.isValid(e.targetx / 64, e.targety / 64) )
+			//if((e.targetx / 64 < 64 && e.targetx / 64 > 0 && e.targety / 64 > 0 && e.targety / 64 < 64) && astar.isValid(e.targetx / 64, e.targety / 64) )
 				e.setPath(astar.getPath(e.startx / 64, e.starty / 64, e.targetx / 64, e.targety / 64));
 			if (e.canShoot)
 				world.addBullet(e.fire());

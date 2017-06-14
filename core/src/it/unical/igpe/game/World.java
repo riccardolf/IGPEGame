@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
@@ -25,30 +23,25 @@ import it.unical.igpe.tools.Updatable;
 import it.unical.igpe.tools.MapManager;
 
 public class World implements Updatable {
-	private Player player;
+	public static boolean finished = false;
+	public static int keyCollected;
+	
+	public Player player;
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
 	private static LinkedList<Lootable> lootables;
-	private TileType nextTile;
-	private boolean finished = false;
 	public LinkedList<Enemy> ens;
 	public EnemyManager EM;
 	public Vector2 dir;
-	private Rectangle box;
 	private MapManager manager;
-	public boolean idle;
-	public boolean running;
-	public boolean reloading;
 
 	public World(String path) {
 		player = new Player(new Vector2(), this);
-		idle = false;
-		running = false;
-		reloading = false;
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		ens = new LinkedList<Enemy>();
 		bls = new LinkedList<Bullet>();
+		keyCollected = 0;
 
 		manager = new MapManager(64, 64);
 		try {
@@ -95,159 +88,16 @@ public class World implements Updatable {
 		EM = new EnemyManager(this);
 	}
 
+	@SuppressWarnings("static-access")
 	public void update(float delta) {
-		idle = false;
-		running = false;
-		reloading = false;
-		// Angle for player and bullets
-		float midX = Gdx.graphics.getWidth() / 2;
-		float midY = Gdx.graphics.getHeight() / 2;
-		float mouseX = Gdx.input.getX();
-		float mouseY = Gdx.input.getY();
-		dir = new Vector2(mouseX - midX, mouseY - midY);
-		dir.rotate90(-1);
-		player.angle = dir.angle();
-
-		// Movements and Collisions of the player
-		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
-					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
-					player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveUpLeft();
-			} else if (nextTile != TileType.WALL)
-				player.MoveUpLeft();
-
-		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
-					player.getBoundingBox().y - GameConfig.MOVESPEED, player.getBoundingBox().width,
-					player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveUpRight();
-			} else if (nextTile != TileType.WALL)
-				player.MoveUpRight();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED,
-					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
-					player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveDownLeft();
-			} else if (nextTile != TileType.WALL)
-				player.MoveDownLeft();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED,
-					player.getBoundingBox().y + GameConfig.MOVESPEED, player.getBoundingBox().width,
-					player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveDownRight();
-			} else if (nextTile != TileType.WALL)
-				player.MoveDownRight();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y - GameConfig.MOVESPEED,
-					player.getBoundingBox().width, player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveUp();
-			} else if (nextTile != TileType.WALL)
-				player.MoveUp();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x - GameConfig.MOVESPEED, player.getBoundingBox().y,
-					player.getBoundingBox().width, player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveLeft();
-			} else if (nextTile != TileType.WALL)
-				player.MoveLeft();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x, player.getBoundingBox().y + GameConfig.MOVESPEED,
-					player.getBoundingBox().width, player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveDown();
-			} else if (nextTile != TileType.WALL)
-				player.MoveDown();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			if (!player.getReloading())
-				running = true;
-			box = new Rectangle(player.getBoundingBox().x + GameConfig.MOVESPEED, player.getBoundingBox().y,
-					player.getBoundingBox().width, player.getBoundingBox().height);
-			nextTile = getNextTile(box);
-			if (nextTile == TileType.ENDLEVEL && isDoorUnlocked()) {
-				finished = true;
-				player.MoveRight();
-			} else if (nextTile != TileType.WALL)
-				player.MoveRight();
-		}
-
-		// Fire and Reloading action of the player
-		if (Gdx.input.justTouched() && player.activeWeapon.lastFired > player.activeWeapon.fireRate
-				&& player.activeWeapon.actClip > 0) {
-			if (player.getActWeapon() == "pistol" && !player.isReloading()) {
-				player.activeWeapon.lastFired = 0;
-				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-				player.fire();
-			} else if (player.getActWeapon() == "shotgun" && !player.isReloading()) {
-				player.activeWeapon.lastFired = 0;
-				Assets.manager.get(Assets.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-				player.fire();
-			} else if (player.getActWeapon() == "rifle" && !player.isReloading()) {
-				player.activeWeapon.lastFired = 0;
-				Assets.manager.get(Assets.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-				player.fire();
-			}
-			if (player.checkAmmo()) {
-				if (player.getActWeapon() == "pistol")
-					Assets.manager.get(Assets.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
-				else if (player.getActWeapon() == "shotgun")
-					Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
-			}
-		}
+		player.state = Player.PLAYER_STATE_IDLE;
 
 		if (player.isReloading(delta))
-			reloading = true;
-		if (!reloading && !running)
-			idle = true;
+			player.state = Player.PLAYER_STATE_RELOADING;
+		if (player.state != Player.PLAYER_STATE_RELOADING && player.state != Player.PLAYER_STATE_RUNNING)
+			player.state = Player.PLAYER_STATE_IDLE;
+		
 		player.activeWeapon.lastFired += delta;
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && player.canReload()) {
-			player.reload();
-			if (player.getActWeapon() == "pistol") {
-				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-			} else if (player.getActWeapon() == "shotgun") {
-				Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
-			}
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-			player.setActWeapon("pistol");
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-			player.setActWeapon("shotgun");
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
-			player.setActWeapon("rifle");
-		}
 
 		// Enemies
 		EM.update(delta);
@@ -297,16 +147,11 @@ public class World implements Updatable {
 					break;
 				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR
 						|| l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
-					player.keys++;
+					this.keyCollected++;
 					itl.remove();
 				}
 			}
 		}
-	}
-
-	public float calculateAngle(float x, float y) {
-		return (float) Math
-				.toDegrees((Math.PI / 2 - Math.atan2(GameConfig.WIDTH / 2 - x, GameConfig.HEIGHT / 2 - y)) + 85f);
 	}
 
 	public static TileType getNextTile(Rectangle _box) {
@@ -322,8 +167,8 @@ public class World implements Updatable {
 		return TileType.GROUND;
 	}
 
-	public boolean isDoorUnlocked() {
-		if (player.keys == 4) {
+	public static boolean isDoorUnlocked() {
+		if (keyCollected == 4) {
 			return true;
 		}
 		return false;
