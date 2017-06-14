@@ -34,7 +34,7 @@ public class PauseScreen implements Screen{
 	
 	private Texture command;
 
-	public PauseScreen(IGPEGame _game, Screen _prevScreen) {
+	public PauseScreen(IGPEGame _game) {
 		this.game = _game;
 	}
 

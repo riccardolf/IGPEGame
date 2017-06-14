@@ -20,7 +20,8 @@ public class MainMenuScreen implements Screen {
 	private Stage stage;
 	private Table table;
 	private Label title;
-	private TextButton startButton;
+	private TextButton singleButton;
+	private TextButton multiButton;
 	private TextButton optionButton;
 	private TextButton quitButton;
 	
@@ -42,12 +43,21 @@ public class MainMenuScreen implements Screen {
 		
 		title = new Label("NOT ANOTHER TOP DOWN SHOOTER 3", IGPEGame.skinsoldier);
 		
-		startButton = new TextButton("Start", IGPEGame.skinsoldier);
-		startButton.addListener(new ChangeListener() {
+		singleButton = new TextButton("SinglePlayer", IGPEGame.skinsoldier);
+		singleButton.addListener(new ChangeListener() {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				game.setScreen(ScreenManager.LCS);
+			}
+		});
+		
+		multiButton = new TextButton("MultiPlayer", IGPEGame.skinsoldier);
+		multiButton.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.setScreen(ScreenManager.MS);
 			}
 		});
 		
@@ -70,7 +80,9 @@ public class MainMenuScreen implements Screen {
 		});
 		table.add(title);
 		table.row();
-		table.add(startButton);
+		table.add(singleButton);
+		table.row();
+		table.add(multiButton);
 		table.row();
 		table.add(optionButton);
 		table.row();

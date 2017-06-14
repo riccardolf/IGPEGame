@@ -29,7 +29,7 @@ public class LevelChooseScreen implements Screen {
 	private TextButton returnButton;
 	public String world;
 
-	public LevelChooseScreen(IGPEGame _game, Screen _prevScreen) {
+	public LevelChooseScreen(IGPEGame _game) {
 		this.game = _game;
 	}
 

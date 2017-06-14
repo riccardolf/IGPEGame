@@ -11,17 +11,19 @@ public class ScreenManager {
 	public static OptionScreen OS;
 	public static PauseScreen PS;
 	public static LoadingScreen LS;
+	public static MultiScreen MS;
 	
 	private static IGPEGame game;
 	
 	public ScreenManager(IGPEGame _game) {
 		game = _game;
 		MMS = new MainMenuScreen(game);
-		LCS = new LevelChooseScreen(game, MMS);
+		LCS = new LevelChooseScreen(game);
 		LCompletedS = new LevelCompletedScreen(game);
-		OS = new OptionScreen(game, MMS);
-		PS = new PauseScreen(game, GS);
+		OS = new OptionScreen(game);
+		PS = new PauseScreen(game);
 		LS = new LoadingScreen(game);
+		MS = new MultiScreen(game);
 		game.setScreen(MMS);
 	}
 	

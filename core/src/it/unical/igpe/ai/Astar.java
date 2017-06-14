@@ -21,7 +21,6 @@ public class Astar {
 
 	/** Returns x,y pairs that are the path from the target to the start. */
 	public IntArray getPath(int startX, int startY, int targetX, int targetY) {
-		int count = 0;
 		this.targetX = targetX;
 		this.targetY = targetY;
 
@@ -48,7 +47,6 @@ public class Astar {
 		@SuppressWarnings("unused")
 		int i = 0;
 		while (open.size > 0) {
-			count++;
 			PathNode node = open.pop();
 			if (node.x == targetX && node.y == targetY) {
 				while (node != root) {
@@ -81,7 +79,6 @@ public class Astar {
 				addNode(node, x, y - 1, 10);
 			i++;
 		}
-		System.out.println(count);
 		return path;
 	}
 

@@ -27,11 +27,9 @@ public class OptionScreen implements Screen {
 	private Slider musicVolume;
 	private Slider soundVolume;
 	private TextButton returnButton;
-	private Screen prevScreen;
 
-	public OptionScreen(IGPEGame _game, Screen _prevScreen) {
+	public OptionScreen(IGPEGame _game) {
 		this.game = _game;
-		this.prevScreen = _prevScreen;
 	}
 
 	@Override
@@ -76,7 +74,7 @@ public class OptionScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(prevScreen);
+				game.setScreen(ScreenManager.MMS);
 			}
 		});
 		table.add(title);
