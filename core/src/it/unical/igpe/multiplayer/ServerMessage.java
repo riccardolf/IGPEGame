@@ -1,26 +1,42 @@
 package it.unical.igpe.multiplayer;
 
+import java.util.LinkedList;
+
+import it.unical.igpe.logic.Bullet;
+import it.unical.igpe.logic.Enemy;
+import it.unical.igpe.logic.Player;
+
 public class ServerMessage {
-	// The different types of message sent by the Client
-	// WHOISIN to receive the list of the users connected
+	// The different types of message sent by the Client to the server
 	// MESSAGE an ordinary message
 	// LOGOUT to disconnect from the Server
 	static final int MESSAGE = 0, LOGOUT = 1;
 	private int type;
-	private String message;
+	private LinkedList<Player> pls;
+	private Bullet bulletFired;
+	private LinkedList<Enemy> ens;
 
-	// constructor
-	ServerMessage(int type, String message) {
+	ServerMessage(int type, Bullet bulletFired, LinkedList<Player> pls, LinkedList<Enemy> ens) {
 		this.type = type;
-		this.message = message;
+		this.pls = pls;
+		this.bulletFired = bulletFired;
+		this.ens = ens;
 	}
 
 	int getType() {
 		return type;
 	}
 
-	String getMessage() {
-		return message;
+	LinkedList<Player> getPlayers() {
+		return pls;
+	}
+	
+	LinkedList<Enemy> getEnemies() {
+		return ens;
+	}
+	
+	Bullet getBullet() {
+		return bulletFired;
 	}
 
 }

@@ -8,6 +8,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
+	private static final int GET_ID = 0;
+	private static final int GET_MAP = 1;
+	private static final int SEND_MAIN_CHARACTER = 2;
+	private static final int REMOVE_CHARACTER = 4;
+	
 	public static int uniqueID;
 	private int port;
 	private boolean keepGoing;
