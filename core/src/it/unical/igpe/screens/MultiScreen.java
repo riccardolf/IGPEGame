@@ -13,9 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.multiplayer.Server;
+import it.unical.igpe.multiplayer.Client;
 
 public class MultiScreen implements Screen {
 	private IGPEGame game;
+	private Server server;
 
 	private SpriteBatch batch;
 	private Stage stage;
@@ -33,14 +36,17 @@ public class MultiScreen implements Screen {
 	private Label clientLabel;
 	private Label serverLabel;
 	private Label IPClientLabel;
-	private Label IPServerLabel;
+	private Label PortClientLabel;
+	private Label PortServerLabel;
 	private Label nameLabel;
 	private TextField nameText;
 	private TextField IPClientText;
-	private TextField IPServerText;
-	
+	private TextField PortClientText;
+	private TextField PortServerText;
+
 	public MultiScreen(IGPEGame _game) {
 		this.game = _game;
+		server = game.server;
 	}
 
 	@Override
@@ -126,7 +132,8 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				System.out.println(nameText.getText() + " CONNESSO PORCA MADONNA");
+				game.client = new Client(IPClientText.getText(), Integer.parseInt(PortClientText.getText()), nameText.getText());
+				game.client.start();
 			}
 		});
 		
@@ -135,7 +142,8 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				// TODO: Creation server
+				server = new Server(Integer.parseInt(PortServerText.getText()));
+				new ServerRunning().start();
 			}
 		});
 		
@@ -152,11 +160,13 @@ public class MultiScreen implements Screen {
 		clientLabel = new Label("Client", IGPEGame.skinsoldier);
 		serverLabel = new Label("Server", IGPEGame.skinsoldier);
 		IPClientLabel = new Label("IP", IGPEGame.skinsoldier);
-		IPServerLabel = new Label("IP", IGPEGame.skinsoldier);
+		PortClientLabel = new Label("Port", IGPEGame.skinsoldier);
+		PortServerLabel = new Label("Port", IGPEGame.skinsoldier);
 		nameLabel = new Label("Name", IGPEGame.skinsoldier);
-		nameText = new TextField("Pasticciopoli", IGPEGame.skinsoldier);
+		nameText = new TextField("Fabio", IGPEGame.skinsoldier);
 		IPClientText = new TextField("127.0.0.1", IGPEGame.skinsoldier);
-		IPServerText = new TextField("127.0.0.1", IGPEGame.skinsoldier);
+		PortClientText = new TextField("1234", IGPEGame.skinsoldier);
+		PortServerText = new TextField("1234", IGPEGame.skinsoldier);
 		
 		tableChoose.add(Client);
 		tableChoose.row();
@@ -172,14 +182,17 @@ public class MultiScreen implements Screen {
 		tableClient.add(IPClientLabel);
 		tableClient.add(IPClientText).width(200);
 		tableClient.row();
+		tableClient.add(PortClientLabel);
+		tableClient.add(PortClientText).width(100);
+		tableClient.row();
 		tableClient.add(connectClient);
 		tableClient.row();
 		tableClient.add(chosenReturnClientButton);
 		
 		tableServer.add(serverLabel);
 		tableServer.row();
-		tableServer.add(IPServerLabel);
-		tableServer.add(IPServerText).width(200);
+		tableServer.add(PortServerLabel);
+		tableServer.add(PortServerText).width(200);
 		tableServer.row();
 		tableServer.add(selectMap);
 		tableServer.row();
@@ -225,4 +238,14 @@ public class MultiScreen implements Screen {
 	@Override
 	public void resume() {
 	}
+
+	class ServerRunning extends Thread {
+		public void run() {
+			System.out.println("Server Running");
+			server.start(); // should execute until it fails
+			// the server failed
+			server = null;
+		}
+	}
+
 }

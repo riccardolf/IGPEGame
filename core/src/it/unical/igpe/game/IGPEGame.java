@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import it.unical.igpe.multiplayer.Client;
+import it.unical.igpe.multiplayer.Server;
 import it.unical.igpe.screens.ScreenManager;
 import it.unical.igpe.tools.GameConfig;
 
@@ -21,6 +23,9 @@ public class IGPEGame extends Game {
 	public static Texture background;
 	public static Skin skinsoldier;
 	public static Skin skinui;
+	
+	public Server server;
+	public Client client;
 	
 	@Override
 	public void create() {

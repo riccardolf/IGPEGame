@@ -20,7 +20,7 @@ public class Client {
 	 * Constructor called by console mode server: the server address port: the
 	 * port number username: the username
 	 */
-	Client(String server, int port, String username) {
+	public Client(String server, int port, String username) {
 		this.server = server;
 		this.port = port;
 		this.username = username;
@@ -91,23 +91,6 @@ public class Client {
 				socket.close();
 		} catch (Exception e) {
 		} // not much else I can do
-	}
-
-	/*
-	 * To start the Client in console mode use one of the following command >
-	 * java Client > java Client username > java Client username portNumber >
-	 * java Client username portNumber serverAddress at the console prompt If
-	 * the portNumber is not specified 1500 is used If the serverAddress is not
-	 * specified "localHost" is used If the username is not specified
-	 * "Anonymous" is used > java Client is equivalent to > java Client
-	 * Anonymous 1500 localhost are eqquivalent
-	 *
-	 * In console mode, if an error occurs the program simply stops when a GUI
-	 * id used, the GUI is informed of the disconnection
-	 */
-	public static void main(String[] args) {
-		// create the Client object
-		Client client = new Client("localhost", 1234, "ciaone");
 	}
 
 	/*

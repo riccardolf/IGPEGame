@@ -7,8 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import it.unical.igpe.game.World;
-
 public class Server {
 	public static int uniqueID;
 	private int port;
@@ -31,6 +29,7 @@ public class Server {
 				if (!keepGoing)
 					break;
 				ClientThread t = new ClientThread(socket);
+				System.out.println("client added");
 				al.add(t);
 				t.start();
 			}
@@ -64,7 +63,7 @@ public class Server {
 		ObjectOutputStream sOutput;
 		int id;
 		String username;
-		World world;
+		ServerMessage sm;
 
 		public ClientThread(Socket socket) {
 			id = ++Server.uniqueID;
@@ -83,7 +82,7 @@ public class Server {
 			boolean keepGoing = true;
 			while (keepGoing) {
 				try {
-					world = (World) sInput.readObject();
+					sm = (ServerMessage) sInput.readObject();
 				} catch (ClassNotFoundException e) {
 					break;
 				} catch (IOException e) {
@@ -114,18 +113,24 @@ public class Server {
 			}
 		}
 
-		private boolean sendWorld(World world) {
+		@SuppressWarnings("unused")
+		private boolean writeMsg(String msg) {
+			// if Client is still connected send the message to it
 			if (!socket.isConnected()) {
 				close();
 				return false;
 			}
-
+			// write the message to the stream
 			try {
-				sOutput.writeObject(world);
-			} catch (IOException e) {
-				e.printStackTrace();
+				sOutput.writeObject(msg);
+			}
+			// if an error occurs, do not abort just inform the user
+			catch (IOException e) {
+				System.out.println("Error sending message to " + username);
+				System.out.println(e.toString());
 			}
 			return true;
 		}
+
 	}
 }
