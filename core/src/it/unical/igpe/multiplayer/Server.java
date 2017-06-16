@@ -45,12 +45,9 @@ public class Server {
 	}
 
 	private synchronized void broadcast(ServerMessage message) {
-		System.out.println("broadcast sent");
-		// we loop in reverse order in case we would have to remove a Client
-		// because it has disconnected
-		for (int i = al.size(); --i >= 0;) {
+		System.out.println("Broadcast sent");
+		for (int i = 0; i < al.size(); i++) {
 			ClientThread ct = al.get(i);
-			// try to write to the Client if it fails remove it from the list
 			if (!ct.writeMsg(message)) {
 				al.remove(i);
 				System.out.println("Disconnected Client " + ct.username + " removed from list.");
@@ -59,7 +56,6 @@ public class Server {
 	}
 
 	synchronized void remove(int id) {
-		// scan the array list until we found the Id
 		for (int i = 0; i < al.size(); ++i) {
 			ClientThread ct = al.get(i);
 			if (ct.id == id) {
@@ -95,7 +91,8 @@ public class Server {
 
 		@Override
 		public void run() {
-			while (true) {
+			boolean keepGoing = true;
+			while (keepGoing) {
 				try {
 					sm = (ServerMessage) sInput.readObject();
 				} catch (ClassNotFoundException e) {
@@ -103,8 +100,16 @@ public class Server {
 				} catch (IOException e) {
 					break;
 				}
-				
-				broadcast(sm);
+				switch (sm.type) {
+				case ServerMessage.LOGOUT:
+					System.out.println(username + " disconnected");
+					keepGoing = false;
+					break;
+				case ServerMessage.BULLET_FIRED:
+					broadcast(sm);
+					break;
+				}
+
 			}
 			remove(id);
 			close();
@@ -131,19 +136,15 @@ public class Server {
 		}
 
 		private boolean writeMsg(ServerMessage message) {
-			// if Client is still connected send the message to it
 			if (!socket.isConnected()) {
-				System.out.println("socket not connected");
+				System.out.println("Socket not connected");
 				close();
 				return false;
 			}
-			// write the message to the stream
 			try {
 				sOutput.writeObject(message);
-				System.out.println("message wrote to the stream");
-			}
-			// if an error occurs, do not abort just inform the user
-			catch (IOException e) {
+				System.out.println("Message wrote to the stream");
+			} catch (IOException e) {
 				System.out.println("Error sending message to " + username);
 				System.out.println(e.toString());
 			}

@@ -1,51 +1,22 @@
 package it.unical.igpe.multiplayer;
 
-import java.util.LinkedList;
+import java.io.Serializable;
 
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Player;
 
-public class ServerMessage {
-	// The different types of message sent by the Client to the server
-	// MESSAGE an ordinary message
-	// LOGOUT to disconnect from the Server
-	static final int MESSAGE = 0, LOGOUT = 1;
-	private int type;
-	private LinkedList<Player> pls;
-	private Bullet bulletFired;
-	private LinkedList<Enemy> ens;
-	private String msg;
+public class ServerMessage implements Serializable{
+	private static final long serialVersionUID = -1964720133756399344L;
+	
+	public static final int LOGOUT = 0, PLAYER_MOVED = 1, PLAYER_DEATH = 2, BULLET_FIRED = 3, ENEMY_MOVED = 4, ENEMY_DEATH = 5;
+	public int type;
+	public Player playerdata;
+	public Bullet bulletFired;
+	public Enemy enemydata;
 
-	ServerMessage(int type, Bullet bulletFired, LinkedList<Player> pls, LinkedList<Enemy> ens) {
+	ServerMessage(int type) {
 		this.type = type;
-		this.pls = pls;
-		this.bulletFired = bulletFired;
-		this.ens = ens;
-	}
-	
-	ServerMessage(int type, String msg) {
-		this.msg = msg;
-	}
-
-	int getType() {
-		return type;
-	}
-	
-	String getMsg() {
-		return msg;
-	}
-
-	LinkedList<Player> getPlayers() {
-		return pls;
-	}
-	
-	LinkedList<Enemy> getEnemies() {
-		return ens;
-	}
-	
-	Bullet getBullet() {
-		return bulletFired;
 	}
 
 }

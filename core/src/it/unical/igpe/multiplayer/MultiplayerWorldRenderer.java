@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 public class MultiplayerWorldRenderer {
+	@SuppressWarnings("unused")
 	private MultiplayerWorld world;
 	public MultiplayerWorldRenderer(MultiplayerWorld world) {
 		this.world = world;
