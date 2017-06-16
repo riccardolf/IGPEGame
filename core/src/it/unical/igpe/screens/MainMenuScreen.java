@@ -17,7 +17,7 @@ public class MainMenuScreen implements Screen {
 	private IGPEGame game;
 	
 	private SpriteBatch batch;
-	private Stage stage;
+	Stage stage;
 	private Table table;
 	private Label title;
 	private TextButton singleButton;

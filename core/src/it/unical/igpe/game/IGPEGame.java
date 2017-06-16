@@ -17,6 +17,7 @@ public class IGPEGame extends Game {
 	private static final String PREFS_NAME = "my_game";
 	private static final String MUSIC_VOLUME = "musicvolume";
 	private static final String SOUND_VOLUME = "soundvolume";
+	private static final String FULLSCREEN = "fullscreen";
 	private Preferences prefs;
 	
 	public static Music music;
@@ -43,6 +44,10 @@ public class IGPEGame extends Game {
 		
 		GameConfig.MUSIC_VOLUME = this.getMusicVolume();
 		GameConfig.SOUND_VOLUME = this.getSoundVolume();
+		GameConfig.isFullscreen = this.getFullScreen();
+		
+		if(GameConfig.isFullscreen)
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		
 		new ScreenManager(this);
 		this.setScreen(ScreenManager.MMS);
@@ -60,6 +65,11 @@ public class IGPEGame extends Game {
 		prefs.flush();
 	}
 	
+	public void setFullScreen() {
+		prefs.putBoolean(FULLSCREEN, GameConfig.isFullscreen);
+		prefs.flush();
+	}
+	
 	public float getMusicVolume() {
 		if(prefs==null){
 			prefs = Gdx.app.getPreferences(PREFS_NAME);
@@ -71,6 +81,12 @@ public class IGPEGame extends Game {
 		if(prefs==null)
 			prefs = Gdx.app.getPreferences(PREFS_NAME);
 		return prefs.getFloat(SOUND_VOLUME, 1.0f);
+	}
+	
+	public boolean getFullScreen() {
+		if(prefs==null)
+			prefs = Gdx.app.getPreferences(PREFS_NAME);
+		return prefs.getBoolean(FULLSCREEN, false);
 	}
 
 }

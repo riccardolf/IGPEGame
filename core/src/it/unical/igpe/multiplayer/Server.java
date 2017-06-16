@@ -8,11 +8,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-	private static final int GET_ID = 0;
-	private static final int GET_MAP = 1;
-	private static final int SEND_MAIN_CHARACTER = 2;
-	private static final int REMOVE_CHARACTER = 4;
-	
 	public static int uniqueID;
 	private int port;
 	private boolean keepGoing;
@@ -30,11 +25,9 @@ public class Server {
 
 			while (keepGoing) {
 				Socket socket = serverSocket.accept();
-
 				if (!keepGoing)
 					break;
 				ClientThread t = new ClientThread(socket);
-				System.out.println("client added");
 				al.add(t);
 				t.start();
 			}
@@ -48,6 +41,20 @@ public class Server {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private synchronized void broadcast(ServerMessage message) {
+		System.out.println("broadcast sent");
+		// we loop in reverse order in case we would have to remove a Client
+		// because it has disconnected
+		for (int i = al.size(); --i >= 0;) {
+			ClientThread ct = al.get(i);
+			// try to write to the Client if it fails remove it from the list
+			if (!ct.writeMsg(message)) {
+				al.remove(i);
+				System.out.println("Disconnected Client " + ct.username + " removed from list.");
+			}
 		}
 	}
 
@@ -77,15 +84,18 @@ public class Server {
 			try {
 				sOutput = new ObjectOutputStream(socket.getOutputStream());
 				sInput = new ObjectInputStream(socket.getInputStream());
+				username = (String) sInput.readObject();
+				System.out.println(username + " just connected.");
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
 
 		@Override
 		public void run() {
-			boolean keepGoing = true;
-			while (keepGoing) {
+			while (true) {
 				try {
 					sm = (ServerMessage) sInput.readObject();
 				} catch (ClassNotFoundException e) {
@@ -93,6 +103,8 @@ public class Server {
 				} catch (IOException e) {
 					break;
 				}
+				
+				broadcast(sm);
 			}
 			remove(id);
 			close();
@@ -118,16 +130,17 @@ public class Server {
 			}
 		}
 
-		@SuppressWarnings("unused")
-		private boolean writeMsg(String msg) {
+		private boolean writeMsg(ServerMessage message) {
 			// if Client is still connected send the message to it
 			if (!socket.isConnected()) {
+				System.out.println("socket not connected");
 				close();
 				return false;
 			}
 			// write the message to the stream
 			try {
-				sOutput.writeObject(msg);
+				sOutput.writeObject(message);
+				System.out.println("message wrote to the stream");
 			}
 			// if an error occurs, do not abort just inform the user
 			catch (IOException e) {

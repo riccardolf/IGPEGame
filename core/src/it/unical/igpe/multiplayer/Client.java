@@ -5,8 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import it.unical.igpe.game.World;
-
 public class Client {
 	private ObjectInputStream sInput; // to read from the socket
 	private ObjectOutputStream sOutput; // to write on the socket
@@ -36,17 +34,16 @@ public class Client {
 		}
 		// if it failed not much I can so
 		catch (Exception ec) {
-			display("Error connectiong to server:" + ec);
+			System.out.println("Error connectiong to server:" + ec);
 			return false;
 		}
-		String msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
-		display(msg);
+		System.out.println("Connection accepted " + socket.getInetAddress() + ":" + socket.getPort());
 		/* Creating both Data Stream */
 		try {
 			sInput = new ObjectInputStream(socket.getInputStream());
 			sOutput = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException eIO) {
-			display("Exception creating new Input/output Streams: " + eIO);
+			System.out.println("Exception creating new Input/output Streams: " + eIO);
 			return false;
 		}
 		// creates the Thread to listen from the server
@@ -56,7 +53,7 @@ public class Client {
 		try {
 			sOutput.writeObject(username);
 		} catch (IOException eIO) {
-			display("Exception doing login : " + eIO);
+			System.out.println("Exception doing login : " + eIO);
 			disconnect();
 			return false;
 		}
@@ -64,13 +61,11 @@ public class Client {
 		return true;
 	}
 
-	private void display(String msg) {
-		System.out.println(msg); // println in console mode
-	}
-
-	void sendMessage(World world) {
+	void sendMessage(ServerMessage msg) {
 		try {
-			sOutput.writeObject(world);
+			sOutput.writeObject(msg);
+			System.out.println("message sent");
+
 		} catch (IOException e) {
 		}
 	}
@@ -93,25 +88,18 @@ public class Client {
 		} // not much else I can do
 	}
 
-	/*
-	 * a class that waits for the message from the server and simply 
-	 * System.out.println() it in console mode
-	 */
 	class ListenFromServer extends Thread {
-
 		public void run() {
 			while (true) {
 				try {
-					String msg = (String) sInput.readObject();
-					// if console mode print the message and add back the prompt
-					System.out.println(msg);
-					System.out.print("> ");
+					ServerMessage msg = (ServerMessage) sInput.readObject();
+					System.out.println("msg received");
 				} catch (IOException e) {
-					display("Server has close the connection: " + e);
+					System.out.println("Server has close the connection: " + e);
 					break;
 				}
-				// can't happen with a String object but need the catch anyhow
 				catch (ClassNotFoundException e2) {
+					System.out.println("Class not found: " + e2);
 				}
 			}
 		}

@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.tools.Assets;
@@ -18,6 +19,7 @@ public class LevelCompletedScreen implements Screen {
 	private SpriteBatch batch;
 	private float time = 0;
 	public boolean gameOver;
+	private Stage stage;
 	
 	public LevelCompletedScreen(IGPEGame _game) {
 		game = _game;
@@ -61,7 +63,7 @@ public class LevelCompletedScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		stage.getViewport().update(width, height);
 	}
 
 

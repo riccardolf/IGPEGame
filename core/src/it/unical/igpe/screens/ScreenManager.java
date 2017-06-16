@@ -2,6 +2,7 @@ package it.unical.igpe.screens;
 
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
+import it.unical.igpe.multiplayer.MultiplayerGameScreen;
 
 public class ScreenManager {
 	public static MainMenuScreen MMS;
@@ -12,6 +13,8 @@ public class ScreenManager {
 	public static PauseScreen PS;
 	public static LoadingScreen LS;
 	public static MultiScreen MS;
+	public static MultiplayerGameScreen MGS;
+	
 	
 	private static IGPEGame game;
 	

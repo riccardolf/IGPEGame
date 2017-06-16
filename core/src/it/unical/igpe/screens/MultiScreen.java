@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.multiplayer.Server;
 import it.unical.igpe.multiplayer.Client;
+import it.unical.igpe.multiplayer.MultiplayerGameScreen;
 
 public class MultiScreen implements Screen {
 	private IGPEGame game;
@@ -134,6 +135,7 @@ public class MultiScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				game.client = new Client(IPClientText.getText(), Integer.parseInt(PortClientText.getText()), nameText.getText());
 				game.client.start();
+				game.setScreen(ScreenManager.MGS = new MultiplayerGameScreen(game));
 			}
 		});
 		
@@ -142,8 +144,9 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				server = new Server(Integer.parseInt(PortServerText.getText()));
+				game.server = new Server(Integer.parseInt(PortServerText.getText()));
 				new ServerRunning().start();
+				//game.setScreen(ScreenManager.MS);
 			}
 		});
 		
@@ -217,7 +220,7 @@ public class MultiScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stubs
+		stage.getViewport().update(width, height);
 	}
 
 	@Override

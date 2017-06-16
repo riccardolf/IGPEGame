@@ -15,6 +15,7 @@ public class ServerMessage {
 	private LinkedList<Player> pls;
 	private Bullet bulletFired;
 	private LinkedList<Enemy> ens;
+	private String msg;
 
 	ServerMessage(int type, Bullet bulletFired, LinkedList<Player> pls, LinkedList<Enemy> ens) {
 		this.type = type;
@@ -22,9 +23,17 @@ public class ServerMessage {
 		this.bulletFired = bulletFired;
 		this.ens = ens;
 	}
+	
+	ServerMessage(int type, String msg) {
+		this.msg = msg;
+	}
 
 	int getType() {
 		return type;
+	}
+	
+	String getMsg() {
+		return msg;
 	}
 
 	LinkedList<Player> getPlayers() {

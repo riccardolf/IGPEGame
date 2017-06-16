@@ -29,56 +29,59 @@ public class MultiplayerGameScreen implements Screen{
 	IGPEGame game;
 	HUD hud;
 	MultiplayerWorldRenderer renderer;
+	public int port;
 
-	public MultiplayerGameScreen(IGPEGame _game, MultiplayerWorld _world) {
+	public MultiplayerGameScreen(IGPEGame _game) {
 		this.game = _game;
-		this.world = _world;
 	}
 
 	@Override
 	public void show() {
-		this.renderer = new MultiplayerWorldRenderer();
-		this.hud = new HUD();
+		this.renderer = new MultiplayerWorldRenderer(world);
+//		this.hud = new HUD();
 		Gdx.input.setInputProcessor(null);
-		IGPEGame.music.pause();
-		Assets.manager.get(Assets.GameMusic, Music.class).setLooping(true);
-		Assets.manager.get(Assets.GameMusic, Music.class).play();
+//		IGPEGame.music.pause();
+//		Assets.manager.get(Assets.GameMusic, Music.class).setLooping(true);
+//		Assets.manager.get(Assets.GameMusic, Music.class).play();
 	}
 
 	@Override
 	public void render(float delta) {
 		delta = 0.01f;
-		handleInput();
-		world.update(delta);
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//		handleInput();
+//		world.update(delta);
+//		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		renderer.render(delta);
-		hud.render(world.getPlayer());
-
-		Assets.manager.get(Assets.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-			game.setScreen(ScreenManager.PS);
-		if (world.isLevelFinished()) {
-			game.setScreen(ScreenManager.LCompletedS);
-		} else if (world.isGameOver()) {
-			ScreenManager.LCompletedS.gameOver = true;
-			game.setScreen(ScreenManager.LCompletedS);
+//		hud.render(world.getPlayer());
+//
+//		Assets.manager.get(Assets.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+//		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+//			game.setScreen(ScreenManager.PS);
+//		if (world.isLevelFinished()) {
+//			game.setScreen(ScreenManager.LCompletedS);
+//		} else if (world.isGameOver()) {
+//			ScreenManager.LCompletedS.gameOver = true;
+//			game.setScreen(ScreenManager.LCompletedS);
+//		}
+		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
+			game.client.sendMessage(new ServerMessage(0, "ciaone"));
 		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		renderer.viewport.update(width, height, true);
+		//renderer.viewport.update(width, height, true);
 	}
 
 	@Override
 	public void dispose() {
-		hud.dispose();
-		renderer.dispose();
+//		hud.dispose();
+//		renderer.dispose();
 	}
 
 	private void handleInput() {
-		float midX = Gdx.graphics.getWidth() / 2;
+		/*float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
 		float mouseX = Gdx.input.getX();
 		float mouseY = Gdx.input.getY();
@@ -212,7 +215,7 @@ public class MultiplayerGameScreen implements Screen{
 			world.player.setActWeapon("shotgun");
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
 			world.player.setActWeapon("rifle");
-		}
+		}*/
 	}
 
 	@Override

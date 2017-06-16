@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.tools.GameConfig;
@@ -27,6 +28,7 @@ public class OptionScreen implements Screen {
 	private Slider musicVolume;
 	private Slider soundVolume;
 	private TextButton returnButton;
+	private CheckBox fullscreen;
 
 	public OptionScreen(IGPEGame _game) {
 		this.game = _game;
@@ -77,6 +79,25 @@ public class OptionScreen implements Screen {
 				game.setScreen(ScreenManager.MMS);
 			}
 		});
+		
+		fullscreen = new CheckBox("FullScreen", IGPEGame.skinsoldier);
+		fullscreen.setChecked(GameConfig.isFullscreen);
+		fullscreen.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if(fullscreen.isChecked()) {
+					GameConfig.isFullscreen = true;
+					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+					game.setFullScreen();
+				}
+				else {
+					GameConfig.isFullscreen = false;
+					Gdx.graphics.setWindowedMode(GameConfig.WIDTH, GameConfig.HEIGHT);
+					game.setFullScreen();
+				}
+			}
+		});
 		table.add(title);
 		table.row();
 		table.add(music);
@@ -86,6 +107,8 @@ public class OptionScreen implements Screen {
 		table.add(sound);
 		table.row();
 		table.add(soundVolume);
+		table.row();
+		table.add(fullscreen);
 		table.row();
 		table.add(returnButton);
 	}
@@ -105,8 +128,7 @@ public class OptionScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		stage.getViewport().update(width, height);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -31,6 +32,7 @@ public class PauseScreen implements Screen{
 	private Slider musicVolume;
 	private Slider soundVolume;
 	private TextButton quitButton;
+	private CheckBox fullscreen;
 	
 	private Texture command;
 
@@ -87,6 +89,25 @@ public class PauseScreen implements Screen{
 			}
 		});
 		
+		fullscreen = new CheckBox("FullScreen", IGPEGame.skinsoldier);
+		fullscreen.setChecked(GameConfig.isFullscreen);
+		fullscreen.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if(fullscreen.isChecked()) {
+					GameConfig.isFullscreen = true;
+					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+					game.setFullScreen();
+				}
+				else {
+					GameConfig.isFullscreen = false;
+					Gdx.graphics.setWindowedMode(GameConfig.WIDTH, GameConfig.HEIGHT);
+					game.setFullScreen();
+				}
+			}
+		});
+		
 		
 		table.add(title);
 		table.row();
@@ -97,6 +118,8 @@ public class PauseScreen implements Screen{
 		table.add(sound);
 		table.row();
 		table.add(soundVolume);
+		table.row();
+		table.add(fullscreen);
 		table.row();
 		table.add(quitButton);
 	}
@@ -121,8 +144,7 @@ public class PauseScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		stage.getViewport().update(width, height);
 	}
 
 	@Override

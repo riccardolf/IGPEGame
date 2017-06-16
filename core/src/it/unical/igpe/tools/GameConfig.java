@@ -13,5 +13,6 @@ public class GameConfig {
 	public static final int ENEMY_SHOOT_RADIUS = 192;
 	public static float MUSIC_VOLUME = 1.0f;
 	public static float SOUND_VOLUME = 1.0f;
+	public static boolean isFullscreen = false;
 
 }
