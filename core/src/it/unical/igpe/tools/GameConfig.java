@@ -3,7 +3,7 @@ package it.unical.igpe.tools;
 public class GameConfig {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final String GAMENAME = "NOT ANOTHER TOPDOWN SHOOTER 3";
+	public static final String GAMENAME = "NOT ANOTHER TOPDOWN SHOOTER v3.2c";
 	public static final int MOVESPEED = 5;
 	public static final int DIAGONALSPEED = 3;
 	public static final int BULLETSPEED = 10;

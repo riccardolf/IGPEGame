@@ -82,6 +82,7 @@ public class Server {
 				sInput = new ObjectInputStream(socket.getInputStream());
 				username = (String) sInput.readObject();
 				System.out.println(username + " just connected.");
+				// TODO: Output maptile
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {

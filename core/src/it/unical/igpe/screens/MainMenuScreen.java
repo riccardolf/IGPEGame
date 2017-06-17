@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.tools.GameConfig;
 
 public class MainMenuScreen implements Screen {
 	private IGPEGame game;
@@ -41,7 +42,7 @@ public class MainMenuScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		title = new Label("NOT ANOTHER TOP DOWN SHOOTER 3", IGPEGame.skinsoldier);
+		title = new Label(GameConfig.GAMENAME, IGPEGame.skinsoldier);
 		
 		singleButton = new TextButton("SinglePlayer", IGPEGame.skinsoldier);
 		singleButton.addListener(new ChangeListener() {
