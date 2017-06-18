@@ -125,7 +125,7 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				IGPEGame.game.socketClient = new GameClient("localhost");
+				IGPEGame.game.socketClient = new GameClient(IPClientText.getText());
 				IGPEGame.game.socketClient.start();
 				MultiplayerWorld.username = nameText.getText();
 				ScreenManager.CreateMGS();

@@ -7,6 +7,7 @@ import it.unical.igpe.tools.GameConfig;
 
 public abstract class AbstractGameObject {
 	public float angle;
+	public String username;
 	protected Rectangle boundingBox;
 	protected String ID;
 	protected boolean alive;

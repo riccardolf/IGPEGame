@@ -135,13 +135,13 @@ public class MultiplayerWorldRenderer {
 				64, 1f, 1f, world.getPlayer().angle);
 		if (!world.entities.isEmpty())
 			for (AbstractGameObject e : world.entities) {
-				if (e.Alive()) {
+				if (e.Alive() && e.username != MultiplayerWorld.username) {
 					batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
 					batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32,
 							e.getBoundingBox().y - 320 + 32, 640, 640);
 					batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 					batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				} else
+				} else if(!e.Alive())
 					batch.draw(Assets.manager.get(Assets.Skull, Texture.class), e.getPos().x, e.getPos().y, 48, 48);
 			}
 		batch.setColor(1, 1, 1, 0.5f);

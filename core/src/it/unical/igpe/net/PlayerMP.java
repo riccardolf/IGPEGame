@@ -16,7 +16,6 @@ public class PlayerMP extends AbstractGameObject{
 	public static final int PLAYER_STATE_RELOADING = 2;
 	public int state;
 	private boolean reloading;
-	private String username;
 	public Weapon activeWeapon;
 	private Weapon pistol;
 	private Weapon rifle;

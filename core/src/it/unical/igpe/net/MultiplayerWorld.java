@@ -93,7 +93,6 @@ public class MultiplayerWorld implements Updatable {
 		dir = new Vector2();
 	}
 
-	@SuppressWarnings("static-access")
 	public void update(float delta) {
 		player.state = Player.PLAYER_STATE_IDLE;
 
@@ -152,7 +151,7 @@ public class MultiplayerWorld implements Updatable {
 					break;
 				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR
 						|| l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
-					this.keyCollected++;
+					MultiplayerWorld.keyCollected++;
 					itl.remove();
 				}
 			}
