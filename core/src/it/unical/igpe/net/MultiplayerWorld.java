@@ -25,6 +25,7 @@ import it.unical.igpe.tools.TileType;
 import it.unical.igpe.tools.Updatable;
 
 public class MultiplayerWorld implements Updatable {
+	public static String username;
 	public PlayerMP player;
 	public LinkedList<AbstractGameObject> entities;
 	public static boolean finished = false;
@@ -40,6 +41,7 @@ public class MultiplayerWorld implements Updatable {
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		bls = new LinkedList<Bullet>();
+		entities = new LinkedList<AbstractGameObject>();
 		keyCollected = 0;
 
 		manager = new MapManager(64, 64);
@@ -61,7 +63,7 @@ public class MultiplayerWorld implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				} else if (manager.map[x][y] == 10) { // Player
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-					player = new PlayerMP(new Vector2(x * 64, y * 64), this, "fabio", null, -1);
+					player = new PlayerMP(new Vector2(x * 64, y * 64), this, username, null, -1);
 				} else if (manager.map[x][y] == 6) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYY));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
@@ -82,8 +84,11 @@ public class MultiplayerWorld implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				}
 			}
+		this.addEntity(player);
 		Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x, player.getBoundingBox().y);
-		IGPEGame.game.socketServer.addConnection(player, loginPacket);
+		if (IGPEGame.game.socketServer != null) {
+			IGPEGame.game.socketServer.addConnection((PlayerMP) player, loginPacket);
+        }
 		loginPacket.writeData(IGPEGame.game.socketClient);
 		dir = new Vector2();
 	}
@@ -173,6 +178,39 @@ public class MultiplayerWorld implements Updatable {
 		}
 		return false;
 	}
+	
+	public synchronized void removePlayerMP(String username) {
+        int index = 0;
+        for (AbstractGameObject e : entities) {
+            if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
+                break;
+            }
+            index++;
+        }
+        entities.remove(index);
+    }
+
+    private int getPlayerMPIndex(String username) {
+        int index = 0;
+        for (AbstractGameObject e : entities) {
+            if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+
+    public synchronized void movePlayer(String username, int x, int y) {
+    	System.out.println("Moving player");
+        int index = getPlayerMPIndex(username);
+        System.out.println(index);
+        if(index != 0) {
+        PlayerMP player = (PlayerMP) entities.get(index);
+        player.getBoundingBox().x = x;
+        player.getBoundingBox().y = y;
+        }
+    }
 
 	public PlayerMP getPlayer() {
 		return player;

@@ -32,8 +32,7 @@ public class MultiplayerWorldRenderer {
 	private TextureRegion currentFrame;
 	private float stateTime;
 	private MultiplayerWorld world;
-	
-	
+
 	public MultiplayerWorldRenderer(MultiplayerWorld world) {
 		this.world = world;
 		this.camera = new OrthographicCamera();
@@ -46,7 +45,7 @@ public class MultiplayerWorldRenderer {
 		this.sr = new ShapeRenderer();
 		this.sr.setColor(Color.BLACK);
 	}
-	
+
 	public void render(float deltaTime) {
 		stateTime += deltaTime;
 		batch.setProjectionMatrix(camera.combined);
@@ -134,24 +133,25 @@ public class MultiplayerWorldRenderer {
 		batch.setColor(1, 1, 1, 1);
 		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
 				64, 1f, 1f, world.getPlayer().angle);
-		for (AbstractGameObject e : world.entities){
-			if (e.Alive()) {
-				batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
-				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32,
-						e.getBoundingBox().y - 320 + 32, 640, 640);
-				batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-			} else
-				batch.draw(Assets.manager.get(Assets.Skull, Texture.class), e.getPos().x, e.getPos().y, 48, 48);
-		}
+		if (!world.entities.isEmpty())
+			for (AbstractGameObject e : world.entities) {
+				if (e.Alive()) {
+					batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
+					batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32,
+							e.getBoundingBox().y - 320 + 32, 640, 640);
+					batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+					batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				} else
+					batch.draw(Assets.manager.get(Assets.Skull, Texture.class), e.getPos().x, e.getPos().y, 48, 48);
+			}
 		batch.setColor(1, 1, 1, 0.5f);
 		batch.end();
-		
+
 		sr.begin(ShapeType.Filled);
 		for (Bullet bullet : world.getBls()) {
 			sr.circle(bullet.getBoundingBox().x, bullet.getBoundingBox().y, 4);
 		}
 		sr.end();
-		
+
 	}
 }

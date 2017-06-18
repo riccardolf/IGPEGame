@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.GameClient;
 import it.unical.igpe.net.GameServer;
+import it.unical.igpe.net.MultiplayerWorld;
 
 public class MultiScreen implements Screen {
 	private SpriteBatch batch;
@@ -126,6 +127,10 @@ public class MultiScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				IGPEGame.game.socketClient = new GameClient("localhost");
 				IGPEGame.game.socketClient.start();
+				MultiplayerWorld.username = nameText.getText();
+				ScreenManager.CreateMGS();
+				LoadingScreen.isMP = true;
+				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});
 		

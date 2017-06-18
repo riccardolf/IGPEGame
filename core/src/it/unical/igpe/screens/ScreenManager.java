@@ -26,7 +26,11 @@ public class ScreenManager {
 		IGPEGame.game.setScreen(MMS);
 	}
 	
-	public static void CreateGameScreen(String path) {
+	public static void CreateGS(String path) {
 		GS = new GameScreen(new World(path));
+	}
+	
+	public static void CreateMGS() {
+		MGS = new MultiplayerGameScreen();
 	}
 }

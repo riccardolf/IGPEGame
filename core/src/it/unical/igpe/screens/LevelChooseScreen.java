@@ -46,7 +46,7 @@ public class LevelChooseScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				ScreenManager.CreateGameScreen("map.txt");
+				ScreenManager.CreateGS("map.txt");
 				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});
@@ -62,7 +62,7 @@ public class LevelChooseScreen implements Screen {
 				fileChooser.showOpenDialog(fileChooser);
 				File file = fileChooser.getSelectedFile();
 				if (file != null) {
-					ScreenManager.CreateGameScreen(file.getPath());
+					ScreenManager.CreateGS(file.getPath());
 					IGPEGame.game.setScreen(ScreenManager.LS);
 				}
 			}

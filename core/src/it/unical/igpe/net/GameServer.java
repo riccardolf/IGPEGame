@@ -13,15 +13,17 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.net.packet.Packet;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 import it.unical.igpe.net.packet.Packet00Login;
+import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 
 public class GameServer extends Thread {
 	private DatagramSocket socket;
-	private List<PlayerMP> connectedPlayer = new ArrayList<PlayerMP>();
+	private List<PlayerMP> connectedPlayers = new ArrayList<PlayerMP>();
 
 	public GameServer() {
 		try {
 			this.socket = new DatagramSocket(1234);
+			System.out.println("Creating Server...");
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}
@@ -37,12 +39,6 @@ public class GameServer extends Thread {
 				e.printStackTrace();
 			}
 			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
-
-			String message = new String(packet.getData());
-			System.out.println("CLIENT >" + message);
-			if (message.trim().equalsIgnoreCase("ping")) {
-				sendData("pong".getBytes(), packet.getAddress(), packet.getPort());
-			}
 		}
 	}
 
@@ -62,6 +58,10 @@ public class GameServer extends Thread {
 			this.addConnection(player, (Packet00Login) packet);
 			break;
 		case DISCONNECT:
+			packet = new Packet01Disconnect(data);
+			System.out.println("[" + address.getHostAddress() + ":" + port + "] "
+					+ ((Packet01Disconnect) packet).getUsername() + " has left...");
+			this.removeConnection((Packet01Disconnect) packet);
 			break;
 		case MOVE:
 			packet = new Packet02Move(data);
@@ -70,27 +70,23 @@ public class GameServer extends Thread {
 		}
 	}
 
+	private void removeConnection(Packet01Disconnect packet) {
+		this.connectedPlayers.remove(getPlayerMPIndex(packet.getUsername()));
+		packet.writeData(this);
+	}
+
 	private void handleMove(Packet02Move packet) {
-		if(getPlayerMP(packet.getUsername()) != null) {
+		if (getPlayerMP(packet.getUsername()) != null) {
 			int index = getPlayerMPIndex(packet.getUsername());
-			this.connectedPlayer.get(index).getBoundingBox().x = packet.getX();
-			this.connectedPlayer.get(index).getBoundingBox().y = packet.getY();
+			this.connectedPlayers.get(index).getBoundingBox().x = packet.getX();
+			this.connectedPlayers.get(index).getBoundingBox().y = packet.getY();
 			packet.writeData(this);
 		}
 	}
 
-	private int getPlayerMPIndex(String username) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	private Object getPlayerMP(String username) {
-		return null;
-	}
-
 	public void addConnection(PlayerMP player, Packet00Login packet) {
 		boolean alreadyConnected = false;
-		for (PlayerMP p : this.connectedPlayer) {
+		for (PlayerMP p : this.connectedPlayers) {
 			if (player.getUsername().equalsIgnoreCase(p.getUsername())) {
 				if (p.ipAddress == null)
 					p.ipAddress = player.ipAddress;
@@ -104,7 +100,7 @@ public class GameServer extends Thread {
 			}
 		}
 		if (!alreadyConnected) {
-			this.connectedPlayer.add(player);
+			this.connectedPlayers.add(player);
 		}
 
 	}
@@ -119,8 +115,28 @@ public class GameServer extends Thread {
 	}
 
 	public void sendDataToAllClients(byte[] data) {
-		for (PlayerMP p : connectedPlayer) {
+		for (PlayerMP p : connectedPlayers) {
 			sendData(data, p.ipAddress, p.port);
 		}
+	}
+
+	public PlayerMP getPlayerMP(String username) {
+		for (PlayerMP player : this.connectedPlayers) {
+			if (player.getUsername().equals(username)) {
+				return player;
+			}
+		}
+		return null;
+	}
+
+	public int getPlayerMPIndex(String username) {
+		int index = 0;
+		for (PlayerMP player : this.connectedPlayers) {
+			if (player.getUsername().equals(username)) {
+				break;
+			}
+			index++;
+		}
+		return index;
 	}
 }

@@ -5,27 +5,35 @@ import it.unical.igpe.net.GameServer;
 
 public class Packet01Disconnect extends Packet{
 
-	public Packet01Disconnect(int packetID) {
-		super(packetID);
-		// TODO Auto-generated constructor stub
-	}
+	private String username;
 
-	@Override
-	public void writeData(GameClient client) {
-		// TODO Auto-generated method stub
-		
-	}
+    public Packet01Disconnect(byte[] data) {
+        super(01);
+        this.username = readData(data);
+    }
 
-	@Override
-	public void writeData(GameServer server) {
-		// TODO Auto-generated method stub
-		
-	}
+    public Packet01Disconnect(String username) {
+        super(01);
+        this.username = username;
+    }
 
-	@Override
-	public byte[] getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void writeData(GameClient client) {
+        client.sendData(getData());
+    }
+
+    @Override
+    public void writeData(GameServer server) {
+        server.sendDataToAllClients(getData());
+    }
+
+    @Override
+    public byte[] getData() {
+        return ("01" + this.username).getBytes();
+    }
+
+    public String getUsername() {
+        return username;
+    }
 
 }

@@ -5,8 +5,8 @@ import java.awt.Rectangle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.HUD.HUD;
@@ -40,13 +40,11 @@ public class MultiplayerGameScreen implements Screen{
 	@Override
 	public void render(float delta) {
 		delta = 0.01f;
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		renderer.render(delta);
 		handleInput();
 		world.update(delta);
-		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
-		}
 	}
 
 	@Override
@@ -69,89 +67,105 @@ public class MultiplayerGameScreen implements Screen{
 		Rectangle box = new Rectangle();
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - GameConfig.MOVESPEED,
 					world.player.getBoundingBox().y - GameConfig.MOVESPEED, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveUpLeft();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveUpLeft();
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + GameConfig.MOVESPEED,
 					world.player.getBoundingBox().y - GameConfig.MOVESPEED, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveUpRight();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveUpRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - GameConfig.MOVESPEED,
 					world.player.getBoundingBox().y + GameConfig.MOVESPEED, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveDownLeft();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveDownLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + GameConfig.MOVESPEED,
 					world.player.getBoundingBox().y + GameConfig.MOVESPEED, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveDownRight();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveDownRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x, world.player.getBoundingBox().y - GameConfig.MOVESPEED,
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveUp();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveUp();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - GameConfig.MOVESPEED, world.player.getBoundingBox().y,
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveLeft();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x, world.player.getBoundingBox().y + GameConfig.MOVESPEED,
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveDown();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveDown();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + GameConfig.MOVESPEED, world.player.getBoundingBox().y,
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				World.finished = true;
+			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+				MultiplayerWorld.finished = true;
 				world.player.MoveRight();
-			} else if (World.getNextTile(box) != TileType.WALL)
+			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveRight();
 		}
 

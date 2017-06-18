@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.packet.Packet;
 import it.unical.igpe.net.packet.Packet00Login;
+import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 
@@ -66,10 +67,14 @@ public class GameClient extends Thread {
 			handleLogin((Packet00Login) packet, address, port);
 			break;
 		case DISCONNECT:
+			packet = new Packet01Disconnect(data);
+            System.out.println("[" + address.getHostAddress() + ":" + port + "] "
+                    + ((Packet01Disconnect) packet).getUsername() + " has left the world...");
+            IGPEGame.game.worldMP.removePlayerMP(((Packet01Disconnect) packet).getUsername());
 			break;
 		case MOVE:
 			packet = new Packet02Move(data);
-			handlePacket((Packet02Move) packet);
+			handleMove((Packet02Move) packet);
 			break;
 		}
 	}
@@ -81,7 +86,7 @@ public class GameClient extends Thread {
 		IGPEGame.game.worldMP.addEntity(player);
 	}
 	
-	private void handlePacket(Packet02Move packet) {
-		//this.game.level.movePlayer(packet.getUsername(), packet.getX(), packet.getY());
+	private void handleMove(Packet02Move packet) {
+		IGPEGame.game.worldMP.movePlayer(packet.getUsername(), packet.getX(), packet.getY());
 	}
 }
