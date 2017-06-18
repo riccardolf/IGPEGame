@@ -21,8 +21,6 @@ import it.unical.igpe.tools.Assets;
 import it.unical.igpe.tools.GameConfig;
 
 public class PauseScreen implements Screen{
-	private IGPEGame game;
-
 	private SpriteBatch batch;
 	public Stage stage;
 	private Table table;
@@ -35,10 +33,6 @@ public class PauseScreen implements Screen{
 	private CheckBox fullscreen;
 	
 	private Texture command;
-
-	public PauseScreen(IGPEGame _game) {
-		this.game = _game;
-	}
 
 	@Override
 	public void show() {
@@ -62,7 +56,7 @@ public class PauseScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.MUSIC_VOLUME = musicVolume.getValue();
-				game.setVolume();
+				IGPEGame.game.setVolume();
 			}
 		});
 
@@ -73,7 +67,7 @@ public class PauseScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.SOUND_VOLUME = soundVolume.getValue();
-				game.setVolume();
+				IGPEGame.game.setVolume();
 			}
 		});
 
@@ -85,7 +79,7 @@ public class PauseScreen implements Screen{
 				Assets.manager.get(Assets.GameMusic, Music.class).stop();
 				IGPEGame.music.play();
 				Assets.manager.clear();
-				game.setScreen(ScreenManager.MMS);
+				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		});
 		
@@ -98,12 +92,12 @@ public class PauseScreen implements Screen{
 				if(fullscreen.isChecked()) {
 					GameConfig.isFullscreen = true;
 					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-					game.setFullScreen();
+					IGPEGame.game.setFullScreen();
 				}
 				else {
 					GameConfig.isFullscreen = false;
 					Gdx.graphics.setWindowedMode(GameConfig.WIDTH, GameConfig.HEIGHT);
-					game.setFullScreen();
+					IGPEGame.game.setFullScreen();
 				}
 			}
 		});
@@ -130,7 +124,7 @@ public class PauseScreen implements Screen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-			game.setScreen(ScreenManager.GS);
+			IGPEGame.game.setScreen(ScreenManager.GS);
 
 		batch.begin();
 		batch.draw(IGPEGame.background, 0, 0);

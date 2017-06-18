@@ -17,8 +17,6 @@ import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.tools.GameConfig;
 
 public class OptionScreen implements Screen {
-	private IGPEGame game;
-
 	private SpriteBatch batch;
 	private Stage stage;
 	private Table table;
@@ -29,10 +27,6 @@ public class OptionScreen implements Screen {
 	private Slider soundVolume;
 	private TextButton returnButton;
 	private CheckBox fullscreen;
-
-	public OptionScreen(IGPEGame _game) {
-		this.game = _game;
-	}
 
 	@Override
 	public void show() {
@@ -56,7 +50,7 @@ public class OptionScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.MUSIC_VOLUME = musicVolume.getValue();
-				game.setVolume();
+				IGPEGame.game.setVolume();
 			}
 		});
 
@@ -67,7 +61,7 @@ public class OptionScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.SOUND_VOLUME = soundVolume.getValue();
-				game.setVolume();
+				IGPEGame.game.setVolume();
 			}
 		});
 
@@ -76,7 +70,7 @@ public class OptionScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(ScreenManager.MMS);
+				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		});
 		
@@ -89,12 +83,12 @@ public class OptionScreen implements Screen {
 				if(fullscreen.isChecked()) {
 					GameConfig.isFullscreen = true;
 					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-					game.setFullScreen();
+					IGPEGame.game.setFullScreen();
 				}
 				else {
 					GameConfig.isFullscreen = false;
 					Gdx.graphics.setWindowedMode(GameConfig.WIDTH, GameConfig.HEIGHT);
-					game.setFullScreen();
+					IGPEGame.game.setFullScreen();
 				}
 			}
 		});

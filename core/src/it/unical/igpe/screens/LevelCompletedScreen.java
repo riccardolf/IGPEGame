@@ -13,7 +13,6 @@ import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.tools.Assets;
 
 public class LevelCompletedScreen implements Screen {
-	private IGPEGame game;
 	private Texture levelCompleted;
 	private Texture GameOver;
 	private SpriteBatch batch;
@@ -21,10 +20,6 @@ public class LevelCompletedScreen implements Screen {
 	public boolean gameOver;
 	private Stage stage;
 	
-	public LevelCompletedScreen(IGPEGame _game) {
-		game = _game;
-	}
-
 	@Override
 	public void show() {
 		levelCompleted = new Texture(Gdx.files.internal("levelcomplete.png"));
@@ -56,7 +51,7 @@ public class LevelCompletedScreen implements Screen {
 			if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || Gdx.input.justTouched()) {
 				time = 0;
 				Assets.manager.clear();
-				game.setScreen(ScreenManager.MMS);
+				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		}
 	}

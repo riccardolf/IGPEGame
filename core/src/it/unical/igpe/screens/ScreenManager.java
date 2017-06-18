@@ -2,7 +2,7 @@ package it.unical.igpe.screens;
 
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
-import it.unical.igpe.multiplayer.MultiplayerGameScreen;
+import it.unical.igpe.net.MultiplayerGameScreen;
 
 public class ScreenManager {
 	public static MainMenuScreen MMS;
@@ -15,22 +15,18 @@ public class ScreenManager {
 	public static MultiScreen MS;
 	public static MultiplayerGameScreen MGS;
 	
-	
-	private static IGPEGame game;
-	
-	public ScreenManager(IGPEGame _game) {
-		game = _game;
-		MMS = new MainMenuScreen(game);
-		LCS = new LevelChooseScreen(game);
-		LCompletedS = new LevelCompletedScreen(game);
-		OS = new OptionScreen(game);
-		PS = new PauseScreen(game);
-		LS = new LoadingScreen(game);
-		MS = new MultiScreen(game);
-		game.setScreen(MMS);
+	public ScreenManager() {
+		MMS = new MainMenuScreen();
+		LCS = new LevelChooseScreen();
+		LCompletedS = new LevelCompletedScreen();
+		OS = new OptionScreen();
+		PS = new PauseScreen();
+		LS = new LoadingScreen();
+		MS = new MultiScreen();
+		IGPEGame.game.setScreen(MMS);
 	}
 	
 	public static void CreateGameScreen(String path) {
-		GS = new GameScreen(game, new World(path));
+		GS = new GameScreen(new World(path));
 	}
 }

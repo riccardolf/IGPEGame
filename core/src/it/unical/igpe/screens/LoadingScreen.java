@@ -13,16 +13,11 @@ import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.tools.Assets;
 
 public class LoadingScreen implements Screen {
-	private IGPEGame game;
 	private SpriteBatch batch;
 	public Stage stage;
 	private Table table;
 	private ProgressBar loadingBar;
 	private Label loading;
-	
-	public LoadingScreen(IGPEGame _game) {
-		this.game = _game;
-	}
 	
 	@Override
 	public void show() {
@@ -59,7 +54,7 @@ public class LoadingScreen implements Screen {
 		
 		if(Assets.manager.update()) {
 			Assets.manager.finishLoading();
-			game.setScreen(ScreenManager.GS);
+			IGPEGame.game.setScreen(ScreenManager.GS);
 		}
 
 		stage.act(Gdx.graphics.getDeltaTime());

@@ -1,13 +1,16 @@
-package it.unical.igpe.logic;
+package it.unical.igpe.net;
 
 import java.awt.Rectangle;
+import java.net.InetAddress;
 
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.game.World;
+import it.unical.igpe.logic.AbstractGameObject;
+import it.unical.igpe.logic.Bullet;
+import it.unical.igpe.logic.Weapon;
 import it.unical.igpe.tools.GameConfig;
 
-public class Player extends AbstractGameObject {
+public class PlayerMP extends AbstractGameObject{
 	public static final int PLAYER_STATE_IDLE = 0;
 	public static final int PLAYER_STATE_RUNNING = 1;
 	public static final int PLAYER_STATE_RELOADING = 2;
@@ -18,9 +21,12 @@ public class Player extends AbstractGameObject {
 	private Weapon pistol;
 	private Weapon rifle;
 	private Weapon shotgun;
-	public World world;
+	public MultiplayerWorld world;
+	
+	public InetAddress ipAddress;
+	public int port;
 
-	public Player(Vector2 _pos, World _world) {
+	public PlayerMP(Vector2 _pos, MultiplayerWorld _world, String username, InetAddress ipAddress, int port) {
 		this.world = _world;
 		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 48, 48);
 		this.reloading = false;
@@ -35,9 +41,11 @@ public class Player extends AbstractGameObject {
 		this.rifle.createRifle();
 		this.shotgun.createShotgun();
 		this.activeWeapon = pistol;
+		this.username = username;
+		this.ipAddress = ipAddress;
+		this.port = port;
 	}
-
-	// TODO: FireRate per single Weapon
+	
 	public void fire() {
 		if (!reloading) {
 			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32, this.getPos().y + 32), (float) Math.toRadians(this.angle + 90f), "player", activeWeapon.damage));
@@ -113,4 +121,5 @@ public class Player extends AbstractGameObject {
 	public String getUsername() {
 		return this.username;
 	}
+
 }

@@ -1,4 +1,4 @@
-package it.unical.igpe.screens;
+package it.unical.igpe.net;
 
 import java.awt.Rectangle;
 
@@ -6,73 +6,57 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.HUD.HUD;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Player;
+import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.tools.Assets;
 import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.MapRenderer;
 import it.unical.igpe.tools.TileType;
 
-public class GameScreen implements Screen {
-	World world;
+public class MultiplayerGameScreen implements Screen{
+	// message to server player.pos, player.angle, player.state, player.activeWeapon.ID, initial pos player.fire()
+	// message from server other players, enemies
+	// draw this things on multiplayer
+	MultiplayerWorld world;
 	HUD hud;
-	MapRenderer renderer;
-
-	public GameScreen(World _world) {
-		this.world = _world;
+	MultiplayerWorldRenderer renderer;
+	
+	public MultiplayerGameScreen() {
+		IGPEGame.game.worldMP = new MultiplayerWorld("map.txt");
+		this.world = IGPEGame.game.worldMP;
 	}
 
 	@Override
 	public void show() {
-		this.renderer = new MapRenderer(world);
-		this.hud = new HUD();
+		this.renderer = new MultiplayerWorldRenderer(world);
 		Gdx.input.setInputProcessor(null);
-		IGPEGame.music.pause();
-		Assets.manager.get(Assets.GameMusic, Music.class).setLooping(true);
-		Assets.manager.get(Assets.GameMusic, Music.class).play();
-		// Gdx.graphics.setCursor(Gdx.graphics.newCursor(Assets.manager.get(Assets.Crosshair,
-		// Pixmap.class), 32, 32));
 	}
 
 	@Override
 	public void render(float delta) {
 		delta = 0.01f;
+		renderer.render(delta);
 		handleInput();
 		world.update(delta);
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		renderer.render(delta);
-		hud.render(world.getPlayer());
-
-		Assets.manager.get(Assets.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-			IGPEGame.game.setScreen(ScreenManager.PS);
-		if (world.isLevelFinished()) {
-			IGPEGame.game.setScreen(ScreenManager.LCompletedS);
-		} else if (world.isGameOver()) {
-			ScreenManager.LCompletedS.gameOver = true;
-			IGPEGame.game.setScreen(ScreenManager.LCompletedS);
+		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
+			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
+			packet.writeData(IGPEGame.game.socketClient);
 		}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		renderer.viewport.update(width, height, true);
 	}
 
 	@Override
 	public void dispose() {
-		hud.dispose();
-		renderer.dispose();
 	}
-
+	
 	private void handleInput() {
 		float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
@@ -222,4 +206,5 @@ public class GameScreen implements Screen {
 	@Override
 	public void resume() {
 	}
+
 }

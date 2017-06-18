@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-import it.unical.igpe.multiplayer.Client;
-import it.unical.igpe.multiplayer.Server;
+import it.unical.igpe.net.GameClient;
+import it.unical.igpe.net.GameServer;
+import it.unical.igpe.net.MultiplayerWorld;
 import it.unical.igpe.screens.ScreenManager;
 import it.unical.igpe.tools.GameConfig;
 
@@ -18,18 +19,20 @@ public class IGPEGame extends Game {
 	private static final String MUSIC_VOLUME = "musicvolume";
 	private static final String SOUND_VOLUME = "soundvolume";
 	private static final String FULLSCREEN = "fullscreen";
-	private Preferences prefs;
-	
+	public static IGPEGame game;
 	public static Music music;
 	public static Texture background;
 	public static Skin skinsoldier;
 	public static Skin skinui;
 	
-	public Server server;
-	public Client client;
+	private Preferences prefs;
+	public MultiplayerWorld worldMP;
+	public GameClient socketClient;
+	public GameServer socketServer;
 	
 	@Override
 	public void create() {
+		game = this;
 		background = new Texture(Gdx.files.internal("background.jpg"));
 		
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/starsoldier/star-soldier-ui.atlas"));
@@ -49,7 +52,7 @@ public class IGPEGame extends Game {
 		if(GameConfig.isFullscreen)
 			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		
-		new ScreenManager(this);
+		new ScreenManager();
 		this.setScreen(ScreenManager.MMS);
 	}
 

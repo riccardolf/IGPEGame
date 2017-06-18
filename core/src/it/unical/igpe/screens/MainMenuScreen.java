@@ -15,8 +15,6 @@ import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.tools.GameConfig;
 
 public class MainMenuScreen implements Screen {
-	private IGPEGame game;
-	
 	private SpriteBatch batch;
 	Stage stage;
 	private Table table;
@@ -25,10 +23,6 @@ public class MainMenuScreen implements Screen {
 	private TextButton multiButton;
 	private TextButton optionButton;
 	private TextButton quitButton;
-	
-	public MainMenuScreen(IGPEGame _game) {
-		game = _game;
-	}
 	
 	@Override
 	public void show() {		
@@ -49,7 +43,7 @@ public class MainMenuScreen implements Screen {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(ScreenManager.LCS);
+				IGPEGame.game.setScreen(ScreenManager.LCS);
 			}
 		});
 		
@@ -58,7 +52,7 @@ public class MainMenuScreen implements Screen {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(ScreenManager.MS);
+				IGPEGame.game.setScreen(ScreenManager.MS);
 			}
 		});
 		
@@ -67,7 +61,7 @@ public class MainMenuScreen implements Screen {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(ScreenManager.OS);
+				IGPEGame.game.setScreen(ScreenManager.OS);
 			}
 		});
 		

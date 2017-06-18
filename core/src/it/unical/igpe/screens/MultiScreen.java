@@ -13,13 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.multiplayer.Server;
-import it.unical.igpe.multiplayer.Client;
-import it.unical.igpe.multiplayer.MultiplayerGameScreen;
+import it.unical.igpe.net.GameClient;
+import it.unical.igpe.net.GameServer;
 
 public class MultiScreen implements Screen {
-	private IGPEGame game;
-
 	private SpriteBatch batch;
 	private Stage stage;
 	private Table tableChoose;
@@ -43,10 +40,6 @@ public class MultiScreen implements Screen {
 	private TextField IPClientText;
 	private TextField PortClientText;
 	private TextField PortServerText;
-
-	public MultiScreen(IGPEGame _game) {
-		this.game = _game;
-	}
 
 	@Override
 	public void show() {
@@ -77,7 +70,7 @@ public class MultiScreen implements Screen {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(ScreenManager.MMS);
+				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		});
 		
@@ -131,9 +124,8 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.client = new Client(IPClientText.getText(), Integer.parseInt(PortClientText.getText()), nameText.getText());
-				if(game.client.start())
-					game.setScreen(ScreenManager.MGS = new MultiplayerGameScreen(game));
+				IGPEGame.game.socketClient = new GameClient("localhost");
+				IGPEGame.game.socketClient.start();
 			}
 		});
 		
@@ -142,8 +134,8 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.server = new Server(Integer.parseInt(PortServerText.getText()));
-				new ServerRunning().start();
+				IGPEGame.game.socketServer = new GameServer();
+				IGPEGame.game.socketServer.start();
 			}
 		});
 		
@@ -236,15 +228,6 @@ public class MultiScreen implements Screen {
 
 	@Override
 	public void resume() {
-	}
-
-	class ServerRunning extends Thread {
-		public void run() {
-			System.out.println("Server Running");
-			game.server.start(); // should execute until it fails
-			System.out.println("Server failed");
-			game.server = null;
-		}
 	}
 
 }

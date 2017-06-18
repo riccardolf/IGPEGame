@@ -5,11 +5,11 @@ import it.unical.igpe.tools.GameConfig;
 public class Weapon {
 	public float lastFired;
 	public float fireRate;
-	protected int sizeClip;
+	public int sizeClip;
 	public int actClip;
 	public int actAmmo;
 	protected int maxAmmo;
-	protected int damage;
+	public int damage;
 	protected int bulletSpeed;
 	public float reloadAct;
 	public float reloadTime;

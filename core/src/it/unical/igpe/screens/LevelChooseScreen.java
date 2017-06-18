@@ -18,8 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import it.unical.igpe.game.IGPEGame;
 
 public class LevelChooseScreen implements Screen {
-	private IGPEGame game;
-
 	private SpriteBatch batch;
 	private Stage stage;
 	private Table table;
@@ -28,10 +26,6 @@ public class LevelChooseScreen implements Screen {
 	private TextButton chooseLevel;
 	private TextButton returnButton;
 	public String world;
-
-	public LevelChooseScreen(IGPEGame _game) {
-		this.game = _game;
-	}
 
 	@Override
 	public void show() {
@@ -53,7 +47,7 @@ public class LevelChooseScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				ScreenManager.CreateGameScreen("map.txt");
-				game.setScreen(ScreenManager.LS);
+				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});
 
@@ -69,7 +63,7 @@ public class LevelChooseScreen implements Screen {
 				File file = fileChooser.getSelectedFile();
 				if (file != null) {
 					ScreenManager.CreateGameScreen(file.getPath());
-					game.setScreen(ScreenManager.LS);
+					IGPEGame.game.setScreen(ScreenManager.LS);
 				}
 			}
 		});
@@ -79,7 +73,7 @@ public class LevelChooseScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setScreen(ScreenManager.MMS);
+				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		});
 		table.add(title);
