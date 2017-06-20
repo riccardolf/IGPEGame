@@ -167,6 +167,8 @@ public class MultiplayerGameScreen implements Screen {
 			Packet03Fire packetFire = new Packet03Fire(world.player.getUsername(), world.player.getBoundingBox().x,
 					world.player.getBoundingBox().y, world.player.angle);
 			packetFire.writeData(IGPEGame.game.socketClient);
+			world.fireBullet(world.player.getUsername(), world.player.getBoundingBox().x,
+					world.player.getBoundingBox().y, world.player.angle);
 			if (world.player.getActWeapon() == "pistol" && !world.player.isReloading()) {
 				world.player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);

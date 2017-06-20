@@ -81,13 +81,13 @@ public class GameServer extends Thread {
 			this.connectedPlayers.get(index).getBoundingBox().x = packet.getX();
 			this.connectedPlayers.get(index).getBoundingBox().y = packet.getY();
 			this.connectedPlayers.get(index).angle = packet.getAngle();
-			packet.writeData(this);
+			packet.writeData(this, packet.getUsername());
 		}
 	}
 
 	private void removeConnection(Packet01Disconnect packet) {
 		this.connectedPlayers.remove(getPlayerMPIndex(packet.getUsername()));
-		packet.writeData(this);
+		packet.writeData(this, packet.getUsername());
 	}
 
 	private void handleMove(Packet02Move packet) {
@@ -98,7 +98,7 @@ public class GameServer extends Thread {
 			this.connectedPlayers.get(index).angle = packet.getAngle();
 			this.connectedPlayers.get(index).state = packet.getState();
 			this.connectedPlayers.get(index).activeWeapon.ID = packet.getActWeapon();
-			packet.writeData(this);
+			packet.writeData(this, packet.getUsername());
 		}
 	}
 
@@ -132,8 +132,11 @@ public class GameServer extends Thread {
 		}
 	}
 
-	public void sendDataToAllClients(byte[] data) {
+	public synchronized void sendDataToAllClients(byte[] data, String username) {
 		for (PlayerMP p : connectedPlayers) {
+//			if(username == p.getUsername())
+//				continue;
+//			System.out.println("sent " + p.getUsername() + " to " + username);
 			sendData(data, p.ipAddress, p.port);
 		}
 	}

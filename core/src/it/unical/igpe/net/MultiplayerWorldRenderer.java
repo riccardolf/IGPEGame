@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
@@ -30,7 +29,6 @@ public class MultiplayerWorldRenderer {
 	public Viewport viewport;
 	private SpriteBatch batch;
 	private ShapeRenderer sr;
-	private TextureRegion currentFrame;
 	private float stateTime;
 	private MultiplayerWorld world;
 
@@ -115,31 +113,38 @@ public class MultiplayerWorldRenderer {
 		batch.setColor(1, 1, 1, 1);
 		for (AbstractGameObject e : world.entities) {
 			if (e.Alive() && e instanceof PlayerMP) {
-				System.out.println(e.toString()+ " " + ((PlayerMP) e).state);
 				if (((PlayerMP) e).getActWeapon() == "pistol") {
+					System.out.println("pistol");
 					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
-						currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
-						currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
-						currentFrame = Assets.runningPistolAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 				} else if (((PlayerMP) e).getActWeapon() == "shotgun") {
 					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
-						currentFrame = Assets.idleShotgunAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
-						currentFrame = Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
-						currentFrame = Assets.runningShotgunAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 				} else if (((PlayerMP) e).getActWeapon() == "rifle") {
 					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
-						currentFrame = Assets.idleRifleAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.idleRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
-						currentFrame = Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
-						currentFrame = Assets.runningRifleAnimation.getKeyFrame(stateTime, true);
+						batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 				}
-				batch.draw(currentFrame, e.getBoundingBox().x, e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f,
-						((PlayerMP) e).angle);
 			} else if (e.Alive() && e instanceof Enemy) {
 				batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
 				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32,
@@ -160,4 +165,5 @@ public class MultiplayerWorldRenderer {
 		sr.end();
 
 	}
+
 }

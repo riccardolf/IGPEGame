@@ -37,8 +37,8 @@ public class Packet02Move extends Packet{
 	}
 
 	@Override
-	public void writeData(GameServer server) {
-		server.sendDataToAllClients(getData());
+	public void writeData(GameServer server, String username) {
+		server.sendDataToAllClients(getData(), username);
 	}
 
 	@Override
@@ -69,5 +69,5 @@ public class Packet02Move extends Packet{
 	public String getActWeapon() {
 		return this.actWeapon;
 	}
-	
+
 }

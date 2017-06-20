@@ -85,6 +85,7 @@ public class GameClient extends Thread {
 	}
 
 	private void handleFire(Packet03Fire packet) {
+//		System.out.println("Player " + packet.getUsername() + " fired");
 		IGPEGame.game.worldMP.fireBullet(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle());
 	}
 
@@ -96,6 +97,7 @@ public class GameClient extends Thread {
 	}
 	
 	private void handleMove(Packet02Move packet) {
+//		System.out.println("Player " + packet.getUsername() + " moved");
 		IGPEGame.game.worldMP.movePlayer(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle(), packet.getState(), packet.getActWeapon());
 	}
 }

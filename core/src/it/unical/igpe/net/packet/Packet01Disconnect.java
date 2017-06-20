@@ -23,8 +23,8 @@ public class Packet01Disconnect extends Packet{
     }
 
     @Override
-    public void writeData(GameServer server) {
-        server.sendDataToAllClients(getData());
+    public void writeData(GameServer server, String username) {
+        server.sendDataToAllClients(getData(), username);
     }
 
     @Override

@@ -188,7 +188,7 @@ public class MultiplayerWorld implements Updatable {
 		entities.remove(index);
 	}
 
-	private int getPlayerMPIndex(String username) {
+	public int getPlayerMPIndex(String username) {
 		int index = 0;
 		for (AbstractGameObject e : entities) {
 			if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
@@ -199,15 +199,15 @@ public class MultiplayerWorld implements Updatable {
 		return index;
 	}
 
-	public synchronized void movePlayer(String username, int x, int y, float angle, int state, String activeWeapon) {
+	public void movePlayer(String username, int x, int y, float angle, int state, String activeWeapon) {
 		int index = getPlayerMPIndex(username);
-		if (index != 0) {
-			PlayerMP player = (PlayerMP) entities.get(index);
-			player.getBoundingBox().x = x;
-			player.getBoundingBox().y = y;
-			player.angle = angle;
-			player.state = state;
-			player.activeWeapon.ID = activeWeapon;
+		if (index != getPlayerMPIndex(player.username)) {
+			PlayerMP p = (PlayerMP) entities.get(index);
+			p.getBoundingBox().x = x;
+			p.getBoundingBox().y = y;
+			p.angle = angle;
+			p.state = state;
+			p.activeWeapon.ID = activeWeapon;
 		}
 	}
 
