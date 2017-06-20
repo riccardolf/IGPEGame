@@ -61,7 +61,7 @@ public class Player extends AbstractGameObject {
 	}
 
 	public boolean isReloading(float delta) {
-		if (activeWeapon.reloadAct > activeWeapon.reloadTime) {
+		if (activeWeapon.reloadAct >= activeWeapon.reloadTime) {
 			reloading = false;
 		} else if (activeWeapon.reloadAct < activeWeapon.reloadTime) {
 			activeWeapon.reloadAct += delta;

@@ -85,10 +85,11 @@ public class MultiplayerWorld implements Updatable {
 				}
 			}
 		this.addEntity(player);
-		Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x, player.getBoundingBox().y);
+		Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x,
+				player.getBoundingBox().y);
 		if (IGPEGame.game.socketServer != null) {
 			IGPEGame.game.socketServer.addConnection((PlayerMP) player, loginPacket);
-        }
+		}
 		loginPacket.writeData(IGPEGame.game.socketClient);
 		dir = new Vector2();
 	}
@@ -98,8 +99,6 @@ public class MultiplayerWorld implements Updatable {
 
 		if (player.isReloading(delta))
 			player.state = Player.PLAYER_STATE_RELOADING;
-		if (player.state != Player.PLAYER_STATE_RELOADING && player.state != Player.PLAYER_STATE_RUNNING)
-			player.state = Player.PLAYER_STATE_IDLE;
 
 		player.activeWeapon.lastFired += delta;
 
@@ -177,39 +176,44 @@ public class MultiplayerWorld implements Updatable {
 		}
 		return false;
 	}
-	
+
 	public synchronized void removePlayerMP(String username) {
-        int index = 0;
-        for (AbstractGameObject e : entities) {
-            if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
-                break;
-            }
-            index++;
-        }
-        entities.remove(index);
-    }
+		int index = 0;
+		for (AbstractGameObject e : entities) {
+			if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
+				break;
+			}
+			index++;
+		}
+		entities.remove(index);
+	}
 
-    private int getPlayerMPIndex(String username) {
-        int index = 0;
-        for (AbstractGameObject e : entities) {
-            if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
-                break;
-            }
-            index++;
-        }
-        return index;
-    }
+	private int getPlayerMPIndex(String username) {
+		int index = 0;
+		for (AbstractGameObject e : entities) {
+			if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
+				break;
+			}
+			index++;
+		}
+		return index;
+	}
 
-    public synchronized void movePlayer(String username, int x, int y) {
-    	System.out.println("Moving player");
-        int index = getPlayerMPIndex(username);
-        System.out.println(index);
-        if(index != 0) {
-        PlayerMP player = (PlayerMP) entities.get(index);
-        player.getBoundingBox().x = x;
-        player.getBoundingBox().y = y;
-        }
-    }
+	public synchronized void movePlayer(String username, int x, int y, float angle, int state, String activeWeapon) {
+		int index = getPlayerMPIndex(username);
+		if (index != 0) {
+			PlayerMP player = (PlayerMP) entities.get(index);
+			player.getBoundingBox().x = x;
+			player.getBoundingBox().y = y;
+			player.angle = angle;
+			player.state = state;
+			player.activeWeapon.ID = activeWeapon;
+		}
+	}
+
+	public synchronized void fireBullet(String username, int x, int y, float angle) {
+		this.bls.add(new Bullet(new Vector2(x + 32, y + 32), (float) Math.toRadians(angle + 90f), username, 15));
+	}
 
 	public PlayerMP getPlayer() {
 		return player;

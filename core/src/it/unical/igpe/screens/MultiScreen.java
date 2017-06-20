@@ -30,7 +30,6 @@ public class MultiScreen implements Screen {
 	private TextButton Server;
 	private TextButton connectClient;
 	private TextButton createServer;
-	private TextButton selectMap;
 	private Label clientLabel;
 	private Label serverLabel;
 	private Label IPClientLabel;
@@ -139,20 +138,10 @@ public class MultiScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				IGPEGame.game.socketServer = new GameServer();
+				IGPEGame.game.socketServer = new GameServer(Integer.parseInt(PortServerText.getText()));
 				IGPEGame.game.socketServer.start();
 			}
 		});
-		
-		selectMap = new TextButton("Select Map", IGPEGame.skinsoldier);
-		selectMap.addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				// TODO: Selection Map
-			}
-		});
-		
 		
 		clientLabel = new Label("Client", IGPEGame.skinsoldier);
 		serverLabel = new Label("Server", IGPEGame.skinsoldier);
@@ -160,7 +149,7 @@ public class MultiScreen implements Screen {
 		PortClientLabel = new Label("Port", IGPEGame.skinsoldier);
 		PortServerLabel = new Label("Port", IGPEGame.skinsoldier);
 		nameLabel = new Label("Name", IGPEGame.skinsoldier);
-		nameText = new TextField("Fabio", IGPEGame.skinsoldier);
+		nameText = new TextField("", IGPEGame.skinsoldier);
 		IPClientText = new TextField("127.0.0.1", IGPEGame.skinsoldier);
 		PortClientText = new TextField("1234", IGPEGame.skinsoldier);
 		PortServerText = new TextField("1234", IGPEGame.skinsoldier);
@@ -190,8 +179,6 @@ public class MultiScreen implements Screen {
 		tableServer.row();
 		tableServer.add(PortServerLabel);
 		tableServer.add(PortServerText).width(200);
-		tableServer.row();
-		tableServer.add(selectMap);
 		tableServer.row();
 		tableServer.add(createServer);
 		tableServer.row();

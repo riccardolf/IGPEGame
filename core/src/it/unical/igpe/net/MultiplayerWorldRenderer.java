@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.AbstractGameObject;
 import it.unical.igpe.logic.Bullet;
+import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
@@ -54,39 +55,17 @@ public class MultiplayerWorldRenderer {
 		camera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
 				0.3f);
 		camera.update();
+
 		Assets.manager.get(Assets.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
 		Assets.manager.get(Assets.FootStep, Music.class).setLooping(true);
 
-		// Rendering different weapons
-		if (world.getPlayer().getActWeapon() == "pistol") {
-			if (world.getPlayer().state == Player.PLAYER_STATE_IDLE)
-				currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
-			else if (world.getPlayer().state == Player.PLAYER_STATE_RELOADING)
-				currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
-			else if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
-				currentFrame = Assets.runningPistolAnimation.getKeyFrame(stateTime, true);
-		} else if (world.getPlayer().getActWeapon() == "shotgun") {
-			if (world.getPlayer().state == Player.PLAYER_STATE_IDLE)
-				currentFrame = Assets.idleShotgunAnimation.getKeyFrame(stateTime, true);
-			else if (world.getPlayer().state == Player.PLAYER_STATE_RELOADING)
-				currentFrame = Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true);
-			else if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
-				currentFrame = Assets.runningShotgunAnimation.getKeyFrame(stateTime, true);
-		} else if (world.getPlayer().getActWeapon() == "rifle") {
-			if (world.getPlayer().state == Player.PLAYER_STATE_IDLE)
-				currentFrame = Assets.idleRifleAnimation.getKeyFrame(stateTime, true);
-			else if (world.getPlayer().state == Player.PLAYER_STATE_RELOADING)
-				currentFrame = Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true);
-			else if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
-				currentFrame = Assets.runningRifleAnimation.getKeyFrame(stateTime, true);
-		}
-
+		// Sound from the player
 		if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
 			Assets.manager.get(Assets.FootStep, Music.class).play();
 		else
 			Assets.manager.get(Assets.FootStep, Music.class).pause();
 
-		// draw map
+		// Drawing tiles
 		batch.begin();
 		for (Tile tile : world.getTiles()) {
 			if (tile.getType() == TileType.GROUND)
@@ -104,6 +83,8 @@ public class MultiplayerWorldRenderer {
 							tile.getBoundingBox().y);
 			}
 		}
+
+		// Drawing loot
 		for (Lootable loot : world.getLootables()) {
 			if (loot.getType() == LootableType.HEALTPACK)
 				batch.draw(Assets.manager.get(Assets.HealthPack, Texture.class), loot.getBoundingBox().x,
@@ -130,23 +111,48 @@ public class MultiplayerWorldRenderer {
 			}
 		}
 
+		// Drawing enemies and players
 		batch.setColor(1, 1, 1, 1);
-		batch.draw(currentFrame, world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 32, 32, 64,
-				64, 1f, 1f, world.getPlayer().angle);
-		if (!world.entities.isEmpty())
-			for (AbstractGameObject e : world.entities) {
-				if (e.Alive() && e.username != MultiplayerWorld.username) {
-					batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
-					batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32,
-							e.getBoundingBox().y - 320 + 32, 640, 640);
-					batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-					batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				} else if(!e.Alive())
-					batch.draw(Assets.manager.get(Assets.Skull, Texture.class), e.getPos().x, e.getPos().y, 48, 48);
-			}
+		for (AbstractGameObject e : world.entities) {
+			if (e.Alive() && e instanceof PlayerMP) {
+				System.out.println(e.toString()+ " " + ((PlayerMP) e).state);
+				if (((PlayerMP) e).getActWeapon() == "pistol") {
+					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
+						currentFrame = Assets.idlePistolAnimation.getKeyFrame(stateTime, true);
+					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
+						currentFrame = Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true);
+					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
+						currentFrame = Assets.runningPistolAnimation.getKeyFrame(stateTime, true);
+				} else if (((PlayerMP) e).getActWeapon() == "shotgun") {
+					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
+						currentFrame = Assets.idleShotgunAnimation.getKeyFrame(stateTime, true);
+					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
+						currentFrame = Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true);
+					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
+						currentFrame = Assets.runningShotgunAnimation.getKeyFrame(stateTime, true);
+				} else if (((PlayerMP) e).getActWeapon() == "rifle") {
+					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
+						currentFrame = Assets.idleRifleAnimation.getKeyFrame(stateTime, true);
+					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
+						currentFrame = Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true);
+					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
+						currentFrame = Assets.runningRifleAnimation.getKeyFrame(stateTime, true);
+				}
+				batch.draw(currentFrame, e.getBoundingBox().x, e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f,
+						((PlayerMP) e).angle);
+			} else if (e.Alive() && e instanceof Enemy) {
+				batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
+				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32,
+						e.getBoundingBox().y - 320 + 32, 640, 640);
+				batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			} else
+				batch.draw(Assets.manager.get(Assets.Skull, Texture.class), e.getPos().x, e.getPos().y, 48, 48);
+		}
 		batch.setColor(1, 1, 1, 0.5f);
 		batch.end();
 
+		// Drawing Bullets
 		sr.begin(ShapeType.Filled);
 		for (Bullet bullet : world.getBls()) {
 			sr.circle(bullet.getBoundingBox().x, bullet.getBoundingBox().y, 4);

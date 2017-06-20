@@ -3,6 +3,7 @@ package it.unical.igpe.screens;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
 import it.unical.igpe.net.MultiplayerGameScreen;
+import it.unical.igpe.net.MultiplayerPauseScreen;
 
 public class ScreenManager {
 	public static MainMenuScreen MMS;
@@ -14,6 +15,7 @@ public class ScreenManager {
 	public static LoadingScreen LS;
 	public static MultiScreen MS;
 	public static MultiplayerGameScreen MGS;
+	public static MultiplayerPauseScreen MPS;
 	
 	public ScreenManager() {
 		MMS = new MainMenuScreen();
@@ -32,5 +34,6 @@ public class ScreenManager {
 	
 	public static void CreateMGS() {
 		MGS = new MultiplayerGameScreen();
+		MPS = new MultiplayerPauseScreen();
 	}
 }

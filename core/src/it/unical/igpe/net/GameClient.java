@@ -14,6 +14,7 @@ import it.unical.igpe.net.packet.Packet;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
+import it.unical.igpe.net.packet.Packet03Fire;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 
 public class GameClient extends Thread {
@@ -76,17 +77,25 @@ public class GameClient extends Thread {
 			packet = new Packet02Move(data);
 			handleMove((Packet02Move) packet);
 			break;
+		case FIRE:
+			packet = new Packet03Fire(data);
+			handleFire((Packet03Fire) packet);
+			break;
 		}
+	}
+
+	private void handleFire(Packet03Fire packet) {
+		IGPEGame.game.worldMP.fireBullet(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle());
 	}
 
 	private void handleLogin(Packet00Login packet, InetAddress address, int port) {
 		System.out.println("[" + address.getHostAddress() + ":" + port + "]"
-				+ packet.getUsername() + "has joined the game");
+				+ packet.getUsername() + " has joined the game");
 		PlayerMP player = new PlayerMP(new Vector2(packet.getX(), packet.getY()), IGPEGame.game.worldMP, packet.getUsername(), address, port);
 		IGPEGame.game.worldMP.addEntity(player);
 	}
 	
 	private void handleMove(Packet02Move packet) {
-		IGPEGame.game.worldMP.movePlayer(packet.getUsername(), packet.getX(), packet.getY());
+		IGPEGame.game.worldMP.movePlayer(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle(), packet.getState(), packet.getActWeapon());
 	}
 }

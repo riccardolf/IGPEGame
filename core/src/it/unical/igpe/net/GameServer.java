@@ -15,14 +15,15 @@ import it.unical.igpe.net.packet.Packet.PacketTypes;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
+import it.unical.igpe.net.packet.Packet03Fire;
 
 public class GameServer extends Thread {
 	private DatagramSocket socket;
 	private List<PlayerMP> connectedPlayers = new ArrayList<PlayerMP>();
 
-	public GameServer() {
+	public GameServer(int port) {
 		try {
-			this.socket = new DatagramSocket(1234);
+			this.socket = new DatagramSocket(port);
 			System.out.println("Creating Server...");
 		} catch (SocketException e1) {
 			e1.printStackTrace();
@@ -53,7 +54,7 @@ public class GameServer extends Thread {
 		case LOGIN:
 			packet = new Packet00Login(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port + "]"
-					+ ((Packet00Login) packet).getUsername() + "has connected");
+					+ ((Packet00Login) packet).getUsername() + " has connected");
 			PlayerMP player = new PlayerMP(new Vector2(), null, ((Packet00Login) packet).getUsername(), address, port);
 			this.addConnection(player, (Packet00Login) packet);
 			break;
@@ -67,6 +68,20 @@ public class GameServer extends Thread {
 			packet = new Packet02Move(data);
 			this.handleMove((Packet02Move) packet);
 			break;
+		case FIRE:
+			packet = new Packet03Fire(data);
+			handleFire((Packet03Fire) packet);
+			break;
+		}
+	}
+
+	private void handleFire(Packet03Fire packet) {
+		if (getPlayerMP(packet.getUsername()) != null) {
+			int index = getPlayerMPIndex(packet.getUsername());
+			this.connectedPlayers.get(index).getBoundingBox().x = packet.getX();
+			this.connectedPlayers.get(index).getBoundingBox().y = packet.getY();
+			this.connectedPlayers.get(index).angle = packet.getAngle();
+			packet.writeData(this);
 		}
 	}
 
@@ -80,6 +95,9 @@ public class GameServer extends Thread {
 			int index = getPlayerMPIndex(packet.getUsername());
 			this.connectedPlayers.get(index).getBoundingBox().x = packet.getX();
 			this.connectedPlayers.get(index).getBoundingBox().y = packet.getY();
+			this.connectedPlayers.get(index).angle = packet.getAngle();
+			this.connectedPlayers.get(index).state = packet.getState();
+			this.connectedPlayers.get(index).activeWeapon.ID = packet.getActWeapon();
 			packet.writeData(this);
 		}
 	}

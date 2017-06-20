@@ -14,18 +14,21 @@ import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.net.packet.Packet02Move;
+import it.unical.igpe.net.packet.Packet03Fire;
+import it.unical.igpe.screens.ScreenManager;
 import it.unical.igpe.tools.Assets;
 import it.unical.igpe.tools.GameConfig;
 import it.unical.igpe.tools.TileType;
 
-public class MultiplayerGameScreen implements Screen{
-	// message to server player.pos, player.angle, player.state, player.activeWeapon.ID, initial pos player.fire()
+public class MultiplayerGameScreen implements Screen {
+	// message to server player.pos, player.angle, player.state,
+	// player.activeWeapon.ID, initial pos player.fire()
 	// message from server other players, enemies
 	// draw this things on multiplayer
 	MultiplayerWorld world;
 	HUD hud;
 	MultiplayerWorldRenderer renderer;
-	
+
 	public MultiplayerGameScreen() {
 		IGPEGame.game.worldMP = new MultiplayerWorld("map.txt");
 		this.world = IGPEGame.game.worldMP;
@@ -43,8 +46,8 @@ public class MultiplayerGameScreen implements Screen{
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		renderer.render(delta);
-		handleInput();
 		world.update(delta);
+		handleInput();
 	}
 
 	@Override
@@ -53,8 +56,9 @@ public class MultiplayerGameScreen implements Screen{
 
 	@Override
 	public void dispose() {
+
 	}
-	
+
 	private void handleInput() {
 		float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
@@ -63,12 +67,14 @@ public class MultiplayerGameScreen implements Screen{
 		Vector2 dir = new Vector2(mouseX - midX, mouseY - midY);
 		dir.rotate90(-1);
 		world.player.angle = dir.angle();
-		
+
+		Packet02Move packetMove = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x,
+				world.player.getBoundingBox().y, world.player.angle, world.player.state, world.player.activeWeapon.ID);
+		packetMove.writeData(IGPEGame.game.socketClient);
+
 		Rectangle box = new Rectangle();
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - GameConfig.MOVESPEED,
@@ -81,8 +87,6 @@ public class MultiplayerGameScreen implements Screen{
 				world.player.MoveUpLeft();
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + GameConfig.MOVESPEED,
@@ -94,8 +98,6 @@ public class MultiplayerGameScreen implements Screen{
 			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveUpRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - GameConfig.MOVESPEED,
@@ -107,8 +109,6 @@ public class MultiplayerGameScreen implements Screen{
 			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveDownLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + GameConfig.MOVESPEED,
@@ -120,8 +120,6 @@ public class MultiplayerGameScreen implements Screen{
 			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveDownRight();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x, world.player.getBoundingBox().y - GameConfig.MOVESPEED,
@@ -132,8 +130,6 @@ public class MultiplayerGameScreen implements Screen{
 			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveUp();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - GameConfig.MOVESPEED, world.player.getBoundingBox().y,
@@ -144,8 +140,6 @@ public class MultiplayerGameScreen implements Screen{
 			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveLeft();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x, world.player.getBoundingBox().y + GameConfig.MOVESPEED,
@@ -156,8 +150,6 @@ public class MultiplayerGameScreen implements Screen{
 			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.MoveDown();
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			Packet02Move packet = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x, world.player.getBoundingBox().y);
-			packet.writeData(IGPEGame.game.socketClient);
 			if (!world.player.getReloading())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + GameConfig.MOVESPEED, world.player.getBoundingBox().y,
@@ -172,18 +164,21 @@ public class MultiplayerGameScreen implements Screen{
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched() && world.player.activeWeapon.lastFired > world.player.activeWeapon.fireRate
 				&& world.player.activeWeapon.actClip > 0) {
+			Packet03Fire packetFire = new Packet03Fire(world.player.getUsername(), world.player.getBoundingBox().x,
+					world.player.getBoundingBox().y, world.player.angle);
+			packetFire.writeData(IGPEGame.game.socketClient);
 			if (world.player.getActWeapon() == "pistol" && !world.player.isReloading()) {
 				world.player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-				world.player.fire();
+				// world.player.fire();
 			} else if (world.player.getActWeapon() == "shotgun" && !world.player.isReloading()) {
 				world.player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-				world.player.fire();
+				// world.player.fire();
 			} else if (world.player.getActWeapon() == "rifle" && !world.player.isReloading()) {
 				world.player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-				world.player.fire();
+				// world.player.fire();
 			}
 			if (world.player.checkAmmo()) {
 				if (world.player.getActWeapon() == "pistol")
@@ -192,7 +187,7 @@ public class MultiplayerGameScreen implements Screen{
 					Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
 		}
-		
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && world.player.canReload()) {
 			world.player.reload();
 			if (world.player.getActWeapon() == "pistol") {
@@ -207,6 +202,9 @@ public class MultiplayerGameScreen implements Screen{
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
 			world.player.setActWeapon("rifle");
 		}
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+			IGPEGame.game.setScreen(ScreenManager.MPS);
 	}
 
 	@Override

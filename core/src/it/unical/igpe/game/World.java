@@ -94,8 +94,6 @@ public class World implements Updatable {
 
 		if (player.isReloading(delta))
 			player.state = Player.PLAYER_STATE_RELOADING;
-		if (player.state != Player.PLAYER_STATE_RELOADING && player.state != Player.PLAYER_STATE_RUNNING)
-			player.state = Player.PLAYER_STATE_IDLE;
 		
 		player.activeWeapon.lastFired += delta;
 

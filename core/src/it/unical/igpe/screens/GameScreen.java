@@ -44,8 +44,8 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		delta = 0.01f;
-		handleInput();
 		world.update(delta);
+		handleInput();
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		renderer.render(delta);
@@ -187,18 +187,19 @@ public class GameScreen implements Screen {
 				Assets.manager.get(Assets.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();
 			}
-			if (world.player.checkAmmo()) {
-				if (world.player.getActWeapon() == "pistol")
-					Assets.manager.get(Assets.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
-				else if (world.player.getActWeapon() == "shotgun")
-					Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
-			}
+		}
+		
+		if (world.player.checkAmmo()) {
+			if (world.player.getActWeapon() == "pistol")
+				Assets.manager.get(Assets.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
+			else if (world.player.getActWeapon() == "shotgun")
+				Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && world.player.canReload()) {
 			world.player.reload();
 			if (world.player.getActWeapon() == "pistol") {
-				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
+				Assets.manager.get(Assets.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (world.player.getActWeapon() == "shotgun") {
 				Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
