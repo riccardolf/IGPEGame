@@ -114,7 +114,6 @@ public class MultiplayerWorldRenderer {
 		for (AbstractGameObject e : world.entities) {
 			if (e.Alive() && e instanceof PlayerMP) {
 				if (((PlayerMP) e).getActWeapon() == "pistol") {
-					System.out.println("pistol");
 					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
 						batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);

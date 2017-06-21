@@ -27,7 +27,7 @@ public abstract class Packet {
 
 	public abstract void writeData(GameClient client);
 	
-	public abstract void writeData(GameServer server, String username);
+	public abstract void writeData(GameServer server);
 
 	public String readData(byte[] data) {
 		String message = new String(data).trim();

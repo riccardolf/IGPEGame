@@ -2,6 +2,7 @@ package it.unical.igpe.net;
 
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -27,7 +28,7 @@ import it.unical.igpe.tools.Updatable;
 public class MultiplayerWorld implements Updatable {
 	public static String username;
 	public PlayerMP player;
-	public LinkedList<AbstractGameObject> entities;
+	public ArrayList<AbstractGameObject> entities;
 	public static boolean finished = false;
 	public static int keyCollected;
 
@@ -41,7 +42,7 @@ public class MultiplayerWorld implements Updatable {
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		bls = new LinkedList<Bullet>();
-		entities = new LinkedList<AbstractGameObject>();
+		entities = new ArrayList<AbstractGameObject>();
 		keyCollected = 0;
 
 		manager = new MapManager(64, 64);
@@ -103,32 +104,35 @@ public class MultiplayerWorld implements Updatable {
 		player.activeWeapon.lastFired += delta;
 
 		// Enemies
-		if (!bls.isEmpty()) {
-			boolean removed = false;
-			ListIterator<Bullet> it = bls.listIterator();
-			while (it.hasNext()) {
-				ListIterator<AbstractGameObject> iter = entities.listIterator();
-				Bullet b = it.next();
-				b.update(delta);
-				while (iter.hasNext()) {
-					AbstractGameObject a = iter.next();
-					if (a instanceof Enemy)
-						if (b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive() && b.getID() == "player") {
-							it.remove();
-							((Enemy) a).hit(b.getHP());
-							removed = true;
-						}
-				}
-				if (removed)
-					continue;
-				if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
-					it.remove();
-					player.hit(b.getHP());
-					continue;
-				}
-				if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
-					it.remove();
-					continue;
+		synchronized (bls) {
+			if (!bls.isEmpty()) {
+				boolean removed = false;
+				ListIterator<Bullet> it = bls.listIterator();
+				while (it.hasNext()) {
+					ListIterator<AbstractGameObject> iter = entities.listIterator();
+					Bullet b = it.next();
+					b.update(delta);
+					while (iter.hasNext()) {
+						AbstractGameObject a = iter.next();
+						if (a instanceof Enemy)
+							if (b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()
+									&& b.getID() == "player") {
+								it.remove();
+								((Enemy) a).hit(b.getHP());
+								removed = true;
+							}
+					}
+					if (removed)
+						continue;
+					if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
+						it.remove();
+						player.hit(b.getHP());
+						continue;
+					}
+					if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
+						it.remove();
+						continue;
+					}
 				}
 			}
 		}
@@ -199,7 +203,7 @@ public class MultiplayerWorld implements Updatable {
 		return index;
 	}
 
-	public void movePlayer(String username, int x, int y, float angle, int state, String activeWeapon) {
+	public void movePlayer(String username, int x, int y, float angle, int state, int weapon) {
 		int index = getPlayerMPIndex(username);
 		if (index != getPlayerMPIndex(player.username)) {
 			PlayerMP p = (PlayerMP) entities.get(index);
@@ -207,12 +211,19 @@ public class MultiplayerWorld implements Updatable {
 			p.getBoundingBox().y = y;
 			p.angle = angle;
 			p.state = state;
-			p.activeWeapon.ID = activeWeapon;
+			if(weapon == 0)
+				p.activeWeapon = p.pistol;
+			else if(weapon == 1)
+				p.activeWeapon = p.shotgun;
+			else if(weapon == 2)
+				p.activeWeapon = p.rifle;
 		}
 	}
 
-	public synchronized void fireBullet(String username, int x, int y, float angle) {
-		this.bls.add(new Bullet(new Vector2(x + 32, y + 32), (float) Math.toRadians(angle + 90f), username, 15));
+	public void fireBullet(String username, int x, int y, float angle) {
+		synchronized (bls) {
+			this.bls.add(new Bullet(new Vector2(x + 32, y + 32), (float) Math.toRadians(angle + 90f), username, 15));
+		}
 	}
 
 	public PlayerMP getPlayer() {
@@ -246,7 +257,9 @@ public class MultiplayerWorld implements Updatable {
 	}
 
 	public void addEntity(PlayerMP player) {
-		this.entities.add(player);
+		synchronized (entities) {
+			this.entities.add(player);		
+		}
 	}
 
 }

@@ -17,9 +17,9 @@ public class PlayerMP extends AbstractGameObject{
 	public int state;
 	private boolean reloading;
 	public Weapon activeWeapon;
-	private Weapon pistol;
-	private Weapon rifle;
-	private Weapon shotgun;
+	public Weapon pistol;
+	public Weapon rifle;
+	public Weapon shotgun;
 	public MultiplayerWorld world;
 	
 	public InetAddress ipAddress;

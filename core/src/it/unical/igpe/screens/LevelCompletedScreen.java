@@ -22,6 +22,7 @@ public class LevelCompletedScreen implements Screen {
 	
 	@Override
 	public void show() {
+		stage = new Stage();
 		levelCompleted = new Texture(Gdx.files.internal("levelcomplete.png"));
 		GameOver = new Texture(Gdx.files.internal("GameOver.jpg"));
 		batch = new SpriteBatch();

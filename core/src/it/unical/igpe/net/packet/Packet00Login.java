@@ -29,8 +29,8 @@ public class Packet00Login extends Packet{
 	}
 
 	@Override
-	public void writeData(GameServer server, String username) {
-		server.sendDataToAllClients(getData(), username);
+	public void writeData(GameServer server) {
+		server.sendDataToAllClients(getData());
 	}
 
 	@Override

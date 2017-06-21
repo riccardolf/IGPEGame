@@ -60,20 +60,20 @@ public class MultiScreen implements Screen {
 		tableChoose.setDebug(false);
 		tableServer.setDebug(false);
 		tableClient.setDebug(false);
-		
+
 		tableChoose.setVisible(true);
 		tableClient.setVisible(false);
 		tableServer.setVisible(false);
 
 		returnButton = new TextButton("Return", IGPEGame.skinsoldier);
 		returnButton.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		});
-		
+
 		chosenReturnClientButton = new TextButton("Return", IGPEGame.skinsoldier);
 		chosenReturnClientButton.addListener(new ChangeListener() {
 
@@ -84,7 +84,7 @@ public class MultiScreen implements Screen {
 				tableServer.setVisible(false);
 			}
 		});
-		
+
 		chosenReturnServerButton = new TextButton("Return", IGPEGame.skinsoldier);
 		chosenReturnServerButton.addListener(new ChangeListener() {
 
@@ -95,8 +95,7 @@ public class MultiScreen implements Screen {
 				tableServer.setVisible(false);
 			}
 		});
-		
-		
+
 		Client = new TextButton("Connect to a Server", IGPEGame.skinsoldier);
 		Client.addListener(new ChangeListener() {
 
@@ -107,7 +106,7 @@ public class MultiScreen implements Screen {
 				tableServer.setVisible(false);
 			}
 		});
-		
+
 		Server = new TextButton("Create Server", IGPEGame.skinsoldier);
 		Server.addListener(new ChangeListener() {
 
@@ -118,13 +117,14 @@ public class MultiScreen implements Screen {
 				tableServer.setVisible(true);
 			}
 		});
-		
+
 		connectClient = new TextButton("Connect to the server", IGPEGame.skinsoldier);
 		connectClient.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				IGPEGame.game.socketClient = new GameClient(IPClientText.getText());
+				IGPEGame.game.socketClient = new GameClient(IPClientText.getText(),
+						Integer.parseInt(PortClientText.getText()));
 				IGPEGame.game.socketClient.start();
 				MultiplayerWorld.username = nameText.getText();
 				ScreenManager.CreateMGS();
@@ -132,7 +132,7 @@ public class MultiScreen implements Screen {
 				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});
-		
+
 		createServer = new TextButton("Create", IGPEGame.skinsoldier);
 		createServer.addListener(new ChangeListener() {
 
@@ -142,7 +142,7 @@ public class MultiScreen implements Screen {
 				IGPEGame.game.socketServer.start();
 			}
 		});
-		
+
 		clientLabel = new Label("Client", IGPEGame.skinsoldier);
 		serverLabel = new Label("Server", IGPEGame.skinsoldier);
 		IPClientLabel = new Label("IP", IGPEGame.skinsoldier);
@@ -153,13 +153,13 @@ public class MultiScreen implements Screen {
 		IPClientText = new TextField("127.0.0.1", IGPEGame.skinsoldier);
 		PortClientText = new TextField("1234", IGPEGame.skinsoldier);
 		PortServerText = new TextField("1234", IGPEGame.skinsoldier);
-		
+
 		tableChoose.add(Client);
 		tableChoose.row();
 		tableChoose.add(Server);
 		tableChoose.row();
 		tableChoose.add(returnButton);
-		
+
 		tableClient.add(clientLabel);
 		tableClient.row();
 		tableClient.add(nameLabel);
@@ -174,7 +174,7 @@ public class MultiScreen implements Screen {
 		tableClient.add(connectClient);
 		tableClient.row();
 		tableClient.add(chosenReturnClientButton);
-		
+
 		tableServer.add(serverLabel);
 		tableServer.row();
 		tableServer.add(PortServerLabel);
@@ -183,7 +183,7 @@ public class MultiScreen implements Screen {
 		tableServer.add(createServer);
 		tableServer.row();
 		tableServer.add(chosenReturnServerButton);
-		
+
 	}
 
 	@Override

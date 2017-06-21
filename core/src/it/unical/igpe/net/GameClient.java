@@ -20,11 +20,13 @@ import it.unical.igpe.net.packet.Packet.PacketTypes;
 public class GameClient extends Thread {
 	private InetAddress ipAddress;
 	private DatagramSocket socket;
+	private int port;
 
-	public GameClient(String ipAddress) {
+	public GameClient(String ipAddress, int port) {
 		try {
 			this.socket = new DatagramSocket();
 			this.ipAddress = InetAddress.getByName(ipAddress);
+			this.port = port;
 			System.out.println("Connected to server " + ipAddress);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -47,7 +49,7 @@ public class GameClient extends Thread {
 	}
 	
 	public void sendData(byte[] data) {
-		DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, 1234);
+		DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, port);
 		try {
 			socket.send(packet);
 		} catch (IOException e) {
@@ -80,12 +82,10 @@ public class GameClient extends Thread {
 		case FIRE:
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
-			break;
 		}
 	}
 
 	private void handleFire(Packet03Fire packet) {
-//		System.out.println("Player " + packet.getUsername() + " fired");
 		IGPEGame.game.worldMP.fireBullet(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle());
 	}
 
@@ -97,7 +97,6 @@ public class GameClient extends Thread {
 	}
 	
 	private void handleMove(Packet02Move packet) {
-//		System.out.println("Player " + packet.getUsername() + " moved");
-		IGPEGame.game.worldMP.movePlayer(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle(), packet.getState(), packet.getActWeapon());
+		IGPEGame.game.worldMP.movePlayer(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle(), packet.getState(), packet.getWeapon());
 	}
 }

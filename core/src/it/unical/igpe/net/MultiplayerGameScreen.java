@@ -68,10 +68,6 @@ public class MultiplayerGameScreen implements Screen {
 		dir.rotate90(-1);
 		world.player.angle = dir.angle();
 
-		Packet02Move packetMove = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x,
-				world.player.getBoundingBox().y, world.player.angle, world.player.state, world.player.activeWeapon.ID);
-		packetMove.writeData(IGPEGame.game.socketClient);
-
 		Rectangle box = new Rectangle();
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -207,6 +203,18 @@ public class MultiplayerGameScreen implements Screen {
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
 			IGPEGame.game.setScreen(ScreenManager.MPS);
+
+		Packet02Move packetMove;
+		if (world.player.activeWeapon.ID == "pistol")
+			packetMove = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x,
+					world.player.getBoundingBox().y, world.player.angle, world.player.state, 0);
+		else if (world.player.activeWeapon.ID == "shotgun")
+			packetMove = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x,
+					world.player.getBoundingBox().y, world.player.angle, world.player.state, 1);
+		else
+			packetMove = new Packet02Move(world.player.getUsername(), world.player.getBoundingBox().x,
+					world.player.getBoundingBox().y, world.player.angle, world.player.state, 2);
+		packetMove.writeData(IGPEGame.game.socketClient);
 	}
 
 	@Override

@@ -71,7 +71,6 @@ public class GameServer extends Thread {
 		case FIRE:
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
-			break;
 		}
 	}
 
@@ -81,24 +80,24 @@ public class GameServer extends Thread {
 			this.connectedPlayers.get(index).getBoundingBox().x = packet.getX();
 			this.connectedPlayers.get(index).getBoundingBox().y = packet.getY();
 			this.connectedPlayers.get(index).angle = packet.getAngle();
-			packet.writeData(this, packet.getUsername());
+			packet.writeData(this);
 		}
 	}
 
 	private void removeConnection(Packet01Disconnect packet) {
 		this.connectedPlayers.remove(getPlayerMPIndex(packet.getUsername()));
-		packet.writeData(this, packet.getUsername());
+		packet.writeData(this);
 	}
 
 	private void handleMove(Packet02Move packet) {
 		if (getPlayerMP(packet.getUsername()) != null) {
 			int index = getPlayerMPIndex(packet.getUsername());
-			this.connectedPlayers.get(index).getBoundingBox().x = packet.getX();
-			this.connectedPlayers.get(index).getBoundingBox().y = packet.getY();
-			this.connectedPlayers.get(index).angle = packet.getAngle();
-			this.connectedPlayers.get(index).state = packet.getState();
-			this.connectedPlayers.get(index).activeWeapon.ID = packet.getActWeapon();
-			packet.writeData(this, packet.getUsername());
+			PlayerMP plMP = this.connectedPlayers.get(index);
+			plMP.getBoundingBox().x = packet.getX();
+			plMP.getBoundingBox().y = packet.getY();
+			plMP.angle = packet.getAngle();
+			plMP.state = packet.getState();
+			packet.writeData(this);
 		}
 	}
 
@@ -132,11 +131,8 @@ public class GameServer extends Thread {
 		}
 	}
 
-	public synchronized void sendDataToAllClients(byte[] data, String username) {
+	public void sendDataToAllClients(byte[] data) {
 		for (PlayerMP p : connectedPlayers) {
-//			if(username == p.getUsername())
-//				continue;
-//			System.out.println("sent " + p.getUsername() + " to " + username);
 			sendData(data, p.ipAddress, p.port);
 		}
 	}
