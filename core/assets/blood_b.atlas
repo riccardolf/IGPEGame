@@ -1,0 +1,48 @@
+
+blood_b.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+blood_b
+  rotate: false
+  xy: 2, 1030
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 1
+blood_b
+  rotate: false
+  xy: 2, 516
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 2
+blood_b
+  rotate: false
+  xy: 516, 1030
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 3
+blood_b
+  rotate: false
+  xy: 2, 2
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 4
+blood_b
+  rotate: false
+  xy: 516, 516
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 5
+blood_b
+  rotate: false
+  xy: 1030, 1030
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 6
