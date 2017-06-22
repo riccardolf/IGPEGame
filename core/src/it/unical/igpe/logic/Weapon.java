@@ -16,7 +16,7 @@ public class Weapon {
 	public String ID;
 	
 	public void reload() {
-		while(actClip <= sizeClip) {
+		while(actAmmo > 0 && actClip < sizeClip) {
 			actClip++;
 			actAmmo--;
 		}
@@ -24,6 +24,7 @@ public class Weapon {
 	
 	public void createPistol() {
 		fireRate = 0.1f;
+		lastFired = fireRate;
 		sizeClip = 10;
 		actClip = 10;
 		actAmmo = 100;
@@ -37,10 +38,11 @@ public class Weapon {
 	
 	public void createRifle() {
 		fireRate = 0.4f;
+		lastFired = fireRate;
 		sizeClip = 1;
 		actClip = 1;
-		actAmmo = 20;
-		maxAmmo = 50;
+		actAmmo = 10;
+		maxAmmo = 30;
 		reloadTime = 1;
 		reloadAct = reloadTime;
 		damage = 50;
@@ -49,14 +51,16 @@ public class Weapon {
 	}
 	public void createShotgun() {
 		fireRate = 0.5f;
+		lastFired = fireRate;
 		sizeClip = 3;
 		actClip = 3;
-		actAmmo = 25;
-		maxAmmo = 50;
+		actAmmo = 15;
+		maxAmmo = 30;
 		reloadTime = 1.5f;
 		reloadAct = reloadTime;
 		damage = 34;
 		bulletSpeed = GameConfig.BULLETSPEED;
 		ID = "shotgun";
 	}	
+	
 }

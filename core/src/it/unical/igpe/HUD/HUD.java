@@ -1,7 +1,6 @@
 package it.unical.igpe.HUD;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,8 +29,8 @@ public class HUD implements Disposable {
 		pistol = new Texture(Gdx.files.internal("pistol.png"));
 		rifle = new Texture(Gdx.files.internal("rifle.png"));
 		shotgun = new Texture(Gdx.files.internal("shotgun.png"));
-		font = new BitmapFont();
-		font.setColor(Color.BLACK);
+		font = IGPEGame.skinsoldier.getFont("font");
+		font.setColor(IGPEGame.skinsoldier.getColor("sky-blue"));
 
 		// Creating batch
 		batch = new SpriteBatch();
@@ -62,11 +61,11 @@ public class HUD implements Disposable {
 			batch.draw(rifle, 10, 40, 64, 64);
 		else if (player.activeWeapon.ID == "shotgun")
 			batch.draw(shotgun, 10, 40, 64, 64);
+		
 		if (player.isReloading())
 			font.draw(batch, "RELOADING", 5, 15);
 		else
-			for (int i = 0; i < player.activeWeapon.actClip; i++)
-				batch.draw(Assets.Bullet, i * 10, 5, 8, 8, 32, 32, 1f, 1f, 0);
+			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 5, 15);
 		
 		for(int i = 0; i < World.keyCollected; i++)
 			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32 , 5, 32, 32);

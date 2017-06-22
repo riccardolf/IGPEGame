@@ -46,12 +46,15 @@ public class Assets {
 	public static Animation<TextureRegion> runningPistolAnimation;
 	public static Animation<TextureRegion> idlePistolAnimation;
 	public static Animation<TextureRegion> reloadingPistolAnimation;
+	public static Animation<TextureRegion> shootingPistolAnimation;
 	public static Animation<TextureRegion> runningShotgunAnimation;
 	public static Animation<TextureRegion> idleShotgunAnimation;
 	public static Animation<TextureRegion> reloadingShotgunAnimation;
+	public static Animation<TextureRegion> shootingShotgunAnimation;
 	public static Animation<TextureRegion> runningRifleAnimation;
 	public static Animation<TextureRegion> idleRifleAnimation;
 	public static Animation<TextureRegion> reloadingRifleAnimation;
+	public static Animation<TextureRegion> shootingRifleAnimation;
 
 	public static void load() {
 
@@ -81,6 +84,8 @@ public class Assets {
 		idlePistolAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("handgun_idle"));
 		atlas = new TextureAtlas(Gdx.files.internal("handgun_reload.atlas"));
 		reloadingPistolAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("handgun_reload"));
+		atlas = new TextureAtlas(Gdx.files.internal("handgun_shoot.atlas"));
+		shootingPistolAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("handgun_shoot"));
 
 		atlas = new TextureAtlas(Gdx.files.internal("rifle_move.atlas"));
 		runningRifleAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("rifle_move"));
@@ -88,6 +93,8 @@ public class Assets {
 		idleRifleAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("rifle_idle"));
 		atlas = new TextureAtlas(Gdx.files.internal("rifle_reload.atlas"));
 		reloadingRifleAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("rifle_reload"));
+		atlas = new TextureAtlas(Gdx.files.internal("rifle_shoot.atlas"));
+		shootingRifleAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("rifle_shoot"));
 
 		atlas = new TextureAtlas(Gdx.files.internal("shotgun_move.atlas"));
 		runningShotgunAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("shotgun_move"));
@@ -95,6 +102,8 @@ public class Assets {
 		idleShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_idle"));
 		atlas = new TextureAtlas(Gdx.files.internal("shotgun_reload.atlas"));
 		reloadingShotgunAnimation = new Animation<TextureRegion>(0.04f, atlas.findRegions("shotgun_reload"));
+		atlas = new TextureAtlas(Gdx.files.internal("shotgun_shoot.atlas"));
+		shootingShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_shoot"));
 
 		// load sound effects
 		manager.load(FootStep, Music.class);

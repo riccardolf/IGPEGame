@@ -37,8 +37,6 @@ public class GameScreen implements Screen {
 		IGPEGame.music.pause();
 		Assets.manager.get(Assets.GameMusic, Music.class).setLooping(true);
 		Assets.manager.get(Assets.GameMusic, Music.class).play();
-		// Gdx.graphics.setCursor(Gdx.graphics.newCursor(Assets.manager.get(Assets.Crosshair,
-		// Pixmap.class), 32, 32));
 	}
 
 	@Override
@@ -172,18 +170,14 @@ public class GameScreen implements Screen {
 		}
 
 		// Fire and Reloading action of the player
-		if (Gdx.input.justTouched() && world.player.activeWeapon.lastFired > world.player.activeWeapon.fireRate
-				&& world.player.activeWeapon.actClip > 0) {
+		if (Gdx.input.justTouched() && world.player.canShoot()) {
 			if (world.player.getActWeapon() == "pistol" && !world.player.isReloading()) {
-				world.player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();
 			} else if (world.player.getActWeapon() == "shotgun" && !world.player.isReloading()) {
-				world.player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();
 			} else if (world.player.getActWeapon() == "rifle" && !world.player.isReloading()) {
-				world.player.activeWeapon.lastFired = 0;
 				Assets.manager.get(Assets.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();
 			}
