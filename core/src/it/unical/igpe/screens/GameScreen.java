@@ -27,12 +27,12 @@ public class GameScreen implements Screen {
 
 	public GameScreen(World _world) {
 		this.world = _world;
+		this.hud = new HUD();
+		this.renderer = new MapRenderer(world);
 	}
 
 	@Override
 	public void show() {
-		this.renderer = new MapRenderer(world);
-		this.hud = new HUD();
 		Gdx.input.setInputProcessor(null);
 		IGPEGame.music.pause();
 		Assets.manager.get(Assets.GameMusic, Music.class).setLooping(true);

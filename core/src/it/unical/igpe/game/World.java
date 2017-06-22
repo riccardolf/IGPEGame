@@ -25,7 +25,7 @@ import it.unical.igpe.tools.MapManager;
 public class World implements Updatable {
 	public static boolean finished = false;
 	public static int keyCollected;
-	
+
 	public Player player;
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
@@ -58,7 +58,7 @@ public class World implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
 				else if (manager.map[x][y] == 2)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
-				else if (manager.map[x][y] == 11||manager.map[x][y] == 12) { // Enemy
+				else if (manager.map[x][y] == 11 || manager.map[x][y] == 12) { // Enemy
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					ens.add(new Enemy(new Vector2(x * 64, y * 64), player));
 				} else if (manager.map[x][y] == 10) { // Player
@@ -82,6 +82,9 @@ public class World implements Updatable {
 				} else if (manager.map[x][y] == 13) { // Trap
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.TRAP));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+				} else if (manager.map[x][y] == 4) { // Trap
+					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.AMMOPACK));
+					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				}
 			}
 		dir = new Vector2();
@@ -94,10 +97,10 @@ public class World implements Updatable {
 
 		if (player.isReloading(delta))
 			player.state = Player.PLAYER_STATE_RELOADING;
-		
-		if(player.isShooting(delta))
+
+		if (player.isShooting(delta))
 			player.state = Player.PLAYER_STATE_SHOOTING;
-		
+
 		// Enemies
 		EM.update(delta);
 		if (!bls.isEmpty()) {
@@ -138,12 +141,17 @@ public class World implements Updatable {
 					player.setHP(player.getHP() + 25);
 					Assets.manager.get(Assets.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
 					itl.remove();
-					break;
+				} else if (l.getType() == LootableType.AMMOPACK) {
+					if(player.pistol.canAdd() || player.shotgun.canAdd() || player.rifle.canAdd()) {
+						player.pistol.addAmmo(15);
+						player.shotgun.addAmmo(6);
+						player.rifle.addAmmo(5);
+						itl.remove();
+					}
 				} else if (l.getType() == LootableType.TRAP && l.closed == false) {
 					player.setHP(player.getHP() - 50);
 					Assets.manager.get(Assets.TrapClosing, Sound.class).play(GameConfig.SOUND_VOLUME);
 					l.closed = true;
-					break;
 				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR
 						|| l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
 					this.keyCollected++;
@@ -151,6 +159,7 @@ public class World implements Updatable {
 				}
 			}
 		}
+
 	}
 
 	public static TileType getNextTile(Rectangle _box) {

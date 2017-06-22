@@ -1,11 +1,11 @@
 package it.unical.igpe.tools;
 
 public enum LootableType {
-	AMMOPACK,
-	HEALTPACK,	//12
-	TRAP,		//22
-	KEYR,		//14
-	KEYG,		//16
-	KEYB,		//15
-	KEYY;		//13
+	AMMOPACK,	//4
+	HEALTPACK,	//5
+	TRAP,		//13
+	KEYR,		//7
+	KEYG,		//9
+	KEYB,		//8
+	KEYY;		//6
 }

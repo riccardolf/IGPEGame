@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Disposable;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Player;
+import it.unical.igpe.net.PlayerMP;
 import it.unical.igpe.tools.Assets;
 
 public class HUD implements Disposable {
@@ -31,7 +32,8 @@ public class HUD implements Disposable {
 		shotgun = new Texture(Gdx.files.internal("shotgun.png"));
 		font = IGPEGame.skinsoldier.getFont("font");
 		font.setColor(IGPEGame.skinsoldier.getColor("sky-blue"));
-
+		font.getData().setScale(1.3f);
+		
 		// Creating batch
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 800);
@@ -63,9 +65,9 @@ public class HUD implements Disposable {
 			batch.draw(shotgun, 10, 40, 64, 64);
 		
 		if (player.isReloading())
-			font.draw(batch, "RELOADING", 5, 15);
+			font.draw(batch, "RELOADING", 15, 20);
 		else
-			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 5, 15);
+			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 20);
 		
 		for(int i = 0; i < World.keyCollected; i++)
 			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32 , 5, 32, 32);
@@ -78,6 +80,28 @@ public class HUD implements Disposable {
 	public void dispose() {
 		stage.dispose();
 		batch.dispose();
+	}
+
+	public void render(PlayerMP player) {
+		health.setValue(player.getHP());
+		batch.begin();
+		if (player.activeWeapon.ID == "pistol")
+			batch.draw(pistol, 10, 40, 64, 64);
+		else if (player.activeWeapon.ID == "rifle")
+			batch.draw(rifle, 10, 40, 64, 64);
+		else if (player.activeWeapon.ID == "shotgun")
+			batch.draw(shotgun, 10, 40, 64, 64);
+		
+		if (player.isReloading())
+			font.draw(batch, "RELOADING", 15, 20);
+		else
+			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 20);
+		
+		for(int i = 0; i < World.keyCollected; i++)
+			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32 , 5, 32, 32);
+		
+		batch.end();
+		stage.draw();
 	}
 
 }

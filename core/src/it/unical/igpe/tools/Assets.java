@@ -27,6 +27,7 @@ public class Assets {
 	public static String Skull = "skull.png";
 	public static String Key = "key.png";
 	public static String Crosshair = "crosshair2.png";
+	public static String AmmoBox = "ammobox.png";
 
 	public static String FootStep = "Audio/footstep.ogg";
 	public static String PistolFire = "Audio/pistol_fire.ogg";
@@ -74,6 +75,7 @@ public class Assets {
 		manager.load(Skull, Texture.class);
 		manager.load(Key, Texture.class);
 		manager.load(Crosshair, Pixmap.class);
+		manager.load(AmmoBox, Texture.class);
 
 		// load character's animations
 		Bullet = new TextureRegion(new Texture(Gdx.files.internal("bullet.png")));

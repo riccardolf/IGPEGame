@@ -32,6 +32,7 @@ public class MultiplayerGameScreen implements Screen {
 	public MultiplayerGameScreen() {
 		IGPEGame.game.worldMP = new MultiplayerWorld("map.txt");
 		this.world = IGPEGame.game.worldMP;
+		this.hud = new HUD();
 	}
 
 	@Override
@@ -48,6 +49,7 @@ public class MultiplayerGameScreen implements Screen {
 		renderer.render(delta);
 		world.update(delta);
 		handleInput();
+		hud.render(world.player);
 	}
 
 	@Override

@@ -22,6 +22,13 @@ public class Weapon {
 		}
 	}
 	
+	public void addAmmo(int x) {
+		while(actAmmo < maxAmmo && x > 0) {
+			x--;
+			actAmmo++;
+		}
+	}
+	
 	public void createPistol() {
 		fireRate = 0.1f;
 		lastFired = fireRate;
@@ -61,6 +68,12 @@ public class Weapon {
 		damage = 34;
 		bulletSpeed = GameConfig.BULLETSPEED;
 		ID = "shotgun";
+	}
+
+	public boolean canAdd() {
+		if(actAmmo < maxAmmo)
+			return true;
+		return false;
 	}	
 	
 }

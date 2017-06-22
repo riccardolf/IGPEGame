@@ -99,6 +99,9 @@ public class MapRenderer {
 			} else if (loot.getType() == LootableType.KEYB) {
 				batch.draw(Assets.manager.get(Assets.KeyB, Texture.class), loot.getBoundingBox().x,
 						loot.getBoundingBox().y);
+			} else if(loot.getType() == LootableType.AMMOPACK) {
+				batch.draw(Assets.manager.get(Assets.AmmoBox, Texture.class), loot.getBoundingBox().x,
+						loot.getBoundingBox().y);
 			}
 		}
 

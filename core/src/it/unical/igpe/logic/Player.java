@@ -16,9 +16,9 @@ public class Player extends AbstractGameObject {
 	private boolean reloading;
 	private String username;
 	public Weapon activeWeapon;
-	private Weapon pistol;
-	private Weapon rifle;
-	private Weapon shotgun;
+	public Weapon pistol;
+	public Weapon rifle;
+	public Weapon shotgun;
 	public World world;
 
 	public Player(Vector2 _pos, World _world) {
