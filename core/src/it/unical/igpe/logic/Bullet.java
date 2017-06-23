@@ -14,13 +14,12 @@ public class Bullet extends AbstractGameObject implements Updatable {
 		this.ID = _ID;
 		this.alive = true;
 		this.HP = dmg;
-		this.speed = GameConfig.BULLETSPEED;
 	}
 
 	@Override
 	public void update(float delta) {
-		boundingBox.x += Math.cos(angle) * speed;
-		boundingBox.y += Math.sin(angle) * speed;
+		boundingBox.x += Math.cos(angle) * GameConfig.BULLETSPEED * delta;
+		boundingBox.y += Math.sin(angle) * GameConfig.BULLETSPEED * delta;
 	}
 
 	@Override

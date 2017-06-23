@@ -114,6 +114,10 @@ public class Player extends AbstractGameObject {
 		float y2 = (float) (16 * Math.sin(Math.toRadians(this.angle)) + 16 * Math.cos(Math.toRadians(this.angle)));
 		return new Vector2(this.getPos().x + 32 + x2, this.getPos().y + 32 + y2);
 	}
+	
+	public float getSkillCharge() {
+		return 100;
+	}
 
 	public boolean isReloading() {
 		return reloading;

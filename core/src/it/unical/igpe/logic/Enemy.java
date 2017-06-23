@@ -92,7 +92,7 @@ public class Enemy extends AbstractGameObject implements Updatable{
 		if (path.size != 0 && lastMovement > 0.3f && canMove) {
 			float y = path.pop();
 			float x = path.pop();
-			this.followPath(new Vector2(x * 64, y * 64));
+			this.followPath(new Vector2(x * 64, y * 64), delta);
 		}
 
 		shootDelay += delta;
@@ -120,34 +120,34 @@ public class Enemy extends AbstractGameObject implements Updatable{
 		return path;
 	}
 
-	public void followPath(Vector2 pos) {
+	public void followPath(Vector2 pos, float delta) {
 		if (this.boundingBox.y > pos.y) {
-			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y - GameConfig.MOVESPEED,
+			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y - (int) (GameConfig.ENEMY_SPEED * delta),
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
-				this.MoveUp();
+				this.getBoundingBox().y -= GameConfig.ENEMY_SPEED * delta;
 		}
 		if (this.boundingBox.x > pos.x) {
-			box = new Rectangle(this.getBoundingBox().x - GameConfig.MOVESPEED, this.getBoundingBox().y,
+			box = new Rectangle(this.getBoundingBox().x - (int) (GameConfig.ENEMY_SPEED * delta), this.getBoundingBox().y,
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
-				this.MoveLeft();
+				this.getBoundingBox().x -= GameConfig.ENEMY_SPEED * delta;
 		}
 		if (this.boundingBox.y < pos.y) {
-			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y + GameConfig.MOVESPEED,
+			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y + (int) (GameConfig.ENEMY_SPEED * delta),
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
-				this.MoveDown();
+				this.getBoundingBox().y += GameConfig.ENEMY_SPEED * delta;
 		}
 		if (this.boundingBox.x < pos.x) {
-			box = new Rectangle(this.getBoundingBox().x + GameConfig.MOVESPEED, this.getBoundingBox().y,
+			box = new Rectangle(this.getBoundingBox().x + (int) (GameConfig.ENEMY_SPEED * delta), this.getBoundingBox().y,
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
-				this.MoveRight();
+				this.getBoundingBox().x += GameConfig.ENEMY_SPEED * delta;
 		}
 	}
 	

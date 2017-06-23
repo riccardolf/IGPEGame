@@ -19,6 +19,7 @@ public class HUD implements Disposable {
 	private Stage stage;
 	private SpriteBatch batch;
 	private ProgressBar health;
+	private ProgressBar skill;
 	private Table table;
 	private Texture pistol;
 	private Texture shotgun;
@@ -49,6 +50,7 @@ public class HUD implements Disposable {
 		table.setBounds(0f, 0f, width, partialYpos);
 
 		health = new ProgressBar(0, 100, 1, false, IGPEGame.skinui);
+		skill = new ProgressBar(0, 100, 1, true, IGPEGame.skinui);
 		table.add(health);
 
 		stage.addActor(table);
@@ -56,6 +58,7 @@ public class HUD implements Disposable {
 
 	public void render(Player player) {
 		health.setValue(player.getHP());
+		skill.setValue(player.getSkillCharge());
 		batch.begin();
 		if (player.activeWeapon.ID == "pistol")
 			batch.draw(pistol, 10, 40, 64, 64);

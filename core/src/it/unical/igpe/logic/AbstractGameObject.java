@@ -3,8 +3,6 @@ package it.unical.igpe.logic;
 import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.tools.GameConfig;
-
 public abstract class AbstractGameObject {
 	public float angle;
 	public String username;
@@ -14,41 +12,7 @@ public abstract class AbstractGameObject {
 	protected float HP;
 	protected float speed;
 
-	public void MoveUp() {
-		this.boundingBox.y -= this.speed;
-	}
-
-	public void MoveDown() {
-		this.boundingBox.y += this.speed;
-	}
-
-	public void MoveRight() {
-		this.boundingBox.x += this.speed;
-	}
-
-	public void MoveLeft() {
-		this.boundingBox.x -= this.speed;
-	}
-
-	public void MoveUpLeft() {
-		this.boundingBox.x -= GameConfig.DIAGONALSPEED;
-		this.boundingBox.y -= GameConfig.DIAGONALSPEED;
-	}
-
-	public void MoveUpRight() {
-		this.boundingBox.x += GameConfig.DIAGONALSPEED;
-		this.boundingBox.y -= GameConfig.DIAGONALSPEED;
-	}
-
-	public void MoveDownLeft() {
-		this.boundingBox.x -= GameConfig.DIAGONALSPEED;
-		this.boundingBox.y += GameConfig.DIAGONALSPEED;
-	}
-
-	public void MoveDownRight() {
-		this.boundingBox.x += GameConfig.DIAGONALSPEED;
-		this.boundingBox.y += GameConfig.DIAGONALSPEED;
-	}
+	
 
 	@Override
 	public String toString() {
