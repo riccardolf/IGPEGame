@@ -13,15 +13,15 @@ public class Player extends AbstractGameObject {
 	public static final int PLAYER_STATE_RELOADING = 2;
 	public static final int PLAYER_STATE_SHOOTING = 3;
 	public int state;
-	private boolean reloading;
-	private String username;
+	protected boolean reloading;
+	public String username;
 	public Weapon activeWeapon;
 	public Weapon pistol;
 	public Weapon rifle;
 	public Weapon shotgun;
 	public World world;
 
-	public Player(Vector2 _pos, World _world) {
+	public Player(Vector2 _pos, World _world, String username) {
 		this.world = _world;
 		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 48, 48);
 		this.reloading = false;
@@ -36,23 +36,21 @@ public class Player extends AbstractGameObject {
 		this.rifle.createRifle();
 		this.shotgun.createShotgun();
 		this.activeWeapon = pistol;
+		this.username = username;
 	}
 
-	// TODO: FireRate per single Weapon
 	public void fire() {
-		float x2 = (float) (16 * Math.cos(Math.toRadians(this.angle)) - 16 * Math.sin(Math.toRadians(this.angle)));
-		float y2 = (float) (16 * Math.sin(Math.toRadians(this.angle)) + 16 * Math.cos(Math.toRadians(this.angle)));
 		if (!reloading) {
-			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32 + x2, this.getPos().y + 32 + y2),
-					(float) Math.toRadians(this.angle + 90f), "player", activeWeapon.damage));
+			world.addBullet(new Bullet(this.shotPosition(), (float) Math.toRadians(this.angle + 90f), "player",
+					activeWeapon.damage));
 			this.activeWeapon.lastFired = 0f;
 			this.activeWeapon.actClip--;
 		}
 		if (!reloading && activeWeapon.ID == "shotgun") {
-			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32 + x2, this.getPos().y + 32 + y2),
-					(float) Math.toRadians(this.angle + 100f), "player", activeWeapon.damage));
-			world.addBullet(new Bullet(new Vector2(this.getPos().x + 32 + x2, this.getPos().y + 32 + y2),
-					(float) Math.toRadians(this.angle + 80f), "player", activeWeapon.damage));
+			world.addBullet(new Bullet(this.shotPosition(), (float) Math.toRadians(this.angle + 100f), "player",
+					activeWeapon.damage));
+			world.addBullet(new Bullet(this.shotPosition(), (float) Math.toRadians(this.angle + 80f), "player",
+					activeWeapon.damage));
 		}
 	}
 
@@ -61,10 +59,6 @@ public class Player extends AbstractGameObject {
 			activeWeapon.reloadAct = 0;
 			reloading = true;
 		}
-	}
-
-	public void hit(float dmg) {
-		this.HP -= dmg;
 	}
 
 	public boolean isReloading(float delta) {
@@ -78,20 +72,12 @@ public class Player extends AbstractGameObject {
 		return reloading;
 	}
 
-	public boolean isReloading() {
-		return reloading;
-	}
-
 	public boolean checkAmmo() {
 		if (activeWeapon.actClip == 0) {
 			this.reload();
 			return true;
 		}
 		return false;
-	}
-
-	public String getActWeapon() {
-		return activeWeapon.ID;
 	}
 
 	public void setActWeapon(String ID) {
@@ -103,6 +89,40 @@ public class Player extends AbstractGameObject {
 			activeWeapon = rifle;
 	}
 
+	public boolean canReload() {
+		if (this.activeWeapon.actClip < this.activeWeapon.sizeClip && this.activeWeapon.actAmmo > 0)
+			return true;
+		return false;
+	}
+
+	public boolean canShoot() {
+		if (this.activeWeapon.lastFired >= this.activeWeapon.fireRate && this.activeWeapon.actClip > 0)
+			return true;
+		return false;
+	}
+
+	public boolean isShooting(float delta) {
+		activeWeapon.lastFired += delta;
+		if (activeWeapon.lastFired >= activeWeapon.fireRate / 2) {
+			return false;
+		}
+		return true;
+	}
+
+	public Vector2 shotPosition() {
+		float x2 = (float) (16 * Math.cos(Math.toRadians(this.angle)) - 16 * Math.sin(Math.toRadians(this.angle)));
+		float y2 = (float) (16 * Math.sin(Math.toRadians(this.angle)) + 16 * Math.cos(Math.toRadians(this.angle)));
+		return new Vector2(this.getPos().x + 32 + x2, this.getPos().y + 32 + y2);
+	}
+
+	public boolean isReloading() {
+		return reloading;
+	}
+
+	public String getActWeapon() {
+		return activeWeapon.ID;
+	}
+
 	public boolean getReloading() {
 		return this.reloading;
 	}
@@ -111,27 +131,11 @@ public class Player extends AbstractGameObject {
 		this.reloading = bool;
 	}
 
-	public boolean canReload() {
-		if (this.activeWeapon.actClip < this.activeWeapon.sizeClip && this.activeWeapon.actAmmo > 0)
-			return true;
-		return false;
-	}
-	
-	public boolean canShoot() {
-		if(this.activeWeapon.lastFired >= this.activeWeapon.fireRate && this.activeWeapon.actClip > 0)
-			return true;
-		return false;
-	}
-
 	public String getUsername() {
 		return this.username;
 	}
 
-	public boolean isShooting(float delta) {
-		activeWeapon.lastFired += delta;
-		if(activeWeapon.lastFired >= activeWeapon.fireRate / 2) {
-			return false;
-		}
-		return true;
+	public void hit(float dmg) {
+		this.HP -= dmg;
 	}
 }

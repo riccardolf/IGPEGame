@@ -36,7 +36,7 @@ public class World implements Updatable {
 	private MapManager manager;
 
 	public World(String path) {
-		player = new Player(new Vector2(), this);
+		player = new Player(new Vector2(), this, null);
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		ens = new LinkedList<Enemy>();
@@ -60,7 +60,9 @@ public class World implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
 				else if (manager.map[x][y] == 11 || manager.map[x][y] == 12) { // Enemy
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-					ens.add(new Enemy(new Vector2(x * 64, y * 64), player));
+					Enemy e = new Enemy(new Vector2(x * 64, y * 64));
+					e.addPlayer(player);
+					ens.add(e);
 				} else if (manager.map[x][y] == 10) { // Player
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					player.setPos(new Vector2(x * 64, y * 64));

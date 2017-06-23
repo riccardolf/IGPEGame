@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import com.badlogic.gdx.audio.Sound;
@@ -28,7 +29,7 @@ import it.unical.igpe.tools.Updatable;
 public class MultiplayerWorld implements Updatable {
 	public static String username;
 	public PlayerMP player;
-	public ArrayList<AbstractGameObject> entities;
+	public List<AbstractGameObject> entities;
 	public static boolean finished = false;
 	public static int keyCollected;
 
@@ -88,6 +89,7 @@ public class MultiplayerWorld implements Updatable {
 		this.addEntity(player);
 		Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x,
 				player.getBoundingBox().y);
+		// If the client has started a server, add it has a connection
 		if (IGPEGame.game.socketServer != null) {
 			IGPEGame.game.socketServer.addConnection((PlayerMP) player, loginPacket);
 		}
@@ -189,24 +191,24 @@ public class MultiplayerWorld implements Updatable {
 			}
 			index++;
 		}
-		entities.remove(index);
+		this.getEntities().remove(index);
 	}
 
 	public int getPlayerMPIndex(String username) {
 		int index = 0;
-		for (AbstractGameObject e : entities) {
+		for (AbstractGameObject e : this.getEntities()) {
 			if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
-				break;
+				return index;
 			}
 			index++;
 		}
-		return index;
+		return 0;
 	}
 
 	public void movePlayer(String username, int x, int y, float angle, int state, int weapon) {
 		int index = getPlayerMPIndex(username);
 		if (index != getPlayerMPIndex(player.username)) {
-			PlayerMP p = (PlayerMP) entities.get(index);
+			PlayerMP p = (PlayerMP) this.getEntities().get(index);
 			p.getBoundingBox().x = x;
 			p.getBoundingBox().y = y;
 			p.angle = angle;
@@ -256,10 +258,11 @@ public class MultiplayerWorld implements Updatable {
 		return false;
 	}
 
-	public void addEntity(PlayerMP player) {
-		synchronized (entities) {
-			this.entities.add(player);		
-		}
+	public synchronized void addEntity(AbstractGameObject player) {
+			this.getEntities().add(player);
 	}
 
+	public synchronized List<AbstractGameObject> getEntities() {
+        return this.entities;
+    }
 }

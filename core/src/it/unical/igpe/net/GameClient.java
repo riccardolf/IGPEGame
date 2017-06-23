@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.logic.AbstractGameObject;
 import it.unical.igpe.net.packet.Packet;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
@@ -64,6 +65,7 @@ public class GameClient extends Thread {
 		switch (type) {
 		default:
 		case INVALID:
+			System.out.println("INVALID PACKET");
 			break;
 		case LOGIN:
 			packet = new Packet00Login(data);
@@ -82,6 +84,7 @@ public class GameClient extends Thread {
 		case FIRE:
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
+			break;
 		}
 	}
 
@@ -90,6 +93,11 @@ public class GameClient extends Thread {
 	}
 
 	private void handleLogin(Packet00Login packet, InetAddress address, int port) {
+		for (AbstractGameObject e: IGPEGame.game.worldMP.getEntities()) {
+			if(((PlayerMP)e).username.equalsIgnoreCase(packet.getUsername())) {
+				return;
+			}
+		}
 		System.out.println("[" + address.getHostAddress() + ":" + port + "]"
 				+ packet.getUsername() + " has joined the game");
 		PlayerMP player = new PlayerMP(new Vector2(packet.getX(), packet.getY()), IGPEGame.game.worldMP, packet.getUsername(), address, port);

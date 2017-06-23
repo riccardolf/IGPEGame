@@ -31,7 +31,7 @@ public class Enemy extends AbstractGameObject implements Updatable{
 	private LinkedList<Player> players;
 	private IntArray path;
 
-	public Enemy(Vector2 _pos, Player _player) {
+	public Enemy(Vector2 _pos) {
 		boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 64, 64);
 		ID = "enemy";
 		alive = true;
@@ -40,7 +40,6 @@ public class Enemy extends AbstractGameObject implements Updatable{
 		chaseObj = true;
 		canShoot = false;
 		players = new LinkedList<Player>();
-		players.add(_player);
 		path = new IntArray();
 		dir = new Vector2();
 		Random random = new Random();
@@ -151,4 +150,9 @@ public class Enemy extends AbstractGameObject implements Updatable{
 				this.MoveRight();
 		}
 	}
+	
+	public void addPlayer(Player player) {
+		this.players.add(player);
+	}
+
 }

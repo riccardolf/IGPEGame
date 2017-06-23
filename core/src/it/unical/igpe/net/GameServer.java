@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.ai.EnemyManager;
+import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.packet.Packet;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 import it.unical.igpe.net.packet.Packet00Login;
@@ -18,6 +20,8 @@ import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
 
 public class GameServer extends Thread {
+	public MultiplayerWorld worldMP;
+	public EnemyManager EM;
 	private DatagramSocket socket;
 	private List<PlayerMP> connectedPlayers = new ArrayList<PlayerMP>();
 
@@ -25,6 +29,8 @@ public class GameServer extends Thread {
 		try {
 			this.socket = new DatagramSocket(port);
 			System.out.println("Creating Server...");
+//			this.worldMP = new MultiplayerWorld("map.txt");
+//			this.EM = new EnemyManager(worldMP);
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}
@@ -55,7 +61,7 @@ public class GameServer extends Thread {
 			packet = new Packet00Login(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port + "]"
 					+ ((Packet00Login) packet).getUsername() + " has connected");
-			PlayerMP player = new PlayerMP(new Vector2(), null, ((Packet00Login) packet).getUsername(), address, port);
+			PlayerMP player = new PlayerMP(new Vector2(((Packet00Login) packet).getX(), ((Packet00Login) packet).getY()), IGPEGame.game.worldMP, ((Packet00Login) packet).getUsername(), address, port);
 			this.addConnection(player, (Packet00Login) packet);
 			break;
 		case DISCONNECT:
@@ -71,6 +77,7 @@ public class GameServer extends Thread {
 		case FIRE:
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
+			break;
 		}
 	}
 
@@ -110,11 +117,13 @@ public class GameServer extends Thread {
 				if (p.port == -1)
 					p.port = player.port;
 				alreadyConnected = true;
-			} else {
-				sendData(packet.getData(), p.ipAddress, p.port);
-				packet = new Packet00Login(p.getUsername(), p.getBoundingBox().x, p.getBoundingBox().y);
-				sendData(packet.getData(), player.ipAddress, player.port);
 			}
+			System.out.println("Sending login data to " + p.ipAddress + " " + p.port);
+			sendData(packet.getData(), p.ipAddress, p.port);
+
+			Packet newPacket = new Packet00Login(p.getUsername(), p.getBoundingBox().x, p.getBoundingBox().y);
+			System.out.println("Sending login data to " + player.ipAddress + " " + player.port);
+			sendData(newPacket.getData(), player.ipAddress, player.port);
 		}
 		if (!alreadyConnected) {
 			this.connectedPlayers.add(player);
@@ -139,7 +148,7 @@ public class GameServer extends Thread {
 
 	public PlayerMP getPlayerMP(String username) {
 		for (PlayerMP player : this.connectedPlayers) {
-			if (player.getUsername().equals(username)) {
+			if (player.getUsername().equalsIgnoreCase(username)) {
 				return player;
 			}
 		}
@@ -149,7 +158,7 @@ public class GameServer extends Thread {
 	public int getPlayerMPIndex(String username) {
 		int index = 0;
 		for (PlayerMP player : this.connectedPlayers) {
-			if (player.getUsername().equals(username)) {
+			if (player.getUsername().equalsIgnoreCase(username)) {
 				break;
 			}
 			index++;
