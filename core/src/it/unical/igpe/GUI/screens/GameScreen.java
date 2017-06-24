@@ -1,4 +1,4 @@
-package it.unical.igpe.screens;
+package it.unical.igpe.GUI.screens;
 
 import java.awt.Rectangle;
 
@@ -11,14 +11,14 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.HUD.HUD;
+import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.HUD.HUD;
+import it.unical.igpe.MapUtils.MapRenderer;
+import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Player;
-import it.unical.igpe.tools.Assets;
-import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.MapRenderer;
-import it.unical.igpe.tools.TileType;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.TileType;
 
 public class GameScreen implements Screen {
 	World world;
@@ -86,7 +86,7 @@ public class GameScreen implements Screen {
 		Rectangle box = new Rectangle();
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
@@ -101,7 +101,7 @@ public class GameScreen implements Screen {
 			}
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
@@ -114,9 +114,9 @@ public class GameScreen implements Screen {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
-			
+
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
@@ -129,9 +129,9 @@ public class GameScreen implements Screen {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
-			
+
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
@@ -144,9 +144,9 @@ public class GameScreen implements Screen {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
-			
+
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x,
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
@@ -157,9 +157,9 @@ public class GameScreen implements Screen {
 			} else if (World.getNextTile(box) != TileType.WALL) {
 				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
 			}
-			
+
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
@@ -170,9 +170,9 @@ public class GameScreen implements Screen {
 			} else if (World.getNextTile(box) != TileType.WALL) {
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
 			}
-			
+
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x,
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
@@ -183,9 +183,9 @@ public class GameScreen implements Screen {
 			} else if (World.getNextTile(box) != TileType.WALL) {
 				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
 			}
-			
+
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			if (!world.player.getReloading())
+			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.PLAYER_STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
@@ -196,7 +196,7 @@ public class GameScreen implements Screen {
 			} else if (World.getNextTile(box) != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
 			}
-			
+
 		}
 
 		// Fire and Reloading action of the player
@@ -236,7 +236,7 @@ public class GameScreen implements Screen {
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-			if(world.player.slowActive)
+			if (world.player.slowActive)
 				world.player.slowActive = false;
 			else
 				world.player.slowActive = true;

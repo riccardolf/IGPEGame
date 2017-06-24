@@ -1,4 +1,4 @@
-package it.unical.igpe.game;
+package it.unical.igpe.MapUtils;
 
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -9,18 +9,17 @@ import java.util.ListIterator;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.ai.EnemyManager;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
-import it.unical.igpe.tools.Assets;
-import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.LootableType;
-import it.unical.igpe.tools.TileType;
-import it.unical.igpe.tools.Updatable;
-import it.unical.igpe.tools.MapManager;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.LootableType;
+import it.unical.igpe.utils.TileType;
+import it.unical.igpe.utils.Updatable;
 
 public class World implements Updatable {
 	public static boolean finished = false;
@@ -43,7 +42,7 @@ public class World implements Updatable {
 		bls = new LinkedList<Bullet>();
 		keyCollected = 0;
 
-		manager = new MapManager(64, 64);
+		manager = new MapManager(GameConfig.TILEDIM, GameConfig.TILEDIM);
 		try {
 			manager.LoadMap(path);
 		} catch (IOException e) {
@@ -53,40 +52,47 @@ public class World implements Updatable {
 		for (int x = 0; x < manager.map.length; x++)
 			for (int y = 0; y < manager.map.length; y++) {
 				if (manager.map[x][y] == 0)
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				else if (manager.map[x][y] == 1)
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.WALL));
 				else if (manager.map[x][y] == 2)
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.ENDLEVEL));
 				else if (manager.map[x][y] == 11 || manager.map[x][y] == 12) { // Enemy
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-					Enemy e = new Enemy(new Vector2(x * 64, y * 64));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
+					Enemy e = new Enemy(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM));
 					e.addPlayer(player);
 					ens.add(e);
 				} else if (manager.map[x][y] == 10) { // Player
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-					player.setPos(new Vector2(x * 64, y * 64));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
+					player.setPos(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM));
 				} else if (manager.map[x][y] == 6) { // Yellow Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYY));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.KEYY));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 7) { // Red Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYR));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.KEYR));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 8) { // Blue Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYB));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.KEYB));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 9) { // Green Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYG));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.KEYG));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 5) { // HealthPack
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.HEALTPACK));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.HEALTPACK));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 13) { // Trap
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.TRAP));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.TRAP));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 4) { // Trap
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.AMMOPACK));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.AMMOPACK));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				}
 			}
 		dir = new Vector2();
@@ -102,7 +108,7 @@ public class World implements Updatable {
 
 		if (player.isShooting(delta))
 			player.state = Player.PLAYER_STATE_SHOOTING;
-		
+
 		// Enemies
 		EM.update(delta);
 		if (!bls.isEmpty()) {
@@ -144,7 +150,7 @@ public class World implements Updatable {
 					Assets.manager.get(Assets.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
 					itl.remove();
 				} else if (l.getType() == LootableType.AMMOPACK) {
-					if(player.pistol.canAdd() || player.shotgun.canAdd() || player.rifle.canAdd()) {
+					if (player.pistol.canAdd() || player.shotgun.canAdd() || player.rifle.canAdd()) {
 						player.pistol.addAmmo(15);
 						player.shotgun.addAmmo(6);
 						player.rifle.addAmmo(5);

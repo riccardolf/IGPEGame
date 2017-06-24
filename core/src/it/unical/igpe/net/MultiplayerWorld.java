@@ -11,6 +11,8 @@ import java.util.ListIterator;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.MapUtils.MapManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.AbstractGameObject;
 import it.unical.igpe.logic.Bullet;
@@ -19,12 +21,10 @@ import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.net.packet.Packet00Login;
-import it.unical.igpe.tools.Assets;
-import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.LootableType;
-import it.unical.igpe.tools.MapManager;
-import it.unical.igpe.tools.TileType;
-import it.unical.igpe.tools.Updatable;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.LootableType;
+import it.unical.igpe.utils.TileType;
+import it.unical.igpe.utils.Updatable;
 
 public class MultiplayerWorld implements Updatable {
 	public static String username;

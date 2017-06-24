@@ -1,4 +1,4 @@
-package it.unical.igpe.HUD;
+package it.unical.igpe.GUI.HUD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,11 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 
+import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.game.World;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.net.PlayerMP;
-import it.unical.igpe.tools.Assets;
 
 public class HUD implements Disposable {
 	private Stage stage;

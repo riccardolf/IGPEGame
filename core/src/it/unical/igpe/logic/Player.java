@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.game.World;
-import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.MapUtils.World;
+import it.unical.igpe.utils.GameConfig;
 
 public class Player extends AbstractGameObject {
 	public static final int PLAYER_STATE_IDLE = 0;
@@ -14,6 +14,7 @@ public class Player extends AbstractGameObject {
 	public static final int PLAYER_STATE_SHOOTING = 3;
 	public int state;
 	protected boolean reloading;
+	protected boolean shooting;
 	public String username;
 	public Weapon activeWeapon;
 	public Weapon pistol;
@@ -106,9 +107,11 @@ public class Player extends AbstractGameObject {
 	public boolean isShooting(float delta) {
 		activeWeapon.lastFired += delta;
 		if (activeWeapon.lastFired >= activeWeapon.fireRate / 2) {
-			return false;
+			shooting = false;
 		}
-		return true;
+		else
+			shooting = true;
+		return shooting;
 	}
 	
 	public boolean isSlowMo(float delta) {
@@ -134,13 +137,13 @@ public class Player extends AbstractGameObject {
 	public boolean isReloading() {
 		return reloading;
 	}
+	
+	public boolean isShooting() {
+		return shooting;
+	}
 
 	public String getActWeapon() {
 		return activeWeapon.ID;
-	}
-
-	public boolean getReloading() {
-		return this.reloading;
 	}
 
 	public void setReloading(boolean bool) {

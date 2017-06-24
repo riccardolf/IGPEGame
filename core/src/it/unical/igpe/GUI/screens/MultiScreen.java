@@ -1,4 +1,4 @@
-package it.unical.igpe.screens;
+package it.unical.igpe.GUI.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -201,7 +201,7 @@ public class MultiScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height);
+		this.show();
 	}
 
 	@Override

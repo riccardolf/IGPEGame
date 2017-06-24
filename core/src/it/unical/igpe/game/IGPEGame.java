@@ -9,12 +9,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 
+import it.unical.igpe.GUI.screens.ScreenManager;
 import it.unical.igpe.net.GameClient;
 import it.unical.igpe.net.GameServer;
 import it.unical.igpe.net.MultiplayerWorld;
 import it.unical.igpe.net.packet.Packet01Disconnect;
-import it.unical.igpe.screens.ScreenManager;
-import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.utils.GameConfig;
 
 public class IGPEGame extends Game implements Disposable {
 	private static final String PREFS_NAME = "my_game";

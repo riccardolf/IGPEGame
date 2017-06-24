@@ -4,14 +4,15 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import it.unical.igpe.game.World;
+import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.logic.AbstractGameObject;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.net.MultiplayerWorld;
-import it.unical.igpe.tools.TileType;
-import it.unical.igpe.tools.Updatable;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.TileType;
+import it.unical.igpe.utils.Updatable;
 
 public class EnemyManager implements Updatable {
 	static LinkedList<Enemy> ens;
@@ -28,7 +29,7 @@ public class EnemyManager implements Updatable {
 		map = new boolean[64][64];
 		for (Tile tile : world.getTiles())
 			if (tile.getType() == TileType.WALL)
-				map[(int) (tile.getPos().x / 64)][(int) (tile.getPos().y / 64)] = true;
+				map[(int) (tile.getPos().x / GameConfig.TILEDIM)][(int) (tile.getPos().y / GameConfig.TILEDIM)] = true;
 
 		astar = new Astar(64, 64) {
 			protected boolean isValid(int x, int y) {
@@ -36,18 +37,18 @@ public class EnemyManager implements Updatable {
 			}
 		};
 	}
-	
+
 	public EnemyManager(MultiplayerWorld _world) {
 		worldMP = _world;
 		ens = new LinkedList<Enemy>();
-		for (AbstractGameObject	o : worldMP.getEntities()) {
-			if(o instanceof Enemy)
+		for (AbstractGameObject o : worldMP.getEntities()) {
+			if (o instanceof Enemy)
 				ens.add((Enemy) o);
 		}
 		map = new boolean[64][64];
 		for (Tile tile : world.getTiles())
 			if (tile.getType() == TileType.WALL)
-				map[(int) (tile.getPos().x / 64)][(int) (tile.getPos().y / 64)] = true;
+				map[(int) (tile.getPos().x / GameConfig.TILEDIM)][(int) (tile.getPos().y / GameConfig.TILEDIM)] = true;
 
 		astar = new Astar(64, 64) {
 			protected boolean isValid(int x, int y) {
@@ -60,19 +61,29 @@ public class EnemyManager implements Updatable {
 		Iterator<Enemy> iter = ens.iterator();
 		while (iter.hasNext()) {
 			Enemy e = iter.next();
-			if(!e.Alive())
+			if (!e.Alive())
 				continue;
-			if((e.targetx / 64 < 64 && e.targetx / 64 > 0 && e.targety / 64 > 0 && e.targety / 64 < 64) && astar.isValid(e.targetx / 64, e.targety / 64) )
-				e.setPath(astar.getPath(e.startx / 64, e.starty / 64, e.targetx / 64, e.targety / 64));
+			if ((e.targetx / GameConfig.TILEDIM < GameConfig.TILEDIM && e.targetx / GameConfig.TILEDIM > 0
+					&& e.targety / GameConfig.TILEDIM > 0 && e.targety / GameConfig.TILEDIM < GameConfig.TILEDIM)
+					&& astar.isValid(e.targetx / GameConfig.TILEDIM, e.targety / GameConfig.TILEDIM))
+				e.setPath(astar.getPath(e.startx / GameConfig.TILEDIM, e.starty / GameConfig.TILEDIM,
+						e.targetx / GameConfig.TILEDIM, e.targety / GameConfig.TILEDIM));
 			if (e.canShoot)
 				world.addBullet(e.fire());
 			e.update(delta);
 		}
 	}
-	
+
+	/**
+	 * Check enemies collisions
+	 * 
+	 * @param _box
+	 * @param act
+	 * @return true if collide otherwise false
+	 */
 	public static boolean collisionsEnemy(Rectangle _box, Enemy act) {
 		for (Enemy e : ens) {
-			if(e.Alive() && e != act && e.getBoundingBox().intersects(_box))
+			if (e.Alive() && e != act && e.getBoundingBox().intersects(_box))
 				return true;
 		}
 		return false;

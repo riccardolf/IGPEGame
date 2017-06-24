@@ -1,7 +1,7 @@
-package it.unical.igpe.screens;
+package it.unical.igpe.GUI.screens;
 
+import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.game.World;
 import it.unical.igpe.net.MultiplayerGameScreen;
 import it.unical.igpe.net.MultiplayerPauseScreen;
 

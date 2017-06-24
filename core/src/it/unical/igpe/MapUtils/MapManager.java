@@ -1,4 +1,4 @@
-package it.unical.igpe.tools;
+package it.unical.igpe.MapUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

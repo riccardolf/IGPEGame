@@ -1,4 +1,4 @@
-package it.unical.igpe.tools;
+package it.unical.igpe.MapUtils;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -12,12 +12,15 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import it.unical.igpe.game.World;
+import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.LootableType;
+import it.unical.igpe.utils.TileType;
 
 public class MapRenderer {
 	private World world;
@@ -189,7 +192,7 @@ public class MapRenderer {
 		sr.end();
 
 	}
-
+	
 	public void dispose() {
 		batch.dispose();
 	}

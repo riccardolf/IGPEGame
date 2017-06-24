@@ -16,11 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.screens.ScreenManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.packet.Packet01Disconnect;
-import it.unical.igpe.screens.ScreenManager;
-import it.unical.igpe.tools.Assets;
-import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.utils.GameConfig;
 
 public class MultiplayerPauseScreen implements Screen {
 	private SpriteBatch batch;

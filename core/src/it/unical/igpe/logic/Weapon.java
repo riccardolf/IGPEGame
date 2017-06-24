@@ -1,6 +1,6 @@
 package it.unical.igpe.logic;
 
-import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.utils.GameConfig;
 
 public class Weapon {
 	public float lastFired;

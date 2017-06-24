@@ -1,4 +1,4 @@
-package it.unical.igpe.tools;
+package it.unical.igpe.utils;
 
 public enum LootableType {
 	AMMOPACK,	//4

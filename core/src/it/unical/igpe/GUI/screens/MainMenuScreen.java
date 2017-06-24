@@ -1,4 +1,4 @@
-package it.unical.igpe.screens;
+package it.unical.igpe.GUI.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.tools.GameConfig;
+import it.unical.igpe.utils.GameConfig;
 
 public class MainMenuScreen implements Screen {
 	private SpriteBatch batch;
@@ -99,7 +99,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height);
+		this.show();
 	}
 
 

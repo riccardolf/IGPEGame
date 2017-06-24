@@ -3,8 +3,8 @@ package it.unical.igpe.logic;
 import java.awt.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.Updatable;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.Updatable;
 
 public class Bullet extends AbstractGameObject implements Updatable {
 

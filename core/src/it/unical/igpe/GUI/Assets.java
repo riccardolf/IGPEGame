@@ -1,4 +1,4 @@
-package it.unical.igpe.tools;
+package it.unical.igpe.GUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

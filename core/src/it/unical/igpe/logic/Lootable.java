@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.tools.LootableType;
+import it.unical.igpe.utils.LootableType;
 
 public class Lootable {
 	private Rectangle boundingBox;

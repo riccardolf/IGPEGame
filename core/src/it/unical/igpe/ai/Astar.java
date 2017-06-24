@@ -19,7 +19,15 @@ public class Astar {
 		nodes = new PathNode[width * height];
 	}
 
-	/** Returns x,y pairs that are the path from the target to the start. */
+	/**
+	 * Returns x,y pairs that are the path from the target to the start.
+	 * 
+	 * @param startX
+	 * @param startY
+	 * @param targetX
+	 * @param targetY
+	 * @return
+	 */
 	public IntArray getPath(int startX, int startY, int targetX, int targetY) {
 		this.targetX = targetX;
 		this.targetY = targetY;
@@ -115,6 +123,13 @@ public class Astar {
 		}
 	}
 
+	/**
+	 * Check if the selected position is valid
+	 * 
+	 * @param x
+	 * @param y
+	 * @return true if valid otherwise false
+	 */
 	protected boolean isValid(int x, int y) {
 		return true;
 	}

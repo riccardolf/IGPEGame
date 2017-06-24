@@ -12,17 +12,17 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import it.unical.igpe.game.World;
+import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.logic.AbstractGameObject;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
-import it.unical.igpe.tools.Assets;
-import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.LootableType;
-import it.unical.igpe.tools.TileType;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.LootableType;
+import it.unical.igpe.utils.TileType;
 
 public class MultiplayerWorldRenderer {
 	private OrthographicCamera camera;

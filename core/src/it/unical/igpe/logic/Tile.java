@@ -4,14 +4,15 @@ import java.awt.Rectangle;
 
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.tools.TileType;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.TileType;
 
 public class Tile {
 	private Rectangle boundingBox;
 	private TileType type;
 
 	public Tile(Vector2 v, TileType t) {
-		this.boundingBox = new Rectangle((int) v.x, (int) v.y, 64, 64);
+		this.boundingBox = new Rectangle((int) v.x, (int) v.y, GameConfig.TILEDIM, GameConfig.TILEDIM);
 		this.type = t;
 	}
 

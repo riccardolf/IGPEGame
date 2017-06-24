@@ -7,11 +7,11 @@ import java.util.Random;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntArray;
 
+import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.ai.EnemyManager;
-import it.unical.igpe.game.World;
-import it.unical.igpe.tools.GameConfig;
-import it.unical.igpe.tools.TileType;
-import it.unical.igpe.tools.Updatable;
+import it.unical.igpe.utils.GameConfig;
+import it.unical.igpe.utils.TileType;
+import it.unical.igpe.utils.Updatable;
 
 public class Enemy extends AbstractGameObject implements Updatable{
 	public boolean chaseObj;

@@ -1,4 +1,4 @@
-package it.unical.igpe.screens;
+package it.unical.igpe.GUI.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.tools.Assets;
 
 public class LoadingScreen implements Screen {
 	public static boolean isMP = false;
@@ -69,7 +69,7 @@ public class LoadingScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height);
+		this.show();
 	}
 
 	@Override
