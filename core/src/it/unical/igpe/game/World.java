@@ -102,7 +102,7 @@ public class World implements Updatable {
 
 		if (player.isShooting(delta))
 			player.state = Player.PLAYER_STATE_SHOOTING;
-
+		
 		// Enemies
 		EM.update(delta);
 		if (!bls.isEmpty()) {

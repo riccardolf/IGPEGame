@@ -24,7 +24,6 @@ public class Enemy extends AbstractGameObject implements Updatable{
 	private float shootDelay;
 	private float followDelay;
 	private float followTimer;
-	private float lastMovement;
 	private TileType nextTile;
 	private Rectangle box;
 	private Vector2 dir;
@@ -48,7 +47,6 @@ public class Enemy extends AbstractGameObject implements Updatable{
 		starty = this.getBoundingBox().y + 32;
 		targetx = startx;
 		targety = starty;
-		lastMovement = 0;
 		canMove = true;
 	}
 
@@ -88,8 +86,7 @@ public class Enemy extends AbstractGameObject implements Updatable{
 				canShoot = true;
 			}
 		}
-
-		if (path.size != 0 && lastMovement > 0.3f && canMove) {
+		if (path.size != 0 && canMove) {
 			float y = path.pop();
 			float x = path.pop();
 			this.followPath(new Vector2(x * 64, y * 64), delta);
@@ -97,7 +94,6 @@ public class Enemy extends AbstractGameObject implements Updatable{
 
 		shootDelay += delta;
 		followDelay += delta;
-		lastMovement += delta;
 	}
 
 	public Bullet fire() {

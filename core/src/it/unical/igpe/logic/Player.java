@@ -20,6 +20,8 @@ public class Player extends AbstractGameObject {
 	public Weapon rifle;
 	public Weapon shotgun;
 	public World world;
+	public float slowMeter;
+	public boolean slowActive;
 
 	public Player(Vector2 _pos, World _world, String username) {
 		this.world = _world;
@@ -108,6 +110,16 @@ public class Player extends AbstractGameObject {
 		}
 		return true;
 	}
+	
+	public boolean isSlowMo(float delta) {
+		if(slowActive && slowMeter > 0f)
+			slowMeter -= delta;
+		else if(!slowActive && slowMeter <= 1f)
+			slowMeter += delta / 4;
+		else if(slowMeter <= 0f)
+			slowActive = false;
+		return slowActive;
+	}
 
 	public Vector2 shotPosition() {
 		float x2 = (float) (16 * Math.cos(Math.toRadians(this.angle)) - 16 * Math.sin(Math.toRadians(this.angle)));
@@ -148,4 +160,5 @@ public class Player extends AbstractGameObject {
 			return false;
 		return true;
 	}
+
 }

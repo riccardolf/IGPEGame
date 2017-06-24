@@ -42,6 +42,7 @@ public class HUD implements Disposable {
 		// Setting up stage and table
 		stage = new Stage();
 		table = new Table();
+		table.setDebug(false);
 
 		// Setting up tables' positions
 		int width = Gdx.graphics.getWidth();
@@ -50,15 +51,17 @@ public class HUD implements Disposable {
 		table.setBounds(0f, 0f, width, partialYpos);
 
 		health = new ProgressBar(0, 100, 1, false, IGPEGame.skinui);
-		skill = new ProgressBar(0, 100, 1, true, IGPEGame.skinui);
-		table.add(health);
+		skill = new ProgressBar(0.0f, 1.0f, 0.1f, false, IGPEGame.skinui);
+		table.add(skill).width(100);
+		table.row().height(50);
+		table.add(health).width(200);
 
 		stage.addActor(table);
 	}
 
 	public void render(Player player) {
 		health.setValue(player.getHP());
-		skill.setValue(player.getSkillCharge());
+		skill.setValue(player.slowMeter);
 		batch.begin();
 		if (player.activeWeapon.ID == "pistol")
 			batch.draw(pistol, 10, 40, 64, 64);
@@ -89,6 +92,7 @@ public class HUD implements Disposable {
 
 	public void render(PlayerMP player) {
 		health.setValue(player.getHP());
+		skill.setValue(player.slowMeter);
 		batch.begin();
 		if (player.activeWeapon.ID == "pistol")
 			batch.draw(pistol, 10, 40, 64, 64);

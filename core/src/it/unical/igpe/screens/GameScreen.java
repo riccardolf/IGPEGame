@@ -24,7 +24,6 @@ public class GameScreen implements Screen {
 	World world;
 	HUD hud;
 	MapRenderer renderer;
-	boolean slowmo = false;
 
 	public GameScreen(World _world) {
 		this.world = _world;
@@ -42,7 +41,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		if (slowmo)
+		if (world.player.isSlowMo(delta))
 			delta *= 0.5f;
 		world.update(delta);
 		handleInput(delta);
@@ -74,8 +73,8 @@ public class GameScreen implements Screen {
 	}
 
 	private void handleInput(float delta) {
-		if (slowmo)
-			delta *= 2;
+		if (world.player.slowActive)
+			delta *= 2f;
 		float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
 		float mouseX = Gdx.input.getX();
@@ -236,11 +235,11 @@ public class GameScreen implements Screen {
 			world.player.setActWeapon("rifle");
 		}
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && world.player.getSkillCharge() > 0) {
-			if (slowmo)
-				slowmo = false;
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			if(world.player.slowActive)
+				world.player.slowActive = false;
 			else
-				slowmo = true;
+				world.player.slowActive = true;
 		}
 	}
 
