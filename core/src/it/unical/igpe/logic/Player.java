@@ -142,4 +142,10 @@ public class Player extends AbstractGameObject {
 	public void hit(float dmg) {
 		this.HP -= dmg;
 	}
+
+	public boolean hasAmmo() {
+		if(activeWeapon.actAmmo == 0 && activeWeapon.actClip == 0)
+			return false;
+		return true;
+	}
 }

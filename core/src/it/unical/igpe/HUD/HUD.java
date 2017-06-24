@@ -67,8 +67,10 @@ public class HUD implements Disposable {
 		else if (player.activeWeapon.ID == "shotgun")
 			batch.draw(shotgun, 10, 40, 64, 64);
 		
-		if (player.isReloading())
+		if (player.isReloading() && player.hasAmmo())
 			font.draw(batch, "RELOADING", 15, 20);
+		else if(!player.hasAmmo())
+			font.draw(batch, "NO AMMO", 15, 20);
 		else
 			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 20);
 		

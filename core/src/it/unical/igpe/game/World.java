@@ -97,7 +97,7 @@ public class World implements Updatable {
 	public void update(float delta) {
 		player.state = Player.PLAYER_STATE_IDLE;
 
-		if (player.isReloading(delta))
+		if (player.isReloading(delta) && player.hasAmmo())
 			player.state = Player.PLAYER_STATE_RELOADING;
 
 		if (player.isShooting(delta))
