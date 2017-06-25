@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
@@ -49,14 +50,15 @@ public class MapRenderer {
 		camera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
 				0.3f);
 		camera.update();
-		Assets.manager.get(Assets.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
-		Assets.manager.get(Assets.FootStep, Music.class).setLooping(true);
+		
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 
 		// FootStep sound
 		if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
-			Assets.manager.get(Assets.FootStep, Music.class).play();
+			SoundManager.manager.get(SoundManager.FootStep, Music.class).play();
 		else
-			Assets.manager.get(Assets.FootStep, Music.class).pause();
+			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
 
 		batch.begin();
 
@@ -108,9 +110,9 @@ public class MapRenderer {
 			}
 		}
 
-		batch.setColor(1, 1, 1, 1);
 
 		// Draw Enemies
+		batch.setColor(1, 1, 1, 1);
 		for (Enemy e : world.EM.getList()) {
 			if (e.Alive()) {
 				batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);

@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.utils.GameConfig;
 
 public class LevelChooseScreen implements Screen {
 	private SpriteBatch batch;
@@ -56,6 +57,9 @@ public class LevelChooseScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				if(Gdx.graphics.isFullscreen())
+					Gdx.graphics.setWindowedMode(GameConfig.WIDTH, GameConfig.HEIGHT);
+				
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File("."));
 				fileChooser.setAcceptAllFileFilterUsed(false);
@@ -63,7 +67,12 @@ public class LevelChooseScreen implements Screen {
 				File file = fileChooser.getSelectedFile();
 				if (file != null) {
 					ScreenManager.CreateGS(file.getPath());
+					if(GameConfig.isFullscreen = true)
+						Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 					IGPEGame.game.setScreen(ScreenManager.LS);
+				}
+				else if(file == null && GameConfig.isFullscreen) {
+					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 				}
 			}
 		});

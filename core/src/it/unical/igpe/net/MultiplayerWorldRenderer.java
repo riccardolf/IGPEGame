@@ -13,8 +13,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
-import it.unical.igpe.logic.AbstractGameObject;
+import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
@@ -54,17 +55,18 @@ public class MultiplayerWorldRenderer {
 				0.3f);
 		camera.update();
 
-		Assets.manager.get(Assets.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
-		Assets.manager.get(Assets.FootStep, Music.class).setLooping(true);
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 
 		// Sound from the player
 		if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
-			Assets.manager.get(Assets.FootStep, Music.class).play();
+			SoundManager.manager.get(SoundManager.FootStep, Music.class).play();
 		else
-			Assets.manager.get(Assets.FootStep, Music.class).pause();
+			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
 
-		// Drawing tiles
 		batch.begin();
+		
+		// Drawing tiles
 		for (Tile tile : world.getTiles()) {
 			if (tile.getType() == TileType.GROUND)
 				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getBoundingBox().x,
@@ -106,12 +108,15 @@ public class MultiplayerWorldRenderer {
 			} else if (loot.getType() == LootableType.KEYB) {
 				batch.draw(Assets.manager.get(Assets.KeyB, Texture.class), loot.getBoundingBox().x,
 						loot.getBoundingBox().y);
+			} else if (loot.getType() == LootableType.AMMOPACK) {
+				batch.draw(Assets.manager.get(Assets.AmmoBox, Texture.class), loot.getBoundingBox().x,
+						loot.getBoundingBox().y);
 			}
 		}
 
-		// Drawing enemies and players
+		// Drawing players
 		batch.setColor(1, 1, 1, 1);
-		for (AbstractGameObject e : world.entities) {
+		for (AbstractDynamicObject e : world.entities) {
 			if (e.Alive() && e instanceof PlayerMP) {
 				if (((PlayerMP) e).getActWeapon() == "pistol") {
 					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
@@ -163,6 +168,10 @@ public class MultiplayerWorldRenderer {
 		}
 		sr.end();
 
+	}
+	
+	public void dispose() {
+		batch.dispose();
 	}
 
 }

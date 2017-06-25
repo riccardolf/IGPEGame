@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.Updatable;
 
-public class Bullet extends AbstractGameObject implements Updatable {
+public class Bullet extends AbstractDynamicObject implements Updatable {
 
 	public Bullet(Vector2 _pos, float _angle, String _ID, float dmg) {
 		this.angle = _angle;

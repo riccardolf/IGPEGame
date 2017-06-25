@@ -6,12 +6,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.utils.LootableType;
 
-public class Lootable {
-	private Rectangle boundingBox;
+public class Lootable extends AbstractStaticObject {
 	private LootableType type;
 	private float HP;
 	public boolean closed;
-	
+
 	public Lootable(Vector2 v, LootableType t) {
 		this.boundingBox = new Rectangle((int) v.x, (int) v.y, 32, 32);
 		this.type = t;
@@ -20,7 +19,7 @@ public class Lootable {
 
 	@Override
 	public String toString() {
-		return type + " " +this.boundingBox.toString();
+		return type + " " + this.boundingBox.toString();
 	}
 
 	public Vector2 getPos() {
@@ -30,14 +29,6 @@ public class Lootable {
 	public void setPos(Vector2 _pos) {
 		this.boundingBox.x = (int) _pos.x;
 		this.boundingBox.y = (int) _pos.y;
-	}
-
-	public Rectangle getBoundingBox() {
-		return boundingBox;
-	}
-
-	public void setBoundingBox(Rectangle boundingBox) {
-		this.boundingBox = boundingBox;
 	}
 
 	public LootableType getType() {

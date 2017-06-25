@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
 
 public class LevelCompletedScreen implements Screen {
@@ -23,8 +24,8 @@ public class LevelCompletedScreen implements Screen {
 		levelCompleted = new Texture(Gdx.files.internal("levelcomplete.png"));
 		GameOver = new Texture(Gdx.files.internal("GameOver.jpg"));
 		batch = new SpriteBatch();
-		Assets.manager.get(Assets.GameMusic, Music.class).stop();
-		Assets.manager.get(Assets.FootStep, Music.class).stop();
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
 		IGPEGame.music.play();
 	}
 

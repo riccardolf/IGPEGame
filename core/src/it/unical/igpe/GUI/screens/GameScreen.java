@@ -11,7 +11,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.GUI.HUD.HUD;
 import it.unical.igpe.MapUtils.MapRenderer;
 import it.unical.igpe.MapUtils.World;
@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 
 	public GameScreen(World _world) {
 		this.world = _world;
-		this.hud = new HUD();
+		this.hud = new HUD(false);
 		this.renderer = new MapRenderer(world);
 	}
 
@@ -35,24 +35,24 @@ public class GameScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(null);
 		IGPEGame.music.pause();
-		Assets.manager.get(Assets.GameMusic, Music.class).setLooping(true);
-		Assets.manager.get(Assets.GameMusic, Music.class).play();
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setLooping(true);
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).play();
 	}
 
 	@Override
 	public void render(float delta) {
-		if (world.player.isSlowMo(delta))
-			delta *= 0.5f;
-		world.update(delta);
-		handleInput(delta);
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		if (world.player.isSlowMo(delta))
+			delta *= 0.5f;
+		
+		world.update(delta);
+		handleInput(delta);
 		renderer.render(delta);
 		hud.render(world.getPlayer());
 
-		Assets.manager.get(Assets.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-			IGPEGame.game.setScreen(ScreenManager.PS);
 		if (world.isLevelFinished()) {
 			IGPEGame.game.setScreen(ScreenManager.LCompletedS);
 		} else if (world.isGameOver()) {
@@ -72,9 +72,14 @@ public class GameScreen implements Screen {
 		renderer.dispose();
 	}
 
+	/**
+	 * Handle Inputs from the user
+	 * @param delta The time in seconds since the last update
+	 */
 	private void handleInput(float delta) {
 		if (world.player.slowActive)
 			delta *= 2f;
+		
 		float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
 		float mouseX = Gdx.input.getX();
@@ -198,34 +203,27 @@ public class GameScreen implements Screen {
 			}
 
 		}
-
+		
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched() && world.player.canShoot()) {
-			if (world.player.getActWeapon() == "pistol" && !world.player.isReloading()) {
-				Assets.manager.get(Assets.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
+			if (world.player.getActWeapon() == "pistol") {
+				SoundManager.manager.get(SoundManager.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();
-			} else if (world.player.getActWeapon() == "shotgun" && !world.player.isReloading()) {
-				Assets.manager.get(Assets.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
+			} else if (world.player.getActWeapon() == "shotgun") {
+				SoundManager.manager.get(SoundManager.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();
-			} else if (world.player.getActWeapon() == "rifle" && !world.player.isReloading()) {
-				Assets.manager.get(Assets.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
+			} else if (world.player.getActWeapon() == "rifle") {
+				SoundManager.manager.get(SoundManager.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();
 			}
 		}
 
-		if (world.player.checkAmmo()) {
-			if (world.player.getActWeapon() == "pistol")
-				Assets.manager.get(Assets.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
-			else if (world.player.getActWeapon() == "shotgun")
-				Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
-		}
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && world.player.canReload()) {
+		if ((Gdx.input.isKeyJustPressed(Input.Keys.R) && world.player.canReload()) || world.player.checkAmmo()) {
 			world.player.reload();
 			if (world.player.getActWeapon() == "pistol") {
-				Assets.manager.get(Assets.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (world.player.getActWeapon() == "shotgun") {
-				Assets.manager.get(Assets.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 			world.player.setActWeapon("pistol");
@@ -235,12 +233,17 @@ public class GameScreen implements Screen {
 			world.player.setActWeapon("rifle");
 		}
 
+		// Slow-Motion Key
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			if (world.player.slowActive)
 				world.player.slowActive = false;
 			else
 				world.player.slowActive = true;
 		}
+		
+		// Escape Key
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+			IGPEGame.game.setScreen(ScreenManager.PS);
 	}
 
 	@Override

@@ -26,7 +26,10 @@ public class HUD implements Disposable {
 	private Texture rifle;
 	private BitmapFont font;
 
-	public HUD() {
+	/**
+	 * @param isMP true if the game is multiplayer
+	 */
+	public HUD(boolean isMP) {
 		// Loading textures
 		pistol = new Texture(Gdx.files.internal("pistol.png"));
 		rifle = new Texture(Gdx.files.internal("rifle.png"));
@@ -34,7 +37,7 @@ public class HUD implements Disposable {
 		font = IGPEGame.skinsoldier.getFont("font");
 		font.setColor(IGPEGame.skinsoldier.getColor("sky-blue"));
 		font.getData().setScale(1.3f);
-		
+
 		// Creating batch
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 800);
@@ -51,9 +54,11 @@ public class HUD implements Disposable {
 		table.setBounds(0f, 0f, width, partialYpos);
 
 		health = new ProgressBar(0, 100, 1, false, IGPEGame.skinui);
-		skill = new ProgressBar(0.0f, 1.0f, 0.1f, false, IGPEGame.skinui);
-		table.add(skill).width(100);
-		table.row().height(50);
+		if (!isMP) {
+			skill = new ProgressBar(0.0f, 1.0f, 0.1f, false, IGPEGame.skinui);
+			table.add(skill).width(100);
+			table.row().height(50);
+		}
 		table.add(health).width(200);
 
 		stage.addActor(table);
@@ -69,17 +74,17 @@ public class HUD implements Disposable {
 			batch.draw(rifle, 10, 40, 64, 64);
 		else if (player.activeWeapon.ID == "shotgun")
 			batch.draw(shotgun, 10, 40, 64, 64);
-		
+
 		if (player.isReloading() && player.hasAmmo())
 			font.draw(batch, "RELOADING", 15, 20);
-		else if(!player.hasAmmo())
+		else if (!player.hasAmmo())
 			font.draw(batch, "NO AMMO", 15, 20);
 		else
 			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 20);
-		
-		for(int i = 0; i < World.keyCollected; i++)
-			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32 , 5, 32, 32);
-		
+
+		for (int i = 0; i < World.keyCollected; i++)
+			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32, 5, 32, 32);
+
 		batch.end();
 		stage.draw();
 	}
@@ -92,7 +97,6 @@ public class HUD implements Disposable {
 
 	public void render(PlayerMP player) {
 		health.setValue(player.getHP());
-		skill.setValue(player.slowMeter);
 		batch.begin();
 		if (player.activeWeapon.ID == "pistol")
 			batch.draw(pistol, 10, 40, 64, 64);
@@ -100,15 +104,17 @@ public class HUD implements Disposable {
 			batch.draw(rifle, 10, 40, 64, 64);
 		else if (player.activeWeapon.ID == "shotgun")
 			batch.draw(shotgun, 10, 40, 64, 64);
-		
-		if (player.isReloading())
+
+		if (player.isReloading() && player.hasAmmo())
 			font.draw(batch, "RELOADING", 15, 20);
+		else if (!player.hasAmmo())
+			font.draw(batch, "NO AMMO", 15, 20);
 		else
 			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 20);
-		
-		for(int i = 0; i < World.keyCollected; i++)
-			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32 , 5, 32, 32);
-		
+
+		for (int i = 0; i < World.keyCollected; i++)
+			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32, 5, 32, 32);
+
 		batch.end();
 		stage.draw();
 	}

@@ -13,7 +13,7 @@ import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
 import it.unical.igpe.utils.Updatable;
 
-public class Enemy extends AbstractGameObject implements Updatable{
+public class Enemy extends AbstractDynamicObject implements Updatable{
 	public boolean chaseObj;
 	public boolean canShoot;
 	public boolean canMove;

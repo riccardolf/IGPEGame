@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.utils.GameConfig;
 
@@ -76,7 +77,7 @@ public class PauseScreen implements Screen{
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				Assets.manager.get(Assets.GameMusic, Music.class).stop();
+				SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
 				IGPEGame.music.play();
 				Assets.manager.clear();
 				IGPEGame.game.setScreen(ScreenManager.MMS);

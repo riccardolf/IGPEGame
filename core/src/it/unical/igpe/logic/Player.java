@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.utils.GameConfig;
 
-public class Player extends AbstractGameObject {
+public class Player extends AbstractDynamicObject {
 	public static final int PLAYER_STATE_IDLE = 0;
 	public static final int PLAYER_STATE_RUNNING = 1;
 	public static final int PLAYER_STATE_RELOADING = 2;
@@ -76,11 +76,7 @@ public class Player extends AbstractGameObject {
 	}
 
 	public boolean checkAmmo() {
-		if (activeWeapon.actClip == 0) {
-			this.reload();
-			return true;
-		}
-		return false;
+		return activeWeapon.actClip == 0;
 	}
 
 	public void setActWeapon(String ID) {
@@ -99,7 +95,7 @@ public class Player extends AbstractGameObject {
 	}
 
 	public boolean canShoot() {
-		if (this.activeWeapon.lastFired >= this.activeWeapon.fireRate && this.activeWeapon.actClip > 0)
+		if (this.activeWeapon.lastFired >= this.activeWeapon.fireRate && this.activeWeapon.actClip > 0 && !this.isReloading())
 			return true;
 		return false;
 	}

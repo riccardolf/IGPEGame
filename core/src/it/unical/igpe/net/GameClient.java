@@ -10,12 +10,13 @@ import java.net.UnknownHostException;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.logic.AbstractGameObject;
+import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.net.packet.Packet;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
+import it.unical.igpe.net.packet.Packet04Loot;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 
 public class GameClient extends Thread {
@@ -85,7 +86,15 @@ public class GameClient extends Thread {
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
 			break;
+		case LOOT:
+			packet = new Packet04Loot(data);
+			handleLoot((Packet04Loot) packet);
+			break;
 		}
+	}
+
+	private void handleLoot(Packet04Loot packet) {
+		IGPEGame.game.worldMP.removeLoot(packet.getX(), packet.getY());
 	}
 
 	private void handleFire(Packet03Fire packet) {
@@ -93,7 +102,7 @@ public class GameClient extends Thread {
 	}
 
 	private void handleLogin(Packet00Login packet, InetAddress address, int port) {
-		for (AbstractGameObject e: IGPEGame.game.worldMP.getEntities()) {
+		for (AbstractDynamicObject e: IGPEGame.game.worldMP.getEntities()) {
 			if(((PlayerMP)e).username.equalsIgnoreCase(packet.getUsername())) {
 				return;
 			}

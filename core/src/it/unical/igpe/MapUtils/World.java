@@ -9,7 +9,7 @@ import java.util.ListIterator;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.ai.EnemyManager;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
@@ -89,7 +89,7 @@ public class World implements Updatable {
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.TRAP));
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-				} else if (manager.map[x][y] == 4) { // Trap
+				} else if (manager.map[x][y] == 4) { // AmmoPack
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.AMMOPACK));
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
@@ -147,7 +147,7 @@ public class World implements Updatable {
 			if (l.getBoundingBox().intersects(player.getBoundingBox())) {
 				if (l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
 					player.setHP(player.getHP() + 25);
-					Assets.manager.get(Assets.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
+					SoundManager.manager.get(SoundManager.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
 					itl.remove();
 				} else if (l.getType() == LootableType.AMMOPACK) {
 					if (player.pistol.canAdd() || player.shotgun.canAdd() || player.rifle.canAdd()) {
@@ -158,7 +158,7 @@ public class World implements Updatable {
 					}
 				} else if (l.getType() == LootableType.TRAP && l.closed == false) {
 					player.setHP(player.getHP() - 50);
-					Assets.manager.get(Assets.TrapClosing, Sound.class).play(GameConfig.SOUND_VOLUME);
+					SoundManager.manager.get(SoundManager.TrapClosing, Sound.class).play(GameConfig.SOUND_VOLUME);
 					l.closed = true;
 				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR
 						|| l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {

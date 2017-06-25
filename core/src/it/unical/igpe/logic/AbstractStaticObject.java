@@ -1,11 +1,10 @@
 package it.unical.igpe.logic;
 
-import com.badlogic.gdx.math.Rectangle;
+import java.awt.Rectangle;
 
 public abstract class AbstractStaticObject {
 	protected Rectangle boundingBox;
 	protected String ID;
-	protected float HP;
 	
 	public Rectangle getBoundingBox() {
 		return boundingBox;
@@ -18,11 +17,5 @@ public abstract class AbstractStaticObject {
 	}
 	public void setID(String iD) {
 		ID = iD;
-	}
-	public float getHP() {
-		return HP;
-	}
-	public void setHP(float hP) {
-		HP = hP;
 	}
 }

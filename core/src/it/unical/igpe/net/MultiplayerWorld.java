@@ -11,16 +11,16 @@ import java.util.ListIterator;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.MapManager;
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.logic.AbstractGameObject;
+import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
-import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.net.packet.Packet00Login;
+import it.unical.igpe.net.packet.Packet04Loot;
 import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
@@ -28,22 +28,23 @@ import it.unical.igpe.utils.Updatable;
 
 public class MultiplayerWorld implements Updatable {
 	public static String username;
-	public PlayerMP player;
-	public List<AbstractGameObject> entities;
 	public static boolean finished = false;
 	public static int keyCollected;
+	public PlayerMP player;
+	public List<AbstractDynamicObject> entities;
 
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
 	private static LinkedList<Lootable> lootables;
 	public Vector2 dir;
 	private MapManager manager;
+	public boolean isServer = false;
 
 	public MultiplayerWorld(String path) {
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		bls = new LinkedList<Bullet>();
-		entities = new ArrayList<AbstractGameObject>();
+		entities = new ArrayList<AbstractDynamicObject>();
 		keyCollected = 0;
 
 		manager = new MapManager(64, 64);
@@ -84,20 +85,26 @@ public class MultiplayerWorld implements Updatable {
 				} else if (manager.map[x][y] == 13) { // Trap
 					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.TRAP));
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
+				} else if (manager.map[x][y] == 4) { // AmmoPack
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.AMMOPACK));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				}
 			}
-		this.addEntity(player);
-		Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x,
-				player.getBoundingBox().y);
-		// If the client has started a server, add it has a connection
-		if (IGPEGame.game.socketServer != null) {
-			IGPEGame.game.socketServer.addConnection((PlayerMP) player, loginPacket);
+		if(!isServer) {
+			this.addEntity(player);
+			Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x,
+					player.getBoundingBox().y);
+			// If the client has started a server, add it has a connection
+			if (IGPEGame.game.socketServer != null) {
+				IGPEGame.game.socketServer.addConnection((PlayerMP) player, loginPacket);
+			}
+			loginPacket.writeData(IGPEGame.game.socketClient);
 		}
-		loginPacket.writeData(IGPEGame.game.socketClient);
-		dir = new Vector2();
 	}
 
 	public void update(float delta) {
+		
 		player.state = Player.PLAYER_STATE_IDLE;
 
 		if (player.isReloading(delta))
@@ -105,40 +112,34 @@ public class MultiplayerWorld implements Updatable {
 
 		player.activeWeapon.lastFired += delta;
 
-		// Enemies
+		// Bullet collisions
 		synchronized (bls) {
 			if (!bls.isEmpty()) {
 				boolean removed = false;
 				ListIterator<Bullet> it = bls.listIterator();
 				while (it.hasNext()) {
-					ListIterator<AbstractGameObject> iter = entities.listIterator();
+					ListIterator<AbstractDynamicObject> iter = entities.listIterator();
 					Bullet b = it.next();
 					b.update(delta);
 					while (iter.hasNext()) {
-						AbstractGameObject a = iter.next();
-						if (a instanceof Enemy)
-							if (b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()
-									&& b.getID() == "player") {
-								it.remove();
-								((Enemy) a).hit(b.getHP());
-								removed = true;
-							}
+						AbstractDynamicObject a = iter.next();
+						if (b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()
+								&& b.getID() != ((PlayerMP) a).getUsername()) {
+							it.remove();
+							// TODO: Packet player died
+							removed = true;
+						}
 					}
 					if (removed)
 						continue;
-					if (b.getBoundingBox().intersects(player.getBoundingBox()) && b.getID() == "enemy") {
+					if (getNextTile(b.getBoundingBox()) == TileType.WALL)
 						it.remove();
-						player.hit(b.getHP());
-						continue;
-					}
-					if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
-						it.remove();
-						continue;
-					}
 				}
 			}
 		}
 
+		// TODO: Packet for server closed
+		// TODO: Packet for loot
 		// Checking lootable items
 		Iterator<Lootable> itl = lootables.iterator();
 		while (itl.hasNext()) {
@@ -146,18 +147,27 @@ public class MultiplayerWorld implements Updatable {
 			if (l.getBoundingBox().intersects(player.getBoundingBox())) {
 				if (l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
 					player.setHP(player.getHP() + 25);
-					Assets.manager.get(Assets.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
-					itl.remove();
-					break;
+					SoundManager.manager.get(SoundManager.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
+					Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
+					packetLoot.writeData(IGPEGame.game.socketClient);
+				} else if (l.getType() == LootableType.AMMOPACK) {
+					if (player.pistol.canAdd() || player.shotgun.canAdd() || player.rifle.canAdd()) {
+						player.pistol.addAmmo(15);
+						player.shotgun.addAmmo(6);
+						player.rifle.addAmmo(5);
+						Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
+						packetLoot.writeData(IGPEGame.game.socketClient);
+					}
 				} else if (l.getType() == LootableType.TRAP && l.closed == false) {
 					player.setHP(player.getHP() - 50);
-					Assets.manager.get(Assets.TrapClosing, Sound.class).play(GameConfig.SOUND_VOLUME);
-					l.closed = true;
-					break;
+					SoundManager.manager.get(SoundManager.TrapClosing, Sound.class).play(GameConfig.SOUND_VOLUME);
+					Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
+					packetLoot.writeData(IGPEGame.game.socketClient);
 				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR
 						|| l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
 					MultiplayerWorld.keyCollected++;
-					itl.remove();
+					Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
+					packetLoot.writeData(IGPEGame.game.socketClient);
 				}
 			}
 		}
@@ -185,7 +195,7 @@ public class MultiplayerWorld implements Updatable {
 
 	public synchronized void removePlayerMP(String username) {
 		int index = 0;
-		for (AbstractGameObject e : entities) {
+		for (AbstractDynamicObject e : entities) {
 			if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
 				break;
 			}
@@ -196,7 +206,7 @@ public class MultiplayerWorld implements Updatable {
 
 	public int getPlayerMPIndex(String username) {
 		int index = 0;
-		for (AbstractGameObject e : this.getEntities()) {
+		for (AbstractDynamicObject e : this.getEntities()) {
 			if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
 				return index;
 			}
@@ -213,18 +223,35 @@ public class MultiplayerWorld implements Updatable {
 			p.getBoundingBox().y = y;
 			p.angle = angle;
 			p.state = state;
-			if(weapon == 0)
+			if (weapon == 0)
 				p.activeWeapon = p.pistol;
-			else if(weapon == 1)
+			else if (weapon == 1)
 				p.activeWeapon = p.shotgun;
-			else if(weapon == 2)
+			else if (weapon == 2)
 				p.activeWeapon = p.rifle;
 		}
 	}
 
 	public void fireBullet(String username, int x, int y, float angle) {
 		synchronized (bls) {
-			this.bls.add(new Bullet(new Vector2(x + 32, y + 32), (float) Math.toRadians(angle + 90f), username, 15));
+			float x2 = (float) (16 * Math.cos(Math.toRadians(angle)) - 16 * Math.sin(Math.toRadians(angle)));
+			float y2 = (float) (16 * Math.sin(Math.toRadians(angle)) + 16 * Math.cos(Math.toRadians(angle)));
+			this.bls.add(new Bullet(new Vector2(x + 32 + x2, y + 32 + y2), (float) Math.toRadians(angle + 90f),
+					username, 15));
+		}
+	}
+
+	public synchronized void removeLoot(int x, int y) {
+		Iterator<Lootable> iter = lootables.iterator();
+		while (iter.hasNext()) {
+			Lootable l = iter.next();
+			if (l.getBoundingBox().x == x && l.getBoundingBox().y == y) {
+				if (l.getType() == LootableType.TRAP)
+					l.closed = true;
+				else
+					iter.remove();
+				break;
+			}
 		}
 	}
 
@@ -258,11 +285,11 @@ public class MultiplayerWorld implements Updatable {
 		return false;
 	}
 
-	public synchronized void addEntity(AbstractGameObject player) {
-			this.getEntities().add(player);
+	public synchronized void addEntity(AbstractDynamicObject player) {
+		this.getEntities().add(player);
 	}
 
-	public synchronized List<AbstractGameObject> getEntities() {
-        return this.entities;
-    }
+	public synchronized List<AbstractDynamicObject> getEntities() {
+		return this.entities;
+	}
 }

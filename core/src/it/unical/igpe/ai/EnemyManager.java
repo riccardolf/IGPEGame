@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import it.unical.igpe.MapUtils.World;
-import it.unical.igpe.logic.AbstractGameObject;
+import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Tile;
@@ -41,7 +41,7 @@ public class EnemyManager implements Updatable {
 	public EnemyManager(MultiplayerWorld _world) {
 		worldMP = _world;
 		ens = new LinkedList<Enemy>();
-		for (AbstractGameObject o : worldMP.getEntities()) {
+		for (AbstractDynamicObject o : worldMP.getEntities()) {
 			if (o instanceof Enemy)
 				ens.add((Enemy) o);
 		}

@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.GUI.screens.ScreenManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.packet.Packet01Disconnect;
@@ -80,7 +81,7 @@ public class MultiplayerPauseScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				Packet01Disconnect packetDisconnect = new Packet01Disconnect(IGPEGame.game.worldMP.player.getUsername());
 				packetDisconnect.writeData(IGPEGame.game.socketClient);
-				Assets.manager.get(Assets.GameMusic, Music.class).stop();
+				SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
 				IGPEGame.music.play();
 				Assets.manager.clear();
 				IGPEGame.game.setScreen(ScreenManager.MMS);

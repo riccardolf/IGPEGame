@@ -2,8 +2,6 @@ package it.unical.igpe.GUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -29,18 +27,6 @@ public class Assets {
 	public static String Crosshair = "crosshair2.png";
 	public static String AmmoBox = "ammobox.png";
 
-	public static String FootStep = "Audio/footstep.ogg";
-	public static String PistolFire = "Audio/pistol_fire.ogg";
-	public static String RifleFire = "Audio/rifle_fire.wav";
-	public static String ShotgunFire = "Audio/shotgun_fire.wav";
-	public static String PistolReload = "Audio/pistol_reload.ogg";
-	public static String ShotgunReload = "Audio/shotgun_reload.ogg";
-	
-	public static String TrapClosing = "Audio/trap.ogg";
-	public static String HealthRestored = "Audio/health.ogg";
-	
-	public static String GameMusic = "Audio/gamemusic.ogg";
-
 	public static TextureAtlas atlas;
 	public static TextureRegion Enemy;
 	public static TextureRegion Bullet;
@@ -58,6 +44,10 @@ public class Assets {
 	public static Animation<TextureRegion> shootingRifleAnimation;
 	public static Animation<TextureRegion> muzzleflash;
 
+	
+	/**
+	 * Load assets for the game
+	 */
 	public static void load() {
 
 		// load texture for blocks
@@ -110,16 +100,5 @@ public class Assets {
 		
 		atlas = new TextureAtlas(Gdx.files.internal("muzzleflash.atlas"));
 		muzzleflash = new Animation<TextureRegion>(0.04f, atlas.findRegions("muzzle_profile"));
-		
-		// load sound effects
-		manager.load(FootStep, Music.class);
-		manager.load(PistolFire, Sound.class);
-		manager.load(RifleFire, Sound.class);
-		manager.load(ShotgunFire, Sound.class);
-		manager.load(GameMusic, Music.class);
-		manager.load(ShotgunReload, Sound.class);
-		manager.load(PistolReload, Sound.class);
-		manager.load(TrapClosing, Sound.class);
-		manager.load(HealthRestored, Sound.class);
 	}
 }
