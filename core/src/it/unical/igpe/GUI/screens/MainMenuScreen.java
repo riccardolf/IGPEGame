@@ -2,7 +2,6 @@ package it.unical.igpe.GUI.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.utils.GameConfig;
 
@@ -27,12 +25,7 @@ public class MainMenuScreen implements Screen {
 	private TextButton quitButton;
 	
 	@Override
-	public void show() {
-		if(!SoundManager.manager.get(SoundManager.MenuMusic, Music.class).isPlaying()) {
-			SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-			SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
-		}
-		
+	public void show() {		
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 		

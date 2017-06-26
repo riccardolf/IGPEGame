@@ -26,7 +26,7 @@ public class LevelCompletedScreen implements Screen {
 		batch = new SpriteBatch();
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
 		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+		IGPEGame.music.play();
 	}
 
 	@Override

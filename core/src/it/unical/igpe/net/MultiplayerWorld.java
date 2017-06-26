@@ -39,9 +39,8 @@ public class MultiplayerWorld implements Updatable {
 	public Vector2 dir;
 	private MapManager manager;
 	public boolean isServer = false;
-	
-	public MultiplayerWorld(String path, boolean isServer) {
-		this.isServer = isServer;
+
+	public MultiplayerWorld(String path) {
 		tiles = new LinkedList<Tile>();
 		lootables = new LinkedList<Lootable>();
 		bls = new LinkedList<Bullet>();
@@ -127,6 +126,7 @@ public class MultiplayerWorld implements Updatable {
 						if (b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()
 								&& b.getID() != ((PlayerMP) a).getUsername()) {
 							it.remove();
+							// TODO: Packet player died
 							removed = true;
 						}
 					}

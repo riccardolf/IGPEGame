@@ -59,7 +59,7 @@ public class MapRenderer {
 			SoundManager.manager.get(SoundManager.FootStep, Music.class).play();
 		else
 			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
-		
+
 		batch.begin();
 
 		// Drawing Tile

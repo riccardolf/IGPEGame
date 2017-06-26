@@ -82,6 +82,7 @@ public class MultiplayerPauseScreen implements Screen {
 				Packet01Disconnect packetDisconnect = new Packet01Disconnect(IGPEGame.game.worldMP.player.getUsername());
 				packetDisconnect.writeData(IGPEGame.game.socketClient);
 				SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
+				IGPEGame.music.play();
 				Assets.manager.clear();
 				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
@@ -126,8 +127,6 @@ public class MultiplayerPauseScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			IGPEGame.game.setScreen(ScreenManager.MGS);
