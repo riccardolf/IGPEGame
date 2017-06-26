@@ -34,7 +34,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(null);
-		IGPEGame.music.pause();
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).pause();
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setLooping(true);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).play();
