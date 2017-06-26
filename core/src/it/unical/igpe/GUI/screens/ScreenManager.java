@@ -1,9 +1,13 @@
 package it.unical.igpe.GUI.screens;
 
+import com.badlogic.gdx.audio.Music;
+
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.MultiplayerGameScreen;
 import it.unical.igpe.net.MultiplayerPauseScreen;
+import it.unical.igpe.utils.GameConfig;
 
 public class ScreenManager {
 	public static MainMenuScreen MMS;
@@ -18,6 +22,13 @@ public class ScreenManager {
 	public static MultiplayerPauseScreen MPS;
 	
 	public ScreenManager() {
+		SoundManager.load();
+		while(!SoundManager.manager.update())
+			SoundManager.manager.finishLoading();
+		
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);
+		
 		MMS = new MainMenuScreen();
 		LCS = new LevelChooseScreen();
 		LCompletedS = new LevelCompletedScreen();

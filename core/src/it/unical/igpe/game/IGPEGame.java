@@ -3,7 +3,6 @@ package it.unical.igpe.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -22,7 +21,6 @@ public class IGPEGame extends Game implements Disposable {
 	private static final String SOUND_VOLUME = "soundvolume";
 	private static final String FULLSCREEN = "fullscreen";
 	public static IGPEGame game;
-	public static Music music;
 	public static Texture background;
 	public static Skin skinsoldier;
 	public static Skin skinui;
@@ -42,11 +40,7 @@ public class IGPEGame extends Game implements Disposable {
 
 		atlas = new TextureAtlas(Gdx.files.internal("skin/ui/uiskin.atlas"));
 		skinui = new Skin(Gdx.files.internal("skin/ui/uiskin.json"), atlas);
-
-		music = Gdx.audio.newMusic(Gdx.files.internal("Audio/menumusic.mp3"));
-		music.play();
-		music.setLooping(true);
-
+		
 		GameConfig.MUSIC_VOLUME = this.getMusicVolume();
 		GameConfig.SOUND_VOLUME = this.getSoundVolume();
 		GameConfig.isFullscreen = this.getFullScreen();
@@ -60,7 +54,6 @@ public class IGPEGame extends Game implements Disposable {
 
 	@Override
 	public void render() {
-		music.setVolume(GameConfig.MUSIC_VOLUME);
 		super.render();
 	}
 

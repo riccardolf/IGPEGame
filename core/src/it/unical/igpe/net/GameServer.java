@@ -31,8 +31,7 @@ public class GameServer extends Thread {
 		try {
 			this.socket = new DatagramSocket(port);
 			System.out.println("Creating Server...");
-			this.worldMP.isServer = true;
-			this.worldMP = new MultiplayerWorld("map.txt");
+			this.worldMP = new MultiplayerWorld("map.txt", true);
 			this.mapLoot = this.worldMP.getLootables();
 		} catch (SocketException e1) {
 			e1.printStackTrace();
@@ -137,11 +136,9 @@ public class GameServer extends Thread {
 					p.port = player.port;
 				alreadyConnected = true;
 			}
-			System.out.println("Sending login data to " + p.ipAddress + " " + p.port);
 			sendData(packet.getData(), p.ipAddress, p.port);
 
 			Packet newPacket = new Packet00Login(p.getUsername(), p.getBoundingBox().x, p.getBoundingBox().y);
-			System.out.println("Sending login data to " + player.ipAddress + " " + player.port);
 			sendData(newPacket.getData(), player.ipAddress, player.port);
 		}
 		if (!alreadyConnected) {

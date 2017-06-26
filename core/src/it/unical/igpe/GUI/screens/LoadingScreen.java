@@ -24,7 +24,6 @@ public class LoadingScreen implements Screen {
 	@Override
 	public void show() {
 		Assets.load();
-		SoundManager.load();
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
