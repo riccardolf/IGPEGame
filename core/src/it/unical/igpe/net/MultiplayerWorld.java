@@ -106,10 +106,10 @@ public class MultiplayerWorld implements Updatable {
 
 	public void update(float delta) {
 		
-		player.state = Player.PLAYER_STATE_IDLE;
+		player.state = Player.STATE_IDLE;
 
 		if (player.isReloading(delta))
-			player.state = Player.PLAYER_STATE_RELOADING;
+			player.state = Player.STATE_RELOADING;
 
 		player.activeWeapon.lastFired += delta;
 

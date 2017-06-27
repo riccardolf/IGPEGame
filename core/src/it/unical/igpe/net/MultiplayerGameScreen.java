@@ -81,7 +81,7 @@ public class MultiplayerGameScreen implements Screen {
 		// Movements and Collisions of the player
 		if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
@@ -96,7 +96,7 @@ public class MultiplayerGameScreen implements Screen {
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
@@ -111,7 +111,7 @@ public class MultiplayerGameScreen implements Screen {
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
@@ -126,7 +126,7 @@ public class MultiplayerGameScreen implements Screen {
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
@@ -141,7 +141,7 @@ public class MultiplayerGameScreen implements Screen {
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x,
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
@@ -153,7 +153,7 @@ public class MultiplayerGameScreen implements Screen {
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
@@ -165,7 +165,7 @@ public class MultiplayerGameScreen implements Screen {
 			
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x,
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
@@ -177,7 +177,7 @@ public class MultiplayerGameScreen implements Screen {
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!world.player.isReloading())
-				world.player.state = Player.PLAYER_STATE_RUNNING;
+				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);

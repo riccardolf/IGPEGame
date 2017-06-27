@@ -8,10 +8,10 @@ import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.utils.GameConfig;
 
 public class Player extends AbstractDynamicObject {
-	public static final int PLAYER_STATE_IDLE = 0;
-	public static final int PLAYER_STATE_RUNNING = 1;
-	public static final int PLAYER_STATE_RELOADING = 2;
-	public static final int PLAYER_STATE_SHOOTING = 3;
+	public static final int STATE_IDLE = 0;
+	public static final int STATE_RUNNING = 1;
+	public static final int STATE_RELOADING = 2;
+	public static final int STATE_SHOOTING = 3;
 	public int state;
 	protected boolean reloading;
 	protected boolean shooting;

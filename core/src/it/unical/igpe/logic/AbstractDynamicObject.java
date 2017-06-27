@@ -1,7 +1,5 @@
 package it.unical.igpe.logic;
 
-import com.badlogic.gdx.math.Vector2;
-
 public abstract class AbstractDynamicObject extends AbstractStaticObject{
 	public float angle;
 	public String username;
@@ -11,16 +9,7 @@ public abstract class AbstractDynamicObject extends AbstractStaticObject{
 
 	@Override
 	public String toString() {
-		return "Pos: " + boundingBox.x + " " + boundingBox.y + " " + boundingBox.width + " " + boundingBox.height;
-	}
-
-	public Vector2 getPos() {
-		return new Vector2(boundingBox.x, boundingBox.y);
-	}
-
-	public void setPos(Vector2 pos) {
-		this.boundingBox.x = (int) pos.x;
-		this.boundingBox.y = (int) pos.y;
+		return "Pos: " + this.getX() + " " + this.getY() + " " + boundingBox.width + " " + boundingBox.height;
 	}
 
 	public boolean Alive() {

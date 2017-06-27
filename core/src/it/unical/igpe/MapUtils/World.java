@@ -101,13 +101,13 @@ public class World implements Updatable {
 
 	@SuppressWarnings("static-access")
 	public void update(float delta) {
-		player.state = Player.PLAYER_STATE_IDLE;
+		player.state = Player.STATE_IDLE;
 
 		if (player.isReloading(delta) && player.hasAmmo())
-			player.state = Player.PLAYER_STATE_RELOADING;
+			player.state = Player.STATE_RELOADING;
 
 		if (player.isShooting(delta))
-			player.state = Player.PLAYER_STATE_SHOOTING;
+			player.state = Player.STATE_SHOOTING;
 
 		// Enemies
 		EM.update(delta);

@@ -13,7 +13,7 @@ import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
 import it.unical.igpe.utils.Updatable;
 
-public class Enemy extends AbstractDynamicObject implements Updatable{
+public class Enemy extends AbstractDynamicObject implements Updatable {
 	public boolean chaseObj;
 	public boolean canShoot;
 	public boolean canMove;
@@ -43,8 +43,8 @@ public class Enemy extends AbstractDynamicObject implements Updatable{
 		dir = new Vector2();
 		Random random = new Random();
 		followTimer = random.nextFloat() + 6f;
-		startx = this.getBoundingBox().x + 32;
-		starty = this.getBoundingBox().y + 32;
+		startx = this.getX() + 32;
+		starty = this.getY() + 32;
 		targetx = startx;
 		targety = starty;
 		canMove = true;
@@ -54,12 +54,12 @@ public class Enemy extends AbstractDynamicObject implements Updatable{
 		if (this.HP <= 0)
 			this.alive = false;
 		canMove = true;
-		startx = this.getBoundingBox().x + 32;
-		starty = this.getBoundingBox().y + 32;
+		startx = this.getX() + 32;
+		starty = this.getY() + 32;
 		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
 				&& this.getPos().dst(players.getFirst().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
-			targetx = players.getFirst().getBoundingBox().x + 32;
-			targety = players.getFirst().getBoundingBox().y + 32;
+			targetx = players.getFirst().getX() + 32;
+			targety = players.getFirst().getY() + 32;
 			followDelay = 0;
 		} else if (followDelay > followTimer) {
 			Random r = new Random();
@@ -69,8 +69,8 @@ public class Enemy extends AbstractDynamicObject implements Updatable{
 		} else if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_SHOOT_RADIUS) {
 			canMove = false;
 			followDelay = 0;
-			targetx = players.getFirst().getBoundingBox().x + 32;
-			targety = players.getFirst().getBoundingBox().y + 32;
+			targetx = players.getFirst().getX() + 32;
+			targety = players.getFirst().getY() + 32;
 		}
 
 		dir = new Vector2(targetx - startx, targety - starty);
@@ -78,8 +78,8 @@ public class Enemy extends AbstractDynamicObject implements Updatable{
 		angle = dir.angle();
 
 		if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS) {
-			targetx = players.getFirst().getBoundingBox().x + 32;
-			targety = players.getFirst().getBoundingBox().y + 32;
+			targetx = players.getFirst().getX() + 32;
+			targety = players.getFirst().getY() + 32;
 			followDelay = 0;
 			if (shootDelay > 1) {
 				shootDelay = 0;
@@ -98,7 +98,7 @@ public class Enemy extends AbstractDynamicObject implements Updatable{
 
 	public Bullet fire() {
 		this.canShoot = false;
-		return new Bullet(new Vector2(this.getBoundingBox().x + 32, this.getBoundingBox().y + 32),
+		return new Bullet(new Vector2(this.getX() + 32, this.getY() + 32),
 				(float) Math.toRadians(angle + 90f), "enemy", 15);
 	}
 
@@ -117,29 +117,29 @@ public class Enemy extends AbstractDynamicObject implements Updatable{
 	}
 
 	public void followPath(Vector2 pos, float delta) {
-		if (this.boundingBox.y > pos.y) {
-			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y - (int) (GameConfig.ENEMY_SPEED * delta),
+		if (this.getY() > pos.y) {
+			box = new Rectangle(this.getX(), this.getY() - (int) (GameConfig.ENEMY_SPEED * delta),
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
 				this.getBoundingBox().y -= GameConfig.ENEMY_SPEED * delta;
 		}
-		if (this.boundingBox.x > pos.x) {
-			box = new Rectangle(this.getBoundingBox().x - (int) (GameConfig.ENEMY_SPEED * delta), this.getBoundingBox().y,
+		if (this.getX() > pos.x) {
+			box = new Rectangle(this.getX() - (int) (GameConfig.ENEMY_SPEED * delta), this.getY(),
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
 				this.getBoundingBox().x -= GameConfig.ENEMY_SPEED * delta;
 		}
-		if (this.boundingBox.y < pos.y) {
-			box = new Rectangle(this.getBoundingBox().x, this.getBoundingBox().y + (int) (GameConfig.ENEMY_SPEED * delta),
+		if (this.getY() < pos.y) {
+			box = new Rectangle(this.getX(), this.getY() + (int) (GameConfig.ENEMY_SPEED * delta),
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))
 				this.getBoundingBox().y += GameConfig.ENEMY_SPEED * delta;
 		}
-		if (this.boundingBox.x < pos.x) {
-			box = new Rectangle(this.getBoundingBox().x + (int) (GameConfig.ENEMY_SPEED * delta), this.getBoundingBox().y,
+		if (this.getX() < pos.x) {
+			box = new Rectangle(this.getX() + (int) (GameConfig.ENEMY_SPEED * delta), this.getY(),
 					this.getBoundingBox().width, this.getBoundingBox().height);
 			nextTile = World.getNextTile(box);
 			if (nextTile != TileType.WALL && !EnemyManager.collisionsEnemy(box, this))

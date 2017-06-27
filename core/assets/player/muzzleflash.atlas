@@ -1,48 +1,48 @@
 
-blood_d.png
+muzzleflash.png
 size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-blood_d
+muzzle_profile
   rotate: false
   xy: 2, 1030
   size: 512, 512
   orig: 512, 512
-  offset: 0, 0
-  index: 1
-blood_d
+  offset: 256, 256
+  index: 5
+muzzle_profile
   rotate: false
   xy: 2, 516
   size: 512, 512
   orig: 512, 512
-  offset: 0, 0
-  index: 2
-blood_d
+  offset: 256, 256
+  index: 6
+muzzle_profile
   rotate: false
   xy: 516, 1030
   size: 512, 512
   orig: 512, 512
-  offset: 0, 0
-  index: 3
-blood_d
+  offset: 256, 256
+  index: 1
+muzzle_profile
   rotate: false
   xy: 2, 2
   size: 512, 512
   orig: 512, 512
-  offset: 0, 0
-  index: 4
-blood_d
+  offset: 256, 256
+  index: 2
+muzzle_profile
   rotate: false
   xy: 516, 516
   size: 512, 512
   orig: 512, 512
-  offset: 0, 0
-  index: 5
-blood_d
+  offset: 256, 256
+  index: 3
+muzzle_profile
   rotate: false
   xy: 1030, 1030
   size: 512, 512
   orig: 512, 512
-  offset: 0, 0
-  index: 6
+  offset: 256, 256
+  index: 4

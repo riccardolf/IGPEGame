@@ -63,7 +63,7 @@ public class Weapon {
 		actClip = 3;
 		actAmmo = 15;
 		maxAmmo = 30;
-		reloadTime = 1.5f;
+		reloadTime = 2f;
 		reloadAct = reloadTime;
 		damage = 34;
 		bulletSpeed = GameConfig.BULLETSPEED;

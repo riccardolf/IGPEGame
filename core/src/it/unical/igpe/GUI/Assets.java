@@ -14,7 +14,7 @@ public class Assets {
 	public static String Wall = "wall.png";
 	public static String Stair = "stairO.png";
 	public static String StairClosed = "stairC.png";
-	public static String Light = "light.png";
+	public static String Light = "enemy/light.png";
 	public static String HealthPack = "hp.png";
 	public static String TrapOpen = "trapO.png";
 	public static String TrapClosed = "trapC.png";
@@ -22,14 +22,14 @@ public class Assets {
 	public static String KeyR = "keyR.png";
 	public static String KeyG = "keyG.png";
 	public static String KeyB = "keyB.png";
-	public static String Skull = "skull.png";
 	public static String Key = "key.png";
 	public static String Crosshair = "crosshair2.png";
 	public static String AmmoBox = "ammobox.png";
 
 	public static TextureAtlas atlas;
+	public static TextureRegion Skull;
 	public static TextureRegion Enemy;
-	public static TextureRegion Bullet;
+	public static Animation<TextureRegion> runningEnemy;
 	public static Animation<TextureRegion> runningPistolAnimation;
 	public static Animation<TextureRegion> idlePistolAnimation;
 	public static Animation<TextureRegion> reloadingPistolAnimation;
@@ -44,7 +44,6 @@ public class Assets {
 	public static Animation<TextureRegion> shootingRifleAnimation;
 	public static Animation<TextureRegion> muzzleflash;
 
-	
 	/**
 	 * Load assets for the game
 	 */
@@ -63,42 +62,43 @@ public class Assets {
 		manager.load(KeyR, Texture.class);
 		manager.load(KeyG, Texture.class);
 		manager.load(KeyB, Texture.class);
-		manager.load(Skull, Texture.class);
 		manager.load(Key, Texture.class);
 		manager.load(Crosshair, Pixmap.class);
 		manager.load(AmmoBox, Texture.class);
 
 		// load character's animations
-		Bullet = new TextureRegion(new Texture(Gdx.files.internal("bullet.png")));
-		Enemy = new TextureRegion(new Texture(Gdx.files.internal("idle.png")));
-		atlas = new TextureAtlas(Gdx.files.internal("handgun_move.atlas"));
+		Skull = new TextureRegion(new Texture(Gdx.files.internal("enemy/skull.png")));
+		Enemy = new TextureRegion(new Texture(Gdx.files.internal("enemy/idle.png")));
+
+		atlas = new TextureAtlas(Gdx.files.internal("player/handgun_move.atlas"));
 		runningPistolAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("handgun_move"));
-		atlas = new TextureAtlas(Gdx.files.internal("handgun_idle.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/handgun_idle.atlas"));
 		idlePistolAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("handgun_idle"));
-		atlas = new TextureAtlas(Gdx.files.internal("handgun_reload.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/handgun_reload.atlas"));
 		reloadingPistolAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("handgun_reload"));
-		atlas = new TextureAtlas(Gdx.files.internal("handgun_shoot.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/handgun_shoot.atlas"));
 		shootingPistolAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("handgun_shoot"));
 
-		atlas = new TextureAtlas(Gdx.files.internal("rifle_move.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/rifle_move.atlas"));
 		runningRifleAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("rifle_move"));
-		atlas = new TextureAtlas(Gdx.files.internal("rifle_idle.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/rifle_idle.atlas"));
 		idleRifleAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("rifle_idle"));
-		atlas = new TextureAtlas(Gdx.files.internal("rifle_reload.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/rifle_reload.atlas"));
 		reloadingRifleAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("rifle_reload"));
-		atlas = new TextureAtlas(Gdx.files.internal("rifle_shoot.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/rifle_shoot.atlas"));
 		shootingRifleAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("rifle_shoot"));
 
-		atlas = new TextureAtlas(Gdx.files.internal("shotgun_move.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/shotgun_move.atlas"));
 		runningShotgunAnimation = new Animation<TextureRegion>(0.03f, atlas.findRegions("shotgun_move"));
-		atlas = new TextureAtlas(Gdx.files.internal("shotgun_idle.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/shotgun_idle.atlas"));
 		idleShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_idle"));
-		atlas = new TextureAtlas(Gdx.files.internal("shotgun_reload.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/shotgun_reload.atlas"));
 		reloadingShotgunAnimation = new Animation<TextureRegion>(0.04f, atlas.findRegions("shotgun_reload"));
-		atlas = new TextureAtlas(Gdx.files.internal("shotgun_shoot.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("player/shotgun_shoot.atlas"));
 		shootingShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_shoot"));
-		
-		atlas = new TextureAtlas(Gdx.files.internal("muzzleflash.atlas"));
+
+		atlas = new TextureAtlas(Gdx.files.internal("player/muzzleflash.atlas"));
 		muzzleflash = new Animation<TextureRegion>(0.04f, atlas.findRegions("muzzle_profile"));
+
 	}
 }

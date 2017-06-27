@@ -59,7 +59,7 @@ public class MultiplayerWorldRenderer {
 		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 
 		// Sound from the player
-		if (world.getPlayer().state == Player.PLAYER_STATE_RUNNING)
+		if (world.getPlayer().state == Player.STATE_RUNNING)
 			SoundManager.manager.get(SoundManager.FootStep, Music.class).play();
 		else
 			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
@@ -119,33 +119,33 @@ public class MultiplayerWorldRenderer {
 		for (AbstractDynamicObject e : world.entities) {
 			if (e.Alive() && e instanceof PlayerMP) {
 				if (((PlayerMP) e).getActWeapon() == "pistol") {
-					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
+					if (((PlayerMP) e).state == Player.STATE_IDLE)
 						batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
+					else if (((PlayerMP) e).state == Player.STATE_RELOADING)
 						batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
+					else if (((PlayerMP) e).state == Player.STATE_RUNNING)
 						batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 				} else if (((PlayerMP) e).getActWeapon() == "shotgun") {
-					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
+					if (((PlayerMP) e).state == Player.STATE_IDLE)
 						batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
+					else if (((PlayerMP) e).state == Player.STATE_RELOADING)
 						batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
+					else if (((PlayerMP) e).state == Player.STATE_RUNNING)
 						batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 				} else if (((PlayerMP) e).getActWeapon() == "rifle") {
-					if (((PlayerMP) e).state == Player.PLAYER_STATE_IDLE)
+					if (((PlayerMP) e).state == Player.STATE_IDLE)
 						batch.draw(Assets.idleRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RELOADING)
+					else if (((PlayerMP) e).state == Player.STATE_RELOADING)
 						batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.PLAYER_STATE_RUNNING)
+					else if (((PlayerMP) e).state == Player.STATE_RUNNING)
 						batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
 				}
@@ -156,7 +156,7 @@ public class MultiplayerWorldRenderer {
 				batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 			} else
-				batch.draw(Assets.manager.get(Assets.Skull, Texture.class), e.getPos().x, e.getPos().y, 48, 48);
+				batch.draw(Assets.Skull, e.getPos().x, e.getPos().y, 48, 48);
 		}
 		batch.setColor(1, 1, 1, 0.5f);
 		batch.end();

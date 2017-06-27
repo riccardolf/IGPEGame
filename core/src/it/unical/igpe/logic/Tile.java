@@ -21,15 +21,6 @@ public class Tile extends AbstractStaticObject {
 		return type + " " + this.boundingBox.toString();
 	}
 
-	public Vector2 getPos() {
-		return new Vector2(this.boundingBox.x, this.boundingBox.y);
-	}
-
-	public void setPos(Vector2 _pos) {
-		this.boundingBox.x = (int) _pos.x;
-		this.boundingBox.y = (int) _pos.y;
-	}
-
 	public TileType getType() {
 		return this.type;
 	}
