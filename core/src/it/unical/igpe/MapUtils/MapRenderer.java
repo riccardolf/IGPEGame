@@ -119,9 +119,9 @@ public class MapRenderer {
 				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getX() - 320 + 32,
 						e.getY() - 320 + 32, 640, 640);
 				batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 56, 56, 1f, 1f, e.angle);
 			} else
-				batch.draw(Assets.Skull, e.getPos().x, e.getPos().y, 32, 32, 48, 48, 1f, 1f, e.angle);
+				batch.draw(Assets.Skull, e.getPos().x, e.getPos().y, 32, 32, 32, 32, 1f, 1f, e.angle);
 		}
 
 		// Draw Player
