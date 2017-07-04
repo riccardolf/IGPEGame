@@ -39,7 +39,7 @@ public class MultiplayerWorld implements Updatable {
 	public Vector2 dir;
 	private MapManager manager;
 	public boolean isServer = false;
-	
+
 	public MultiplayerWorld(String path, boolean isServer) {
 		this.isServer = isServer;
 		tiles = new LinkedList<Tile>();
@@ -92,7 +92,7 @@ public class MultiplayerWorld implements Updatable {
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				}
 			}
-		if(!isServer) {
+		if (!isServer) {
 			this.addEntity(player);
 			Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x,
 					player.getBoundingBox().y);
@@ -105,7 +105,7 @@ public class MultiplayerWorld implements Updatable {
 	}
 
 	public void update(float delta) {
-		
+
 		player.state = Player.STATE_IDLE;
 
 		if (player.isReloading(delta))
@@ -124,8 +124,8 @@ public class MultiplayerWorld implements Updatable {
 					b.update(delta);
 					while (iter.hasNext()) {
 						AbstractDynamicObject a = iter.next();
-						if (b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()
-								&& b.getID() != ((PlayerMP) a).getUsername()) {
+						if (!b.getID().equalsIgnoreCase(((PlayerMP) a).getUsername())
+								&& b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()) {
 							it.remove();
 							removed = true;
 						}

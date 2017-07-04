@@ -47,7 +47,7 @@ public class LevelChooseScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				ScreenManager.CreateGS("map.txt");
+				ScreenManager.CreateGS("default.map");
 				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});

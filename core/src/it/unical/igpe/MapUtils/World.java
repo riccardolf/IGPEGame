@@ -10,7 +10,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.GUI.SoundManager;
+import it.unical.igpe.GUI.screens.ScreenManager;
 import it.unical.igpe.ai.EnemyManager;
+import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
@@ -47,6 +49,7 @@ public class World implements Updatable {
 			manager.LoadMap(path);
 		} catch (IOException e) {
 			System.out.println("Map not found");
+			IGPEGame.game.setScreen(ScreenManager.LCS);
 		}
 
 		for (int x = 0; x < manager.map.length; x++)

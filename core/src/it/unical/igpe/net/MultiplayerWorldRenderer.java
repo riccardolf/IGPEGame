@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+//import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
+//import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
@@ -27,11 +29,14 @@ import it.unical.igpe.utils.TileType;
 
 public class MultiplayerWorldRenderer {
 	private OrthographicCamera camera;
+	private OrthographicCamera fontCamera;
 	public Viewport viewport;
 	private SpriteBatch batch;
+//	private SpriteBatch spriteFont;
 	private ShapeRenderer sr;
 	private float stateTime;
 	private MultiplayerWorld world;
+//	private BitmapFont font;
 
 	public MultiplayerWorldRenderer(MultiplayerWorld world) {
 		this.world = world;
@@ -39,11 +44,17 @@ public class MultiplayerWorldRenderer {
 		this.camera.setToOrtho(true, GameConfig.WIDTH, GameConfig.HEIGHT);
 		this.camera.position.x = world.player.getBoundingBox().x;
 		this.camera.position.y = world.player.getBoundingBox().y;
+		this.fontCamera = new OrthographicCamera();
+		this.fontCamera.setToOrtho(false, GameConfig.WIDTH, GameConfig.HEIGHT);
+		this.fontCamera.position.x = world.player.getBoundingBox().x;
+		this.fontCamera.position.y = world.player.getBoundingBox().y;
 		this.viewport = new ExtendViewport(GameConfig.WIDTH, GameConfig.HEIGHT, camera);
 		this.batch = new SpriteBatch();
 		this.batch.setColor(1, 1, 1, 0.5f);
 		this.sr = new ShapeRenderer();
 		this.sr.setColor(Color.BLACK);
+//		this.spriteFont = new SpriteBatch();
+//		this.font = IGPEGame.skinsoldier.getFont("font");
 	}
 
 	public void render(float deltaTime) {
@@ -54,6 +65,9 @@ public class MultiplayerWorldRenderer {
 		camera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
 				0.3f);
 		camera.update();
+		fontCamera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
+				0.7f);
+		fontCamera.update();
 
 		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
 		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
@@ -65,7 +79,7 @@ public class MultiplayerWorldRenderer {
 			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
 
 		batch.begin();
-		
+
 		// Drawing tiles
 		for (Tile tile : world.getTiles()) {
 			if (tile.getType() == TileType.GROUND)
@@ -160,7 +174,17 @@ public class MultiplayerWorldRenderer {
 		}
 		batch.setColor(1, 1, 1, 0.5f);
 		batch.end();
-
+		
+		// TODO
+		/*
+		 * spriteFont.setProjectionMatrix(fontCamera.combined);
+		spriteFont.begin();
+		for (AbstractDynamicObject e : world.entities) {
+			if (e.Alive() && e instanceof PlayerMP)
+				font.draw(spriteFont, ((PlayerMP) e).getUsername(), e.getX() - 32, e.getY() + 32);
+		}
+		spriteFont.end();
+		*/
 		// Drawing Bullets
 		sr.begin(ShapeType.Filled);
 		for (Bullet bullet : world.getBls()) {
@@ -169,7 +193,7 @@ public class MultiplayerWorldRenderer {
 		sr.end();
 
 	}
-	
+
 	public void dispose() {
 		batch.dispose();
 	}
