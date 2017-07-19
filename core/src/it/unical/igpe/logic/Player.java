@@ -23,6 +23,8 @@ public class Player extends AbstractDynamicObject {
 	public World world;
 	public float slowMeter;
 	public boolean slowActive;
+	public int kills;
+	public int deaths;
 
 	public Player(Vector2 _pos, World _world, String username) {
 		this.world = _world;
@@ -41,6 +43,8 @@ public class Player extends AbstractDynamicObject {
 		this.shotgun.createShotgun();
 		this.activeWeapon = pistol;
 		this.username = username;
+		this.kills = 0;
+		this.deaths = 0;
 	}
 
 	public void fire() {

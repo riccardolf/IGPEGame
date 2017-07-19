@@ -84,7 +84,7 @@ public class HUD implements Disposable {
 
 		for (int i = 0; i < World.keyCollected; i++)
 			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32, 5, 32, 32);
-
+				
 		batch.end();
 		stage.draw();
 	}
@@ -110,10 +110,9 @@ public class HUD implements Disposable {
 		else if (!player.hasAmmo())
 			font.draw(batch, "NO AMMO", 15, 20);
 		else
-			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 20);
-
-		for (int i = 0; i < World.keyCollected; i++)
-			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32, 5, 32, 32);
+			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 25);
+		
+		font.draw(batch, player.kills + " / " + player.deaths, 600, 600);
 
 		batch.end();
 		stage.draw();

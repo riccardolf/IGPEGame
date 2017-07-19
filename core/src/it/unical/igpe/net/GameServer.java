@@ -17,6 +17,7 @@ import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
+import it.unical.igpe.net.packet.Packet04Death;
 
 public class GameServer extends Thread {
 	public MultiplayerWorld worldMP;
@@ -58,7 +59,9 @@ public class GameServer extends Thread {
 			packet = new Packet00Login(data);
 			System.out.println("[" + address.getHostAddress() + ":" + port + "]"
 					+ ((Packet00Login) packet).getUsername() + " has connected");
-			PlayerMP player = new PlayerMP(new Vector2(((Packet00Login) packet).getX(), ((Packet00Login) packet).getY()), IGPEGame.game.worldMP, ((Packet00Login) packet).getUsername(), address, port);
+			PlayerMP player = new PlayerMP(
+					new Vector2(((Packet00Login) packet).getX(), ((Packet00Login) packet).getY()),
+					IGPEGame.game.worldMP, ((Packet00Login) packet).getUsername(), address, port);
 			this.addConnection(player, (Packet00Login) packet);
 			break;
 		case DISCONNECT:
@@ -74,6 +77,10 @@ public class GameServer extends Thread {
 		case FIRE:
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
+			break;
+		case DEATH:
+			packet = new Packet04Death(data);
+			packet.writeData(this);
 			break;
 		}
 	}

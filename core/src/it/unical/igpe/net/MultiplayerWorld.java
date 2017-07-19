@@ -18,6 +18,7 @@ import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.net.packet.Packet00Login;
+import it.unical.igpe.net.packet.Packet04Death;
 import it.unical.igpe.utils.TileType;
 import it.unical.igpe.utils.Updatable;
 
@@ -101,11 +102,19 @@ public class MultiplayerWorld implements Updatable {
 					Bullet b = it.next();
 					b.update(delta);
 					while (iter.hasNext()) {
-						AbstractDynamicObject a = iter.next();
+						PlayerMP a = (PlayerMP) iter.next();
 						if (!b.getID().equalsIgnoreCase(((PlayerMP) a).getUsername())
 								&& b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()) {
 							it.remove();
 							removed = true;
+							if(a.getUsername() == this.player.getUsername()) {
+								this.player.hit(15);	//TODO: DMG
+								if(this.player.getHP() <= 0) {
+									Packet04Death packet = new Packet04Death(b.getID(), this.player.getUsername());
+									packet.writeData(IGPEGame.game.socketClient);
+								}
+							}
+							
 						}
 					}
 					if (removed)
@@ -115,7 +124,7 @@ public class MultiplayerWorld implements Updatable {
 				}
 			}
 		}
-
+					
 		// TODO: Packet for server closed
 	}
 
@@ -179,6 +188,17 @@ public class MultiplayerWorld implements Updatable {
 					username, 15));
 		}
 	}
+	
+	public void handleDeath(String usernameKiller, String usernameKilled) {
+		System.out.println("Packet Death: " + usernameKiller + " killed " + usernameKilled);
+		if(usernameKiller.equalsIgnoreCase(this.player.username))
+			this.player.kills++;
+		else if(usernameKilled.equalsIgnoreCase(this.player.username)) {
+			this.player.deaths++;
+			this.player.setHP(100);
+			this.player.setPos(randomSpawn());
+		}
+	}
 
 	public PlayerMP getPlayer() {
 		return player;
@@ -217,4 +237,5 @@ public class MultiplayerWorld implements Updatable {
 	public synchronized List<AbstractDynamicObject> getEntities() {
 		return this.entities;
 	}
+
 }

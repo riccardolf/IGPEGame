@@ -167,13 +167,13 @@ public class MultiScreen implements Screen {
 		tableClient.add(clientLabel);
 		tableClient.row();
 		tableClient.add(nameLabel);
-		tableClient.add(nameText).width(200);
+		tableClient.add(nameText).width(250);
 		tableClient.row();
 		tableClient.add(IPClientLabel);
-		tableClient.add(IPClientText).width(200);
+		tableClient.add(IPClientText).width(250);
 		tableClient.row();
 		tableClient.add(PortClientLabel);
-		tableClient.add(PortClientText).width(100);
+		tableClient.add(PortClientText).width(150);
 		tableClient.row();
 		tableClient.add(connectClient);
 		tableClient.row();

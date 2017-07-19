@@ -16,6 +16,7 @@ import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
+import it.unical.igpe.net.packet.Packet04Death;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 
 public class GameClient extends Thread {
@@ -85,7 +86,15 @@ public class GameClient extends Thread {
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
 			break;
+		case DEATH:
+			packet = new Packet04Death(data);
+			handleDeath((Packet04Death) packet);
+			break;
 		}
+	}
+
+	private void handleDeath(Packet04Death packet) {
+		IGPEGame.game.worldMP.handleDeath(packet.getUsernameKiller(), packet.getUsernameKilled());
 	}
 
 	private void handleFire(Packet03Fire packet) {

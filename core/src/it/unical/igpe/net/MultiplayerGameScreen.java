@@ -186,9 +186,6 @@ public class MultiplayerGameScreen implements Screen {
 
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
-			world.player.setPos(MultiplayerWorld.randomSpawn());
-			
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched() && world.player.canShoot()) {
 			world.player.fire();

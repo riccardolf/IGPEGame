@@ -6,7 +6,7 @@ import it.unical.igpe.net.GameServer;
 public abstract class Packet {
 
 	public static enum PacketTypes {
-		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), FIRE(03);
+		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), FIRE(03), DEATH(04);
 
 		private int packetID;
 
