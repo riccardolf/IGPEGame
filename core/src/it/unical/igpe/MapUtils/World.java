@@ -34,7 +34,7 @@ public class World implements Updatable {
 	public LinkedList<Enemy> ens;
 	public EnemyManager EM;
 	public Vector2 dir;
-	private MapManager manager;
+	private WorldLoader manager;
 
 	public World(String path) {
 		player = new Player(new Vector2(), this, null);
@@ -44,7 +44,7 @@ public class World implements Updatable {
 		bls = new LinkedList<Bullet>();
 		keyCollected = 0;
 
-		manager = new MapManager(GameConfig.TILEDIM, GameConfig.TILEDIM);
+		manager = new WorldLoader(GameConfig.TILEDIM, GameConfig.TILEDIM);
 		try {
 			manager.LoadMap(path);
 		} catch (IOException e) {
@@ -127,6 +127,10 @@ public class World implements Updatable {
 						it.remove();
 						e.hit(b.getHP());
 						removed = true;
+						if (e.getHP() <= 0) {
+							e.setAlive(false);
+							player.kills++;
+						}
 					}
 				}
 				if (removed)

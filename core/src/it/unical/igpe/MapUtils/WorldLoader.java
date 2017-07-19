@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MapManager {
+public class WorldLoader {
 	public int[][] map;
 
-	public MapManager(int width, int height) {
+	public WorldLoader(int width, int height) {
 		map = new int[height][width];
 	}
 

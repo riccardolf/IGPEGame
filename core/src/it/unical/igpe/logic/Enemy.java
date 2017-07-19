@@ -51,8 +51,6 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 	}
 
 	public void update(float delta) {
-		if (this.HP <= 0)
-			this.alive = false;
 		canMove = true;
 		startx = this.getX() + 32;
 		starty = this.getY() + 32;

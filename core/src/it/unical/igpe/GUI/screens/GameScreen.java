@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.GUI.HUD.HUD;
-import it.unical.igpe.MapUtils.MapRenderer;
+import it.unical.igpe.MapUtils.WorldRenderer;
 import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.Player;
@@ -23,12 +23,12 @@ import it.unical.igpe.utils.TileType;
 public class GameScreen implements Screen {
 	World world;
 	HUD hud;
-	MapRenderer renderer;
+	WorldRenderer renderer;
 
 	public GameScreen(World _world) {
 		this.world = _world;
 		this.hud = new HUD(false);
-		this.renderer = new MapRenderer(world);
+		this.renderer = new WorldRenderer(world);
 	}
 
 	@Override
@@ -54,8 +54,10 @@ public class GameScreen implements Screen {
 		hud.render(world.getPlayer());
 
 		if (world.isLevelFinished()) {
+			ScreenManager.LCompletedS.kills = world.player.kills;
 			IGPEGame.game.setScreen(ScreenManager.LCompletedS);
 		} else if (world.isGameOver()) {
+			ScreenManager.LCompletedS.kills = world.player.kills;
 			ScreenManager.LCompletedS.gameOver = true;
 			IGPEGame.game.setScreen(ScreenManager.LCompletedS);
 		}

@@ -23,7 +23,7 @@ import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
 
-public class MapRenderer {
+public class WorldRenderer {
 	private World world;
 	public OrthographicCamera camera;
 	public Viewport viewport;
@@ -31,7 +31,7 @@ public class MapRenderer {
 	private ShapeRenderer sr;
 	private float stateTime;
 
-	public MapRenderer(World _world) {
+	public WorldRenderer(World _world) {
 		this.world = _world;
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(true, 800, 800);

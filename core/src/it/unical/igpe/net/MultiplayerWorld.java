@@ -10,7 +10,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.MapUtils.MapManager;
+import it.unical.igpe.MapUtils.WorldLoader;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
@@ -34,7 +34,7 @@ public class MultiplayerWorld implements Updatable {
 	private static LinkedList<Lootable> lootables;
 	private static LinkedList<Vector2> spawnPoints;
 	public Vector2 dir;
-	private MapManager manager;
+	private WorldLoader manager;
 	public boolean isServer = false;
 
 	public MultiplayerWorld(String path, boolean isServer) {
@@ -46,7 +46,7 @@ public class MultiplayerWorld implements Updatable {
 		spawnPoints = new LinkedList<Vector2>();
 		keyCollected = 0;
 
-		manager = new MapManager(64, 64);
+		manager = new WorldLoader(64, 64);
 		try {
 			manager.LoadMap(path);
 		} catch (IOException e) {

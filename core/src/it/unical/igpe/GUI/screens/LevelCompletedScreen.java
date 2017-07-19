@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import it.unical.igpe.GUI.Assets;
@@ -18,6 +20,8 @@ public class LevelCompletedScreen implements Screen {
 	private SpriteBatch batch;
 	private float time = 0;
 	public boolean gameOver;
+	private BitmapFont font;
+	public int kills;
 	
 	@Override
 	public void show() {
@@ -27,6 +31,8 @@ public class LevelCompletedScreen implements Screen {
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
 		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+		font = IGPEGame.skinsoldier.getFont("text");
+		font.setColor(Color.RED);
 	}
 
 	@Override
@@ -36,6 +42,7 @@ public class LevelCompletedScreen implements Screen {
 			batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 360);
 			batch.begin();
 			batch.draw(GameOver, 0, 0);
+			font.draw(batch, "You killed " + kills + " enemies" , 100, 180);
 			batch.end();
 		}
 		else {
