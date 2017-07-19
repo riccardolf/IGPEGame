@@ -67,7 +67,7 @@ public class World implements Updatable {
 					ens.add(e);
 				} else if (manager.map[x][y] == 10) { // Player
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-					player.setPos(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM));
+					player.setPos(new Vector2(x, y));
 				} else if (manager.map[x][y] == 6) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYY));

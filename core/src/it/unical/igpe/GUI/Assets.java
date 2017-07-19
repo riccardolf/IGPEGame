@@ -42,7 +42,6 @@ public class Assets {
 	public static Animation<TextureRegion> idleRifleAnimation;
 	public static Animation<TextureRegion> reloadingRifleAnimation;
 	public static Animation<TextureRegion> shootingRifleAnimation;
-	public static Animation<TextureRegion> muzzleflash;
 
 	/**
 	 * Load assets for the game
@@ -96,9 +95,6 @@ public class Assets {
 		reloadingShotgunAnimation = new Animation<TextureRegion>(0.04f, atlas.findRegions("shotgun_reload"));
 		atlas = new TextureAtlas(Gdx.files.internal("player/shotgun_shoot.atlas"));
 		shootingShotgunAnimation = new Animation<TextureRegion>(0.08f, atlas.findRegions("shotgun_shoot"));
-
-		atlas = new TextureAtlas(Gdx.files.internal("player/muzzleflash.atlas"));
-		muzzleflash = new Animation<TextureRegion>(0.04f, atlas.findRegions("muzzle_profile"));
 
 	}
 }

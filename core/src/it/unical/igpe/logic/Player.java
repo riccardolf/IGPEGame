@@ -26,7 +26,8 @@ public class Player extends AbstractDynamicObject {
 
 	public Player(Vector2 _pos, World _world, String username) {
 		this.world = _world;
-		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 48, 48);
+		this.boundingBox = new Rectangle((int) _pos.x, (int) _pos.y, 64, 64);
+		this.setPos(_pos);
 		this.reloading = false;
 		this.ID = "player";
 		this.alive = true;
@@ -76,7 +77,7 @@ public class Player extends AbstractDynamicObject {
 	}
 
 	public boolean checkAmmo() {
-		return activeWeapon.actClip == 0;
+		return activeWeapon.actClip == 0 && this.canReload();
 	}
 
 	public void setActWeapon(String ID) {

@@ -40,7 +40,7 @@ public class LevelChooseScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		title = new Label("Choose Level", IGPEGame.skinsoldier);
+		title = new Label("CHOOSE LEVEL", IGPEGame.skinsoldier);
 
 		defaultLevel = new TextButton("Default Level", IGPEGame.skinsoldier);
 		defaultLevel.addListener(new ChangeListener() {

@@ -3,8 +3,11 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	font: {
 		file: font-export.fnt
 	}
+	text: {
+		file: font.fnt
+	}
 	title: {
-		file: font-title-export.fnt
+		file: title.fnt
 	}
 }
 com.badlogic.gdx.graphics.Color: {
@@ -98,9 +101,6 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: font
-	}
-	title: {
 		font: title
 	}
 }
@@ -167,7 +167,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: font
+		font: text
 		fontColor: black
 		background: textfield
 		cursor: cursor

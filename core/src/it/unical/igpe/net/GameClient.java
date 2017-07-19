@@ -16,7 +16,6 @@ import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
-import it.unical.igpe.net.packet.Packet04Loot;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 
 public class GameClient extends Thread {
@@ -86,15 +85,7 @@ public class GameClient extends Thread {
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
 			break;
-		case LOOT:
-			packet = new Packet04Loot(data);
-			handleLoot((Packet04Loot) packet);
-			break;
 		}
-	}
-
-	private void handleLoot(Packet04Loot packet) {
-		IGPEGame.game.worldMP.removeLoot(packet.getX(), packet.getY());
 	}
 
 	private void handleFire(Packet03Fire packet) {

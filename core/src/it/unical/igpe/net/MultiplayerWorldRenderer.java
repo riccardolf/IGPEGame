@@ -1,11 +1,11 @@
 package it.unical.igpe.net;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -16,45 +16,33 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
-//import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
-import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
-import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
 
 public class MultiplayerWorldRenderer {
 	private OrthographicCamera camera;
-	private OrthographicCamera fontCamera;
 	public Viewport viewport;
 	private SpriteBatch batch;
-//	private SpriteBatch spriteFont;
 	private ShapeRenderer sr;
 	private float stateTime;
 	private MultiplayerWorld world;
-//	private BitmapFont font;
 
 	public MultiplayerWorldRenderer(MultiplayerWorld world) {
 		this.world = world;
 		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(true, GameConfig.WIDTH, GameConfig.HEIGHT);
+		this.camera.setToOrtho(true, 800, 800);
 		this.camera.position.x = world.player.getBoundingBox().x;
 		this.camera.position.y = world.player.getBoundingBox().y;
-		this.fontCamera = new OrthographicCamera();
-		this.fontCamera.setToOrtho(false, GameConfig.WIDTH, GameConfig.HEIGHT);
-		this.fontCamera.position.x = world.player.getBoundingBox().x;
-		this.fontCamera.position.y = world.player.getBoundingBox().y;
-		this.viewport = new ExtendViewport(GameConfig.WIDTH, GameConfig.HEIGHT, camera);
+		this.viewport = new ExtendViewport(800, 800, camera);
 		this.batch = new SpriteBatch();
 		this.batch.setColor(1, 1, 1, 0.5f);
 		this.sr = new ShapeRenderer();
 		this.sr.setColor(Color.BLACK);
-//		this.spriteFont = new SpriteBatch();
-//		this.font = IGPEGame.skinsoldier.getFont("font");
 	}
 
 	public void render(float deltaTime) {
@@ -63,14 +51,8 @@ public class MultiplayerWorldRenderer {
 		sr.setProjectionMatrix(camera.combined);
 
 		camera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
-				0.3f);
+				0.5f);
 		camera.update();
-		fontCamera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
-				0.7f);
-		fontCamera.update();
-
-		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
-		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 
 		// Sound from the player
 		if (world.getPlayer().state == Player.STATE_RUNNING)
@@ -130,61 +112,44 @@ public class MultiplayerWorldRenderer {
 
 		// Drawing players
 		batch.setColor(1, 1, 1, 1);
-		for (AbstractDynamicObject e : world.entities) {
-			if (e.Alive() && e instanceof PlayerMP) {
-				if (((PlayerMP) e).getActWeapon() == "pistol") {
-					if (((PlayerMP) e).state == Player.STATE_IDLE)
-						batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.STATE_RELOADING)
-						batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.STATE_RUNNING)
-						batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-				} else if (((PlayerMP) e).getActWeapon() == "shotgun") {
-					if (((PlayerMP) e).state == Player.STATE_IDLE)
-						batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.STATE_RELOADING)
-						batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.STATE_RUNNING)
-						batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-				} else if (((PlayerMP) e).getActWeapon() == "rifle") {
-					if (((PlayerMP) e).state == Player.STATE_IDLE)
-						batch.draw(Assets.idleRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.STATE_RELOADING)
-						batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-					else if (((PlayerMP) e).state == Player.STATE_RUNNING)
-						batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, ((PlayerMP) e).angle);
-				}
-			} else if (e.Alive() && e instanceof Enemy) {
-				batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
-				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getBoundingBox().x - 320 + 32,
-						e.getBoundingBox().y - 320 + 32, 640, 640);
-				batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-			} else
-				batch.draw(Assets.Skull, e.getPos().x, e.getPos().y, 48, 48);
+		Iterator<AbstractDynamicObject> iter = world.entities.iterator();
+		while(iter.hasNext()) {
+			PlayerMP e = (PlayerMP) iter.next();
+			if (e.getActWeapon() == "pistol") {
+				if (e.state == Player.STATE_IDLE)
+					batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				else if (e.state == Player.STATE_RELOADING)
+					batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				else if (e.state == Player.STATE_RUNNING)
+					batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			} else if (e.getActWeapon() == "shotgun") {
+				if (e.state == Player.STATE_IDLE)
+					batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				else if (e.state == Player.STATE_RELOADING)
+					batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				else if (e.state == Player.STATE_RUNNING)
+					batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			} else if (e.getActWeapon() == "rifle") {
+				if (e.state == Player.STATE_IDLE)
+					batch.draw(Assets.idleRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				else if (e.state == Player.STATE_RELOADING)
+					batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				else if (e.state == Player.STATE_RUNNING)
+					batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			}
 		}
 		batch.setColor(1, 1, 1, 0.5f);
 		batch.end();
-		
-		// TODO
-		/*
-		 * spriteFont.setProjectionMatrix(fontCamera.combined);
-		spriteFont.begin();
-		for (AbstractDynamicObject e : world.entities) {
-			if (e.Alive() && e instanceof PlayerMP)
-				font.draw(spriteFont, ((PlayerMP) e).getUsername(), e.getX() - 32, e.getY() + 32);
-		}
-		spriteFont.end();
-		*/
+
 		// Drawing Bullets
 		sr.begin(ShapeType.Filled);
 		for (Bullet bullet : world.getBls()) {

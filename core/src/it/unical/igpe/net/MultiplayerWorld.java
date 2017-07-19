@@ -3,15 +3,13 @@ package it.unical.igpe.net;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
-import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.MapManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.AbstractDynamicObject;
@@ -20,9 +18,6 @@ import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.net.packet.Packet00Login;
-import it.unical.igpe.net.packet.Packet04Loot;
-import it.unical.igpe.utils.GameConfig;
-import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
 import it.unical.igpe.utils.Updatable;
 
@@ -36,6 +31,7 @@ public class MultiplayerWorld implements Updatable {
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
 	private static LinkedList<Lootable> lootables;
+	private static LinkedList<Vector2> spawnPoints;
 	public Vector2 dir;
 	private MapManager manager;
 	public boolean isServer = false;
@@ -46,6 +42,7 @@ public class MultiplayerWorld implements Updatable {
 		lootables = new LinkedList<Lootable>();
 		bls = new LinkedList<Bullet>();
 		entities = new ArrayList<AbstractDynamicObject>();
+		spawnPoints = new LinkedList<Vector2>();
 		keyCollected = 0;
 
 		manager = new MapManager(64, 64);
@@ -61,47 +58,28 @@ public class MultiplayerWorld implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				else if (manager.map[x][y] == 1)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
-				else if (manager.map[x][y] == 2)
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.ENDLEVEL));
-				else if (manager.map[x][y] == 11 || manager.map[x][y] == 12) { // Enemy
+				else if (manager.map[x][y] == 99) {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 10) { // Player
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-					player = new PlayerMP(new Vector2(x * 64, y * 64), this, username, null, -1);
-				} else if (manager.map[x][y] == 6) { // Yellow Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYY));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 7) { // Red Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYR));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 8) { // Blue Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYB));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 9) { // Green Key
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.KEYG));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 5) { // HealthPack
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.HEALTPACK));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 13) { // Trap
-					lootables.add(new Lootable(new Vector2(x * 64, y * 64), LootableType.TRAP));
-					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
-				} else if (manager.map[x][y] == 4) { // AmmoPack
-					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
-							LootableType.AMMOPACK));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
+					spawnPoints.add(new Vector2(x, y));
 				}
+					
 			}
+
 		if (!isServer) {
+			player = new PlayerMP(randomSpawn(), this, username, null, -1);
 			this.addEntity(player);
 			Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getBoundingBox().x,
 					player.getBoundingBox().y);
-			// If the client has started a server, add it has a connection
+			// If the client has started a server, add it as a connection
 			if (IGPEGame.game.socketServer != null) {
 				IGPEGame.game.socketServer.addConnection((PlayerMP) player, loginPacket);
 			}
 			loginPacket.writeData(IGPEGame.game.socketClient);
 		}
+	}
+
+	public static Vector2 randomSpawn() {
+		return spawnPoints.get(new Random().nextInt(spawnPoints.size()));
 	}
 
 	public void update(float delta) {
@@ -139,38 +117,6 @@ public class MultiplayerWorld implements Updatable {
 		}
 
 		// TODO: Packet for server closed
-		// TODO: Packet for loot
-		// Checking lootable items
-		Iterator<Lootable> itl = lootables.iterator();
-		while (itl.hasNext()) {
-			Lootable l = itl.next();
-			if (l.getBoundingBox().intersects(player.getBoundingBox())) {
-				if (l.getType() == LootableType.HEALTPACK && player.getHP() < 100) {
-					player.setHP(player.getHP() + 25);
-					SoundManager.manager.get(SoundManager.HealthRestored, Sound.class).play(GameConfig.SOUND_VOLUME);
-					Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
-					packetLoot.writeData(IGPEGame.game.socketClient);
-				} else if (l.getType() == LootableType.AMMOPACK) {
-					if (player.pistol.canAdd() || player.shotgun.canAdd() || player.rifle.canAdd()) {
-						player.pistol.addAmmo(15);
-						player.shotgun.addAmmo(6);
-						player.rifle.addAmmo(5);
-						Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
-						packetLoot.writeData(IGPEGame.game.socketClient);
-					}
-				} else if (l.getType() == LootableType.TRAP && l.closed == false) {
-					player.setHP(player.getHP() - 50);
-					SoundManager.manager.get(SoundManager.TrapClosing, Sound.class).play(GameConfig.SOUND_VOLUME);
-					Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
-					packetLoot.writeData(IGPEGame.game.socketClient);
-				} else if (l.getType() == LootableType.KEYY || l.getType() == LootableType.KEYR
-						|| l.getType() == LootableType.KEYG || l.getType() == LootableType.KEYB) {
-					MultiplayerWorld.keyCollected++;
-					Packet04Loot packetLoot = new Packet04Loot(l.getBoundingBox().x, l.getBoundingBox().y);
-					packetLoot.writeData(IGPEGame.game.socketClient);
-				}
-			}
-		}
 	}
 
 	public static TileType getNextTile(Rectangle _box) {
@@ -184,13 +130,6 @@ public class MultiplayerWorld implements Updatable {
 			}
 		}
 		return TileType.GROUND;
-	}
-
-	public static boolean isDoorUnlocked() {
-		if (keyCollected == 4) {
-			return true;
-		}
-		return false;
 	}
 
 	public synchronized void removePlayerMP(String username) {
@@ -238,20 +177,6 @@ public class MultiplayerWorld implements Updatable {
 			float y2 = (float) (16 * Math.sin(Math.toRadians(angle)) + 16 * Math.cos(Math.toRadians(angle)));
 			this.bls.add(new Bullet(new Vector2(x + 32 + x2, y + 32 + y2), (float) Math.toRadians(angle + 90f),
 					username, 15));
-		}
-	}
-
-	public synchronized void removeLoot(int x, int y) {
-		Iterator<Lootable> iter = lootables.iterator();
-		while (iter.hasNext()) {
-			Lootable l = iter.next();
-			if (l.getBoundingBox().x == x && l.getBoundingBox().y == y) {
-				if (l.getType() == LootableType.TRAP)
-					l.closed = true;
-				else
-					iter.remove();
-				break;
-			}
 		}
 	}
 

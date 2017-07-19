@@ -6,33 +6,28 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.net.packet.Packet;
 import it.unical.igpe.net.packet.Packet.PacketTypes;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
-import it.unical.igpe.net.packet.Packet04Loot;
 
 public class GameServer extends Thread {
 	public MultiplayerWorld worldMP;
 	private DatagramSocket socket;
 	private List<PlayerMP> connectedPlayers = new ArrayList<PlayerMP>();
-	private List<Lootable> mapLoot = new ArrayList<Lootable>();
 
 	public GameServer(int port) {
 		try {
 			this.socket = new DatagramSocket(port);
 			System.out.println("Creating Server...");
-			this.worldMP = new MultiplayerWorld("map.txt", true);
-			this.mapLoot = this.worldMP.getLootables();
+			this.worldMP = new MultiplayerWorld("arena.map", true);
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}
@@ -80,23 +75,7 @@ public class GameServer extends Thread {
 			packet = new Packet03Fire(data);
 			handleFire((Packet03Fire) packet);
 			break;
-		case LOOT:
-			packet = new Packet04Loot(data);
-			handleLoot((Packet04Loot) packet);
-			break;
 		}
-	}
-
-	private void handleLoot(Packet04Loot packet) {
-		Iterator<Lootable> iter = mapLoot.iterator();
-		while(iter.hasNext()) {
-			Lootable l = iter.next();
-			if(l.getBoundingBox().x == packet.getX() && l.getBoundingBox().y == packet.getY()) {
-				iter.remove();
-				break;
-			}
-		}
-		packet.writeData(this);
 	}
 
 	private void handleFire(Packet03Fire packet) {

@@ -36,6 +36,7 @@ public class MultiScreen implements Screen {
 	private Label PortClientLabel;
 	private Label PortServerLabel;
 	private Label nameLabel;
+	private Label multiLabel;
 	private TextField nameText;
 	private TextField IPClientText;
 	private TextField PortClientText;
@@ -145,6 +146,7 @@ public class MultiScreen implements Screen {
 
 		clientLabel = new Label("Client", IGPEGame.skinsoldier);
 		serverLabel = new Label("Server", IGPEGame.skinsoldier);
+		multiLabel = new Label("MULTIPLAYER", IGPEGame.skinsoldier);
 		IPClientLabel = new Label("IP", IGPEGame.skinsoldier);
 		PortClientLabel = new Label("Port", IGPEGame.skinsoldier);
 		PortServerLabel = new Label("Port", IGPEGame.skinsoldier);
@@ -154,6 +156,8 @@ public class MultiScreen implements Screen {
 		PortClientText = new TextField("1234", IGPEGame.skinsoldier);
 		PortServerText = new TextField("1234", IGPEGame.skinsoldier);
 
+		tableChoose.add(multiLabel);
+		tableChoose.row();
 		tableChoose.add(Client);
 		tableChoose.row();
 		tableChoose.add(Server);

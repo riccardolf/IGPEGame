@@ -25,7 +25,7 @@ import it.unical.igpe.utils.TileType;
 
 public class MapRenderer {
 	private World world;
-	private OrthographicCamera camera;
+	public OrthographicCamera camera;
 	public Viewport viewport;
 	private SpriteBatch batch;
 	private ShapeRenderer sr;
@@ -34,8 +34,8 @@ public class MapRenderer {
 	public MapRenderer(World _world) {
 		this.world = _world;
 		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(true, GameConfig.WIDTH, GameConfig.HEIGHT);
-		this.viewport = new ExtendViewport(GameConfig.WIDTH, GameConfig.HEIGHT, camera);
+		this.camera.setToOrtho(true, 800, 800);
+		this.viewport = new ExtendViewport(800, 800, camera);
 		this.batch = new SpriteBatch();
 		this.batch.setColor(1, 1, 1, 0.5f);
 		this.sr = new ShapeRenderer();
@@ -46,9 +46,9 @@ public class MapRenderer {
 		stateTime += deltaTime;
 		batch.setProjectionMatrix(camera.combined);
 		sr.setProjectionMatrix(camera.combined);
-
+		
 		camera.position.lerp(new Vector3(world.getPlayer().getX(), world.getPlayer().getY(), 0),
-				0.3f);
+				0.5f);
 		camera.update();
 		
 		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
@@ -141,8 +141,6 @@ public class MapRenderer {
 			else if (world.getPlayer().state == Player.STATE_SHOOTING) {
 				batch.draw(Assets.shootingPistolAnimation.getKeyFrame(stateTime), world.getPlayer().getX(),
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
-				batch.draw(Assets.muzzleflash.getKeyFrame(stateTime), world.getPlayer().shotPosition().x,
-						world.getPlayer().shotPosition().y, 0, 0, 16, 16, 1f, 1f, world.getPlayer().angle + 90f);
 			}
 		} else if (world.getPlayer().getActWeapon() == "shotgun") {
 			if (world.getPlayer().state == Player.STATE_IDLE)
@@ -160,8 +158,6 @@ public class MapRenderer {
 			else if (world.getPlayer().state == Player.STATE_SHOOTING) {
 				batch.draw(Assets.shootingShotgunAnimation.getKeyFrame(stateTime), world.getPlayer().getX(),
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
-				batch.draw(Assets.muzzleflash.getKeyFrame(stateTime), world.getPlayer().shotPosition().x,
-						world.getPlayer().shotPosition().y, 0, 0, 16, 16, 1f, 1f, world.getPlayer().angle + 90f);
 			}
 		} else if (world.getPlayer().getActWeapon() == "rifle") {
 			if (world.getPlayer().state == Player.STATE_IDLE)
@@ -178,8 +174,6 @@ public class MapRenderer {
 			else if (world.getPlayer().state == Player.STATE_SHOOTING) {
 				batch.draw(Assets.shootingRifleAnimation.getKeyFrame(stateTime), world.getPlayer().getX(),
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
-				batch.draw(Assets.muzzleflash.getKeyFrame(stateTime), world.getPlayer().shotPosition().x,
-						world.getPlayer().shotPosition().y, 0, 0, 16, 16, 1f, 1f, world.getPlayer().angle + 90f);
 			}
 		}
 		batch.setColor(1, 1, 1, 0.5f);

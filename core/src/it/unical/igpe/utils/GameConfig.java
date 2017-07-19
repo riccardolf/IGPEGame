@@ -4,7 +4,7 @@ public class GameConfig {
 	// Constant
 	public static final int WIDTH = 854;
 	public static final int HEIGHT = 480;
-	public static final String GAMENAME = "NOT ANOTHER TOPDOWN SHOOTER v3.2c";
+	public static final String GAMENAME = "NOT ANOTHER TOPDOWN SHOOTER";
 	public static final int MOVESPEED = 250;
 	public static final int DIAGONALSPEED = 200;
 	public static final int ENEMY_SPEED = 100;

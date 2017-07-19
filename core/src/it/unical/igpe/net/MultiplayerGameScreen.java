@@ -17,21 +17,16 @@ import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.net.packet.Packet02Move;
-import it.unical.igpe.net.packet.Packet03Fire;
 import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
 
 public class MultiplayerGameScreen implements Screen {
-	// message to server player.pos, player.angle, player.state,
-	// player.activeWeapon.ID, initial pos player.fire()
-	// message from server other players, enemies
-	// draw this things on other clients
 	MultiplayerWorld world;
 	HUD hud;
 	MultiplayerWorldRenderer renderer;
 
 	public MultiplayerGameScreen() {
-		IGPEGame.game.worldMP = new MultiplayerWorld("map.txt", false);
+		IGPEGame.game.worldMP = new MultiplayerWorld("arena.map", false);
 		this.world = IGPEGame.game.worldMP;
 		this.hud = new HUD(true);
 		this.renderer = new MultiplayerWorldRenderer(world);
@@ -40,17 +35,19 @@ public class MultiplayerGameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(null);
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).pause(); 
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).pause();
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setLooping(true);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).play();
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		world.update(delta);
 		handleInput(delta);
 		renderer.render(delta);
@@ -162,7 +159,7 @@ public class MultiplayerGameScreen implements Screen {
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
 			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
-			
+
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 			if (!world.player.isReloading())
 				world.player.state = Player.STATE_RUNNING;
@@ -188,14 +185,13 @@ public class MultiplayerGameScreen implements Screen {
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
 
 		}
-
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+			world.player.setPos(MultiplayerWorld.randomSpawn());
+			
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched() && world.player.canShoot()) {
-			Packet03Fire packetFire = new Packet03Fire(world.player.getUsername(), world.player.getBoundingBox().x,
-					world.player.getBoundingBox().y, world.player.angle);
-			packetFire.writeData(IGPEGame.game.socketClient);
-//			world.fireBullet(world.player.getUsername(), world.player.getBoundingBox().x,
-//					world.player.getBoundingBox().y, world.player.angle);
+			world.player.fire();
 			if (world.player.getActWeapon() == "pistol" && !world.player.isReloading()) {
 				SoundManager.manager.get(SoundManager.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (world.player.getActWeapon() == "shotgun" && !world.player.isReloading()) {
@@ -211,10 +207,10 @@ public class MultiplayerGameScreen implements Screen {
 			}
 		}
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.R) && world.player.canReload()) {
+		if ((Gdx.input.isKeyJustPressed(Input.Keys.R) && world.player.canReload()) || world.player.checkAmmo()) {
 			world.player.reload();
 			if (world.player.getActWeapon() == "pistol") {
-				SoundManager.manager.get(SoundManager.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (world.player.getActWeapon() == "shotgun") {
 				SoundManager.manager.get(SoundManager.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}

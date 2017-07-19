@@ -34,9 +34,9 @@ public class HUD implements Disposable {
 		pistol = new Texture(Gdx.files.internal("pistol.png"));
 		rifle = new Texture(Gdx.files.internal("rifle.png"));
 		shotgun = new Texture(Gdx.files.internal("shotgun.png"));
-		font = IGPEGame.skinsoldier.getFont("font");
+		font = IGPEGame.skinsoldier.getFont("text");
 		font.setColor(IGPEGame.skinsoldier.getColor("sky-blue"));
-		font.getData().setScale(1.3f);
+		font.getData().setScale(0.8f);
 
 		// Creating batch
 		batch = new SpriteBatch();
@@ -76,11 +76,11 @@ public class HUD implements Disposable {
 			batch.draw(shotgun, 10, 40, 64, 64);
 
 		if (player.isReloading() && player.hasAmmo())
-			font.draw(batch, "RELOADING", 15, 20);
+			font.draw(batch, "RELOADING", 15, 25);
 		else if (!player.hasAmmo())
-			font.draw(batch, "NO AMMO", 15, 20);
+			font.draw(batch, "NO AMMO", 15, 25);
 		else
-			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 20);
+			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 25);
 
 		for (int i = 0; i < World.keyCollected; i++)
 			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32, 5, 32, 32);

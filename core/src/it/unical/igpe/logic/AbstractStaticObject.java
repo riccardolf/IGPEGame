@@ -45,7 +45,7 @@ public abstract class AbstractStaticObject {
 	}
 
 	public void setPos(Vector2 pos) {
-		this.boundingBox.x = (int) pos.x;
-		this.boundingBox.y = (int) pos.y;
+		this.boundingBox.x = (int) pos.x * 64;
+		this.boundingBox.y = (int) pos.y * 64;
 	}
 }

@@ -34,7 +34,7 @@ public class LoadingScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		loading = new Label("LOADING...", IGPEGame.skinui);
+		loading = new Label("LOADING...", IGPEGame.skinsoldier);
 
 		loadingBar = new ProgressBar(0.0f, 1.0f, 0.1f, false, IGPEGame.skinui);
 		loadingBar.setValue(0);
