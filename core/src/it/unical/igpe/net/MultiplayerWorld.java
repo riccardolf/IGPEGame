@@ -63,7 +63,7 @@ public class MultiplayerWorld implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					spawnPoints.add(new Vector2(x, y));
 				}
-					
+
 			}
 
 		if (!isServer) {
@@ -91,7 +91,8 @@ public class MultiplayerWorld implements Updatable {
 			player.state = Player.STATE_RELOADING;
 
 		player.activeWeapon.lastFired += delta;
-
+		
+		String Killer = null;
 		// Bullet collisions
 		synchronized (bls) {
 			if (!bls.isEmpty()) {
@@ -107,14 +108,10 @@ public class MultiplayerWorld implements Updatable {
 								&& b.getBoundingBox().intersects(a.getBoundingBox()) && a.Alive()) {
 							it.remove();
 							removed = true;
-							if(a.getUsername() == this.player.getUsername()) {
-								this.player.hit(15);	//TODO: DMG
-								if(this.player.getHP() <= 0) {
-									Packet04Death packet = new Packet04Death(b.getID(), this.player.getUsername());
-									packet.writeData(IGPEGame.game.socketClient);
-								}
+							if (a.getUsername() == this.player.getUsername()) {
+								this.player.hit(15); // TODO: DMG
+								Killer = b.getID();
 							}
-							
 						}
 					}
 					if (removed)
@@ -124,7 +121,12 @@ public class MultiplayerWorld implements Updatable {
 				}
 			}
 		}
-					
+		
+		if(this.player.getHP() <= 0) {
+			Packet04Death packet = new Packet04Death(Killer, this.player.getUsername());
+			packet.writeData(IGPEGame.game.socketClient);
+		}
+
 		// TODO: Packet for server closed
 	}
 
@@ -188,12 +190,11 @@ public class MultiplayerWorld implements Updatable {
 					username, 15));
 		}
 	}
-	
+
 	public void handleDeath(String usernameKiller, String usernameKilled) {
-		System.out.println("Packet Death: " + usernameKiller + " killed " + usernameKilled);
-		if(usernameKiller.equalsIgnoreCase(this.player.username))
+		if (usernameKiller.equalsIgnoreCase(this.player.username))
 			this.player.kills++;
-		else if(usernameKilled.equalsIgnoreCase(this.player.username)) {
+		else if (usernameKilled.equalsIgnoreCase(this.player.username)) {
 			this.player.deaths++;
 			this.player.setHP(100);
 			this.player.setPos(randomSpawn());

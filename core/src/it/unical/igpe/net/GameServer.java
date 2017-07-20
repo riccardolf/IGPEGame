@@ -80,16 +80,8 @@ public class GameServer extends Thread {
 			break;
 		case DEATH:
 			packet = new Packet04Death(data);
-			handleDeath((Packet04Death) packet);
-			break;
-		}
-	}
-
-	private void handleDeath(Packet04Death packet) {
-		if (getPlayerMP(packet.getUsernameKiller()) != null) {
-			int index = getPlayerMPIndex(packet.getUsernameKiller());
-			this.connectedPlayers.get(index).kills++;
 			packet.writeData(this);
+			break;
 		}
 	}
 

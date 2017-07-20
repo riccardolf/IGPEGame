@@ -63,7 +63,7 @@ public class MainMenuScreen implements Screen {
 			}
 		});
 		
-		optionButton = new TextButton("Option", IGPEGame.skinsoldier);
+		optionButton = new TextButton("Options", IGPEGame.skinsoldier);
 		optionButton.addListener(new ChangeListener() {
 			
 			@Override
@@ -111,10 +111,7 @@ public class MainMenuScreen implements Screen {
 
 
 	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void hide() {}
 
 	@Override
 	public void dispose() {
