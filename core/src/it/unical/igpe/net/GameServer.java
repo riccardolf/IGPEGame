@@ -18,6 +18,7 @@ import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
 import it.unical.igpe.net.packet.Packet04Death;
+import it.unical.igpe.net.packet.Packet05GameOver;
 
 public class GameServer extends Thread {
 	public MultiplayerWorld worldMP;
@@ -80,6 +81,10 @@ public class GameServer extends Thread {
 			break;
 		case DEATH:
 			packet = new Packet04Death(data);
+			packet.writeData(this);
+			break;
+		case GAMEOVER:
+			packet = new Packet05GameOver(data);
 			packet.writeData(this);
 			break;
 		}

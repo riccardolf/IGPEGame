@@ -27,14 +27,12 @@ public class LevelChooseScreen implements Screen {
 	private TextButton chooseLevel;
 	private TextButton returnButton;
 	public String world;
-
-	@Override
-	public void show() {
+	
+	public LevelChooseScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
 
 		table = new Table();
 		table.setFillParent(true);
@@ -95,6 +93,11 @@ public class LevelChooseScreen implements Screen {
 	}
 
 	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(stage);
+	}
+
+	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -109,7 +112,7 @@ public class LevelChooseScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		this.show();
+		stage.getViewport().update(width, height);
 	}
 
 

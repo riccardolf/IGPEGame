@@ -5,8 +5,9 @@ import com.badlogic.gdx.audio.Music;
 import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
-import it.unical.igpe.net.MultiplayerGameScreen;
-import it.unical.igpe.net.MultiplayerPauseScreen;
+import it.unical.igpe.net.screens.MultiplayerGameScreen;
+import it.unical.igpe.net.screens.MultiplayerOverScreen;
+import it.unical.igpe.net.screens.MultiplayerPauseScreen;
 import it.unical.igpe.utils.GameConfig;
 
 public class ScreenManager {
@@ -20,6 +21,7 @@ public class ScreenManager {
 	public static MultiScreen MS;
 	public static MultiplayerGameScreen MGS;
 	public static MultiplayerPauseScreen MPS;
+	public static MultiplayerOverScreen MOS;
 	
 	public ScreenManager() {
 		SoundManager.load();
@@ -36,6 +38,7 @@ public class ScreenManager {
 		PS = new PauseScreen();
 		LS = new LoadingScreen();
 		MS = new MultiScreen();
+		MOS = new MultiplayerOverScreen();
 		IGPEGame.game.setScreen(MMS);
 	}
 	

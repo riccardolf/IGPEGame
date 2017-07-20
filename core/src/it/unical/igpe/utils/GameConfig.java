@@ -13,6 +13,7 @@ public class GameConfig {
 	public static final int TILEDIM = 64;
 	public static final int ENEMY_RADIUS = 300;
 	public static final int ENEMY_SHOOT_RADIUS = 192;
+	public static final int MULTIKILLS = 5;
 
 	// Not constant
 	public static float MUSIC_VOLUME = 1.0f;

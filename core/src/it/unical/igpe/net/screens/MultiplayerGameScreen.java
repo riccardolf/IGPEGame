@@ -1,4 +1,4 @@
-package it.unical.igpe.net;
+package it.unical.igpe.net.screens;
 
 import java.awt.Rectangle;
 
@@ -13,9 +13,10 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.GUI.HUD.HUD;
 import it.unical.igpe.GUI.screens.ScreenManager;
-import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.Player;
+import it.unical.igpe.net.MultiplayerWorld;
+import it.unical.igpe.net.MultiplayerWorldRenderer;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
@@ -52,6 +53,9 @@ public class MultiplayerGameScreen implements Screen {
 		handleInput(delta);
 		renderer.render(delta);
 		hud.render(world.player);
+
+		if (world.isGameOver())
+			IGPEGame.game.setScreen(ScreenManager.MOS);
 	}
 
 	@Override
@@ -82,14 +86,6 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
-				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
-				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
-				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
-			}
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!world.player.isReloading())
@@ -97,11 +93,7 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
-				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
+			if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
@@ -112,11 +104,7 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
-				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
+			if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -127,11 +115,7 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
-				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
+			if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -142,10 +126,7 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x,
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
+		if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -154,10 +135,7 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
+			if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -166,10 +144,7 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x,
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
+			if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -178,14 +153,11 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
-			if (MultiplayerWorld.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
-				MultiplayerWorld.finished = true;
-				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
-			} else if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
+			if (MultiplayerWorld.getNextTile(box) != TileType.WALL)
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
 
 		}
-		
+
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched() && world.player.canShoot()) {
 			world.player.fire();

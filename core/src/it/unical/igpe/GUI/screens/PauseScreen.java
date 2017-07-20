@@ -21,7 +21,7 @@ import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.utils.GameConfig;
 
-public class PauseScreen implements Screen{
+public class PauseScreen implements Screen {
 	private SpriteBatch batch;
 	public Stage stage;
 	private Table table;
@@ -32,16 +32,14 @@ public class PauseScreen implements Screen{
 	private Slider soundVolume;
 	private TextButton quitButton;
 	private CheckBox fullscreen;
-	
+
 	private Texture command;
 
-	@Override
-	public void show() {
+	public PauseScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900,506);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
 
 		table = new Table();
 		table.setFillParent(true);
@@ -84,27 +82,27 @@ public class PauseScreen implements Screen{
 				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		});
-		
+
 		fullscreen = new CheckBox("FullScreen", IGPEGame.skinsoldier);
 		fullscreen.setChecked(GameConfig.isFullscreen);
 		fullscreen.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				if(fullscreen.isChecked()) {
+				if (fullscreen.isChecked()) {
 					GameConfig.isFullscreen = true;
 					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 					IGPEGame.game.setFullScreen();
-				}
-				else {
+				} else {
 					GameConfig.isFullscreen = false;
 					Gdx.graphics.setWindowedMode(GameConfig.WIDTH, GameConfig.HEIGHT);
 					IGPEGame.game.setFullScreen();
 				}
 			}
 		});
-		
-		
+
+		command = new Texture(Gdx.files.internal("command.png"));
+
 		table.add(title);
 		table.row();
 		table.add(music);
@@ -121,18 +119,28 @@ public class PauseScreen implements Screen{
 	}
 
 	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(stage);
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+	}
+
+	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-		
-		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			IGPEGame.game.setScreen(ScreenManager.GS);
 
 		batch.begin();
 		batch.draw(IGPEGame.background, 0, 0);
-		command=new Texture(Gdx.files.internal("command.png"));
-		batch.draw(command,0,0);
+		batch.draw(command, 0, 0);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());
@@ -141,21 +149,19 @@ public class PauseScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		this.show();
+		stage.getViewport().update(width, height, true);
 	}
-
 
 	@Override
 	public void dispose() {
 		stage.dispose();
 		batch.dispose();
-	}	
-	
-	@Override
-	public void hide() {
-		
 	}
 
+	@Override
+	public void hide() {
+
+	}
 
 	@Override
 	public void pause() {

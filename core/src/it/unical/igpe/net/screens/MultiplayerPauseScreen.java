@@ -1,4 +1,4 @@
-package it.unical.igpe.net;
+package it.unical.igpe.net.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -36,15 +36,12 @@ public class MultiplayerPauseScreen implements Screen {
 	private CheckBox fullscreen;
 	
 	private Texture command;
-
-	@Override
-	public void show() {
+	
+	public MultiplayerPauseScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900,506);
 
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
@@ -123,6 +120,16 @@ public class MultiplayerPauseScreen implements Screen {
 	}
 
 	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(stage);
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);	
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+	}
+
+	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -146,18 +153,16 @@ public class MultiplayerPauseScreen implements Screen {
 	public void resize(int width, int height) {
 		stage.getViewport().update(width, height);
 	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void dispose() {
 		stage.dispose();
 		batch.dispose();
 	}
+
+	@Override
+	public void hide() {}
+
 
 	@Override
 	public void pause() {

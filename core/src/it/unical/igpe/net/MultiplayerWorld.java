@@ -19,16 +19,19 @@ import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet04Death;
+import it.unical.igpe.net.packet.Packet05GameOver;
+import it.unical.igpe.net.screens.MultiplayerOverScreen;
+import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
 import it.unical.igpe.utils.Updatable;
 
 public class MultiplayerWorld implements Updatable {
 	public static String username;
-	public static boolean finished = false;
+	public boolean gameOver = false;
 	public static int keyCollected;
 	public PlayerMP player;
 	public List<AbstractDynamicObject> entities;
-
+	
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
 	private static LinkedList<Lootable> lootables;
@@ -125,6 +128,9 @@ public class MultiplayerWorld implements Updatable {
 		if(this.player.getHP() <= 0) {
 			Packet04Death packet = new Packet04Death(Killer, this.player.getUsername());
 			packet.writeData(IGPEGame.game.socketClient);
+		} else if (this.player.kills >= GameConfig.MULTIKILLS) {
+			Packet05GameOver packet = new Packet05GameOver(username);
+			packet.writeData(IGPEGame.game.socketClient);
 		}
 
 		// TODO: Packet for server closed
@@ -200,6 +206,12 @@ public class MultiplayerWorld implements Updatable {
 			this.player.setPos(randomSpawn());
 		}
 	}
+	
+	public void handleGameOver(String usernameWinner) {
+		MultiplayerOverScreen.winner = usernameWinner;
+		MultiplayerOverScreen.kills = GameConfig.MULTIKILLS;
+		this.gameOver = true;
+	}
 
 	public PlayerMP getPlayer() {
 		return player;
@@ -221,22 +233,16 @@ public class MultiplayerWorld implements Updatable {
 		return lootables;
 	}
 
-	public boolean isLevelFinished() {
-		return finished;
-	}
-
-	public boolean isGameOver() {
-		if (player.getHP() <= 0)
-			return true;
-		return false;
-	}
-
 	public synchronized void addEntity(AbstractDynamicObject player) {
 		this.getEntities().add(player);
 	}
 
 	public synchronized List<AbstractDynamicObject> getEntities() {
 		return this.entities;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
 	}
 
 }

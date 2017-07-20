@@ -12,12 +12,13 @@ import com.badlogic.gdx.math.Vector2;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.net.packet.Packet;
+import it.unical.igpe.net.packet.Packet.PacketTypes;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet01Disconnect;
 import it.unical.igpe.net.packet.Packet02Move;
 import it.unical.igpe.net.packet.Packet03Fire;
 import it.unical.igpe.net.packet.Packet04Death;
-import it.unical.igpe.net.packet.Packet.PacketTypes;
+import it.unical.igpe.net.packet.Packet05GameOver;
 
 public class GameClient extends Thread {
 	private InetAddress ipAddress;
@@ -90,7 +91,15 @@ public class GameClient extends Thread {
 			packet = new Packet04Death(data);
 			handleDeath((Packet04Death) packet);
 			break;
+		case GAMEOVER:
+			packet = new Packet05GameOver(data);
+			handleGameOver((Packet05GameOver) packet);
+			break;
 		}
+	}
+
+	private void handleGameOver(Packet05GameOver packet) {
+		IGPEGame.game.worldMP.handleGameOver(packet.getUsernameWinner());
 	}
 
 	private void handleDeath(Packet04Death packet) {

@@ -125,7 +125,7 @@ public class OptionScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		this.show();
+		stage.getViewport().update(width, height);
 	}
 
 	@Override
