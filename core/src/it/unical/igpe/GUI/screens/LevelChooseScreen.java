@@ -33,7 +33,6 @@ public class LevelChooseScreen implements Screen {
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
 		stage = new Stage();
-
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);

@@ -20,27 +20,30 @@ public class LoadingScreen implements Screen {
 	private Table table;
 	private ProgressBar loadingBar;
 	private Label loading;
-
-	@Override
-	public void show() {
-		Assets.load();
+	
+	public LoadingScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-
+		
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
 
 		loading = new Label("LOADING...", IGPEGame.skinsoldier);
 
-		loadingBar = new ProgressBar(0.0f, 1.0f, 0.1f, false, IGPEGame.skinui);
+		loadingBar = new ProgressBar(0.0f, 1.0f, 0.1f, false, IGPEGame.skinComic);
 		loadingBar.setValue(0);
 		table.add(loading);
 		table.row();
 		table.add(loadingBar);
+	}
+
+	@Override
+	public void show() {
+		Assets.load();
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -70,7 +73,13 @@ public class LoadingScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		this.show();
+		stage.getViewport().update(width, height);
+	}
+	
+	@Override
+	public void dispose() {
+		batch.dispose();
+		stage.dispose();
 	}
 
 	@Override
@@ -83,12 +92,6 @@ public class LoadingScreen implements Screen {
 
 	@Override
 	public void hide() {
-	}
-
-	@Override
-	public void dispose() {
-		stage.dispose();
-		batch.dispose();
 	}
 
 }

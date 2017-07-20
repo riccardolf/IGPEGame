@@ -29,7 +29,7 @@ public class MultiplayerGameScreen implements Screen {
 	public MultiplayerGameScreen() {
 		IGPEGame.game.worldMP = new MultiplayerWorld("arena.map", false);
 		this.world = IGPEGame.game.worldMP;
-		this.hud = new HUD(true);
+		this.hud = new HUD();
 		this.renderer = new MultiplayerWorldRenderer(world);
 	}
 

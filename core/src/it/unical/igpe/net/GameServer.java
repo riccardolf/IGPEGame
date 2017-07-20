@@ -89,6 +89,10 @@ public class GameServer extends Thread {
 			break;
 		}
 	}
+	
+	public void close() {
+		this.socket.close();
+	}
 
 	private void handleFire(Packet03Fire packet) {
 		if (getPlayerMP(packet.getUsername()) != null) {

@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -33,8 +32,6 @@ public class PauseScreen implements Screen {
 	private TextButton quitButton;
 	private CheckBox fullscreen;
 
-	private Texture command;
-
 	public PauseScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
@@ -56,6 +53,7 @@ public class PauseScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.MUSIC_VOLUME = musicVolume.getValue();
 				IGPEGame.game.setVolume();
+				SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 			}
 		});
 
@@ -83,7 +81,7 @@ public class PauseScreen implements Screen {
 			}
 		});
 
-		fullscreen = new CheckBox("FullScreen", IGPEGame.skinsoldier);
+		fullscreen = new CheckBox("FullScreen", IGPEGame.skinComic);
 		fullscreen.setChecked(GameConfig.isFullscreen);
 		fullscreen.addListener(new ChangeListener() {
 
@@ -100,8 +98,6 @@ public class PauseScreen implements Screen {
 				}
 			}
 		});
-
-		command = new Texture(Gdx.files.internal("command.png"));
 
 		table.add(title);
 		table.row();
@@ -133,14 +129,11 @@ public class PauseScreen implements Screen {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			IGPEGame.game.setScreen(ScreenManager.GS);
 
 		batch.begin();
 		batch.draw(IGPEGame.background, 0, 0);
-		batch.draw(command, 0, 0);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());

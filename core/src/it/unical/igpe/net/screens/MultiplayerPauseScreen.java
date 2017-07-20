@@ -57,6 +57,7 @@ public class MultiplayerPauseScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.MUSIC_VOLUME = musicVolume.getValue();
 				IGPEGame.game.setVolume();
+				SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 			}
 		});
 
@@ -84,7 +85,7 @@ public class MultiplayerPauseScreen implements Screen {
 			}
 		});
 		
-		fullscreen = new CheckBox("FullScreen", IGPEGame.skinsoldier);
+		fullscreen = new CheckBox("FullScreen", IGPEGame.skinComic);
 		fullscreen.setChecked(GameConfig.isFullscreen);
 		fullscreen.addListener(new ChangeListener() {
 			
@@ -133,8 +134,6 @@ public class MultiplayerPauseScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			IGPEGame.game.setScreen(ScreenManager.MGS);

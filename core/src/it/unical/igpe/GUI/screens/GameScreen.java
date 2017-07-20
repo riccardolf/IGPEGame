@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 
 	public GameScreen(World _world) {
 		this.world = _world;
-		this.hud = new HUD(false);
+		this.hud = new HUD();
 		this.renderer = new WorldRenderer(world);
 	}
 

@@ -20,16 +20,14 @@ public class HUD implements Disposable {
 	private SpriteBatch batch;
 	private ProgressBar health;
 	private ProgressBar skill;
-	private Table table;
+	private Table tableHP;
+	private Table tableSkill;
 	private Texture pistol;
 	private Texture shotgun;
 	private Texture rifle;
 	private BitmapFont font;
 
-	/**
-	 * @param isMP true if the game is multiplayer
-	 */
-	public HUD(boolean isMP) {
+	public HUD() {
 		// Loading textures
 		pistol = new Texture(Gdx.files.internal("pistol.png"));
 		rifle = new Texture(Gdx.files.internal("rifle.png"));
@@ -44,24 +42,19 @@ public class HUD implements Disposable {
 
 		// Setting up stage and table
 		stage = new Stage();
-		table = new Table();
-		table.setDebug(false);
+		tableHP = new Table();
+		tableHP.setFillParent(true);
+		stage.addActor(tableHP);
+		
+		tableSkill = new Table();
+		tableSkill.setFillParent(true);
+		stage.addActor(tableSkill);
 
-		// Setting up tables' positions
-		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
-		float partialYpos = height - (height * 95f) / 100f;
-		table.setBounds(0f, 0f, width, partialYpos);
+		health = new ProgressBar(0, 100, 1, false, IGPEGame.skinUi);
+		skill = new ProgressBar(0.0f, 1.0f, 0.1f, true, IGPEGame.skinUi);
+		tableHP.add(health).padTop(425);
+		tableSkill.add(skill).padLeft(775);
 
-		health = new ProgressBar(0, 100, 1, false, IGPEGame.skinui);
-		if (!isMP) {
-			skill = new ProgressBar(0.0f, 1.0f, 0.1f, false, IGPEGame.skinui);
-			table.add(skill).width(100);
-			table.row().height(50);
-		}
-		table.add(health).width(200);
-
-		stage.addActor(table);
 	}
 
 	public void render(Player player) {
@@ -84,7 +77,7 @@ public class HUD implements Disposable {
 
 		for (int i = 0; i < World.keyCollected; i++)
 			batch.draw(Assets.manager.get(Assets.Key, Texture.class), 650 + i * 32, 5, 32, 32);
-				
+
 		batch.end();
 		stage.draw();
 	}
@@ -111,7 +104,7 @@ public class HUD implements Disposable {
 			font.draw(batch, "NO AMMO", 15, 20);
 		else
 			font.draw(batch, player.activeWeapon.actClip + " / " + player.activeWeapon.actAmmo, 15, 25);
-		
+
 		font.draw(batch, player.kills + " / " + player.deaths, 600, 600);
 
 		batch.end();

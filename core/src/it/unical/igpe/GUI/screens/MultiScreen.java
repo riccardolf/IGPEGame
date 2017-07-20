@@ -41,14 +41,13 @@ public class MultiScreen implements Screen {
 	private TextField IPClientText;
 	private TextField PortClientText;
 	private TextField PortServerText;
-
-	@Override
-	public void show() {
+	
+	public MultiScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
+		
 		tableChoose = new Table();
 		tableServer = new Table();
 		tableClient = new Table();
@@ -187,7 +186,11 @@ public class MultiScreen implements Screen {
 		tableServer.add(createServer);
 		tableServer.row();
 		tableServer.add(chosenReturnServerButton);
+	}
 
+	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -205,17 +208,17 @@ public class MultiScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		this.show();
+		stage.getViewport().update(width, height);
 	}
-
-	@Override
-	public void hide() {
-	}
-
+	
 	@Override
 	public void dispose() {
 		stage.dispose();
 		batch.dispose();
+	}
+
+	@Override
+	public void hide() {
 	}
 
 	@Override

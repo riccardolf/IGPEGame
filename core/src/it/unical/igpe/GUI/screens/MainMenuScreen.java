@@ -26,18 +26,11 @@ public class MainMenuScreen implements Screen {
 	private TextButton optionButton;
 	private TextButton quitButton;
 	
-	@Override
-	public void show() {
-		if(!SoundManager.manager.get(SoundManager.MenuMusic, Music.class).isPlaying()) {
-			SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-			SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
-		}
-		
+	public MainMenuScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 		
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
 		
 		table = new Table();
 		table.setFillParent(true);
@@ -90,6 +83,14 @@ public class MainMenuScreen implements Screen {
 		table.row();
 		table.add(quitButton);
 	}
+	
+	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(stage);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+	}
 
 	@Override
 	public void render(float delta) {
@@ -106,7 +107,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		this.show();
+		stage.getViewport().update(width, height);
 	}
 
 

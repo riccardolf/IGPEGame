@@ -70,6 +70,8 @@ public class MultiplayerOverScreen implements Screen {
 			if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || Gdx.input.justTouched()) {
 				time = 0;
 				Assets.manager.clear();
+				if(IGPEGame.game.socketServer != null)
+					IGPEGame.game.socketServer.close();
 				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		}

@@ -23,7 +23,8 @@ public class IGPEGame extends Game implements Disposable {
 	public static IGPEGame game;
 	public static Texture background;
 	public static Skin skinsoldier;
-	public static Skin skinui;
+	public static Skin skinComic;
+	public static Skin skinUi;
 
 	private Preferences prefs;
 	public MultiplayerWorld worldMP;
@@ -38,8 +39,11 @@ public class IGPEGame extends Game implements Disposable {
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("skin/starsoldier/star-soldier-ui.atlas"));
 		skinsoldier = new Skin(Gdx.files.internal("skin/starsoldier/star-soldier-ui.json"), atlas);
 
+		atlas = new TextureAtlas(Gdx.files.internal("skin/comic/comic-ui.atlas"));
+		skinComic = new Skin(Gdx.files.internal("skin/comic/comic-ui.json"));
+		
 		atlas = new TextureAtlas(Gdx.files.internal("skin/ui/uiskin.atlas"));
-		skinui = new Skin(Gdx.files.internal("skin/ui/uiskin.json"), atlas);
+		skinUi = new Skin(Gdx.files.internal("skin/ui/uiskin.json"));
 		
 		GameConfig.MUSIC_VOLUME = this.getMusicVolume();
 		GameConfig.SOUND_VOLUME = this.getSoundVolume();
@@ -61,6 +65,7 @@ public class IGPEGame extends Game implements Disposable {
 		if (this.socketServer != null) {
 			Packet01Disconnect packetDisconnect = new Packet01Disconnect(IGPEGame.game.worldMP.player.getUsername());
 			packetDisconnect.writeData(IGPEGame.game.socketClient);
+			IGPEGame.game.socketServer.close();
 		}
 	}
 
