@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
 
 public class LoadingScreen implements Screen {
@@ -56,7 +57,7 @@ public class LoadingScreen implements Screen {
 
 		loadingBar.setValue(Assets.manager.getProgress());
 
-		if (Assets.manager.update()) {
+		if (Assets.manager.update() && SoundManager.manager.update()) {
 			Assets.manager.finishLoading();
 			if (!isMP) 
 				IGPEGame.game.setScreen(ScreenManager.GS);

@@ -1,5 +1,6 @@
 package it.unical.igpe.MapUtils;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import it.unical.igpe.GUI.Assets;
-import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Enemy;
 import it.unical.igpe.logic.Lootable;
@@ -23,7 +24,6 @@ import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
 
 public class WorldRenderer {
-	private IGPEGame game;
 	private World world;
 	public OrthographicCamera camera;
 	public Viewport viewport;
@@ -31,8 +31,7 @@ public class WorldRenderer {
 	private ShapeRenderer sr;
 	private float stateTime;
 
-	public WorldRenderer(World _world, IGPEGame game) {
-		this.game = game;
+	public WorldRenderer(World _world) {
 		this.world = _world;
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(true, 800, 800);
@@ -47,106 +46,115 @@ public class WorldRenderer {
 		stateTime += deltaTime;
 		batch.setProjectionMatrix(camera.combined);
 		sr.setProjectionMatrix(camera.combined);
-
-		camera.position.lerp(new Vector3(world.getPlayer().getX(), world.getPlayer().getY(), 0), 0.5f);
+		
+		camera.position.lerp(new Vector3(world.getPlayer().getX(), world.getPlayer().getY(), 0),
+				0.5f);
 		camera.update();
-
-		game.soundManager.FootStep.setVolume(GameConfig.SOUND_VOLUME);
-		game.soundManager.FootStep.setLooping(true);
+		
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 
 		// FootStep sound
 		if (world.getPlayer().state == Player.STATE_RUNNING)
-			game.soundManager.FootStep.play();
+			SoundManager.manager.get(SoundManager.FootStep, Music.class).play();
 		else
-			game.soundManager.FootStep.pause();
-
+			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
+		
 		batch.begin();
 
 		// Drawing Tile
 		for (Tile tile : world.getTiles()) {
 			if (tile.getType() == TileType.GROUND)
-				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getX(), tile.getY());
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getX(),
+						tile.getY());
 			else if (tile.getType() == TileType.WALL)
-				batch.draw(Assets.manager.get(Assets.Wall, Texture.class), tile.getX(), tile.getY());
+				batch.draw(Assets.manager.get(Assets.Wall, Texture.class), tile.getX(),
+						tile.getY());
 			else if (tile.getType() == TileType.ENDLEVEL) {
 				if (!World.isDoorUnlocked())
-					batch.draw(Assets.manager.get(Assets.StairClosed, Texture.class), tile.getX(), tile.getY());
+					batch.draw(Assets.manager.get(Assets.StairClosed, Texture.class), tile.getX(),
+							tile.getY());
 				else
-					batch.draw(Assets.manager.get(Assets.Stair, Texture.class), tile.getX(), tile.getY());
+					batch.draw(Assets.manager.get(Assets.Stair, Texture.class), tile.getX(),
+							tile.getY());
 			}
 		}
 
 		// Drawing loot
 		for (Lootable loot : world.getLootables()) {
 			if (loot.getType() == LootableType.HEALTPACK)
-				batch.draw(Assets.manager.get(Assets.HealthPack, Texture.class), loot.getX(), loot.getY());
+				batch.draw(Assets.manager.get(Assets.HealthPack, Texture.class), loot.getX(),
+						loot.getY());
 			else if (loot.getType() == LootableType.TRAP) {
 				if (loot.closed)
-					batch.draw(Assets.manager.get(Assets.TrapClosed, Texture.class), loot.getX(), loot.getY());
+					batch.draw(Assets.manager.get(Assets.TrapClosed, Texture.class), loot.getX(),
+							loot.getY());
 				else
-					batch.draw(Assets.manager.get(Assets.TrapOpen, Texture.class), loot.getX(), loot.getY());
+					batch.draw(Assets.manager.get(Assets.TrapOpen, Texture.class), loot.getX(),
+							loot.getY());
 			} else if (loot.getType() == LootableType.KEYY) {
-				batch.draw(Assets.manager.get(Assets.KeyY, Texture.class), loot.getX(), loot.getY());
+				batch.draw(Assets.manager.get(Assets.KeyY, Texture.class), loot.getX(),
+						loot.getY());
 			} else if (loot.getType() == LootableType.KEYR) {
-				batch.draw(Assets.manager.get(Assets.KeyR, Texture.class), loot.getX(), loot.getY());
+				batch.draw(Assets.manager.get(Assets.KeyR, Texture.class), loot.getX(),
+						loot.getY());
 			} else if (loot.getType() == LootableType.KEYG) {
-				batch.draw(Assets.manager.get(Assets.KeyG, Texture.class), loot.getX(), loot.getY());
+				batch.draw(Assets.manager.get(Assets.KeyG, Texture.class), loot.getX(),
+						loot.getY());
 			} else if (loot.getType() == LootableType.KEYB) {
-				batch.draw(Assets.manager.get(Assets.KeyB, Texture.class), loot.getX(), loot.getY());
+				batch.draw(Assets.manager.get(Assets.KeyB, Texture.class), loot.getX(),
+						loot.getY());
 			} else if (loot.getType() == LootableType.AMMOPACK) {
-				batch.draw(Assets.manager.get(Assets.AmmoBox, Texture.class), loot.getX(), loot.getY());
+				batch.draw(Assets.manager.get(Assets.AmmoBox, Texture.class), loot.getX(),
+						loot.getY());
 			}
 		}
+
 
 		// Draw Enemies
 		batch.setColor(1, 1, 1, 1);
 		for (Enemy e : world.EM.getList()) {
 			if (e.Alive()) {
 				batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA);
-				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getX() - 320 + 32, e.getY() - 320 + 32,
-						640, 640);
+				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getX() - 320 + 32,
+						e.getY() - 320 + 32, 640, 640);
 				batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 56, 56, 1f, 1f, e.angle);
 			} else
 				batch.draw(Assets.Skull, e.getPos().x, e.getPos().y, 32, 32, 32, 32, 1f, 1f, e.angle);
-			if (e.isMoving) {
-				float boundary = camera.viewportWidth / 2;
-				float xDistance = e.getX() - camera.position.x;
-				float distance = camera.position.dst(e.getX(), e.getY(), 0) * Math.signum(xDistance);
-				distance = Math.min(boundary, Math.max(distance, -boundary));
-
-				game.soundManager.FootStep.setVolume(GameConfig.SOUND_VOLUME * (1 - Math.abs(distance) / boundary));
-				game.soundManager.FootStep.setPan(xDistance / boundary,
-						GameConfig.SOUND_VOLUME);
-				game.soundManager.FootStep.play();
-			}
 		}
 
 		// Draw Player
 		if (world.getPlayer().getActWeapon() == "pistol") {
 			if (world.getPlayer().state == Player.STATE_IDLE)
-				batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_RELOADING)
-				batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_RUNNING)
-				batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_SHOOTING) {
 				batch.draw(Assets.shootingPistolAnimation.getKeyFrame(stateTime), world.getPlayer().getX(),
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
 			}
 		} else if (world.getPlayer().getActWeapon() == "shotgun") {
 			if (world.getPlayer().state == Player.STATE_IDLE)
-				batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_RELOADING)
-				batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_RUNNING)
-				batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_SHOOTING) {
 				batch.draw(Assets.shootingShotgunAnimation.getKeyFrame(stateTime), world.getPlayer().getX(),
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
@@ -156,11 +164,13 @@ public class WorldRenderer {
 				batch.draw(Assets.idleRifleAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_RELOADING)
-				batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_RUNNING)
-				batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), world.getPlayer().getX(),
-						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
+				batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true),
+						world.getPlayer().getX(), world.getPlayer().getY(), 32, 32, 64, 64, 1f,
+						1f, world.getPlayer().angle);
 			else if (world.getPlayer().state == Player.STATE_SHOOTING) {
 				batch.draw(Assets.shootingRifleAnimation.getKeyFrame(stateTime), world.getPlayer().getX(),
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
@@ -177,7 +187,7 @@ public class WorldRenderer {
 		sr.end();
 
 	}
-
+	
 	public void dispose() {
 		batch.dispose();
 	}

@@ -3,6 +3,7 @@ package it.unical.igpe.GUI.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,11 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import it.unical.igpe.GUI.Assets;
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.utils.GameConfig;
 
 public class PauseScreen implements Screen {
-	private IGPEGame game;
 	private SpriteBatch batch;
 	public Stage stage;
 	private Table table;
@@ -31,8 +32,7 @@ public class PauseScreen implements Screen {
 	private TextButton quitButton;
 	private CheckBox fullscreen;
 
-	public PauseScreen(IGPEGame _game) {
-		this.game = _game;
+	public PauseScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
@@ -53,7 +53,7 @@ public class PauseScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				GameConfig.MUSIC_VOLUME = musicVolume.getValue();
 				IGPEGame.game.setVolume();
-				game.soundManager.MenuMusic.setVolume(GameConfig.MUSIC_VOLUME);
+				SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 			}
 		});
 
@@ -73,9 +73,9 @@ public class PauseScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.soundManager.GameMusic.stop();
-				game.soundManager.FootStep.stop();
-				game.soundManager.MenuMusic.play();
+				SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
+				SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
+				SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
 				Assets.manager.clear();
 				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
@@ -117,11 +117,11 @@ public class PauseScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
-		game.soundManager.GameMusic.stop();
-		game.soundManager.FootStep.stop();
-		game.soundManager.MenuMusic.setVolume(GameConfig.MUSIC_VOLUME);
-		game.soundManager.MenuMusic.setLooping(true);
-		game.soundManager.MenuMusic.play();
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
 	}
 
 	@Override

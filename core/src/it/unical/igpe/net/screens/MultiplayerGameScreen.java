@@ -5,9 +5,12 @@ import java.awt.Rectangle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 
+import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.GUI.HUD.HUD;
 import it.unical.igpe.GUI.screens.ScreenManager;
 import it.unical.igpe.game.IGPEGame;
@@ -19,28 +22,26 @@ import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
 
 public class MultiplayerGameScreen implements Screen {
-	private IGPEGame game;
 	MultiplayerWorld world;
 	HUD hud;
 	MultiplayerWorldRenderer renderer;
 
-	public MultiplayerGameScreen(IGPEGame game) {
-		this.game = game;
+	public MultiplayerGameScreen() {
 		IGPEGame.game.worldMP = new MultiplayerWorld("arena.map", false);
 		this.world = IGPEGame.game.worldMP;
 		this.hud = new HUD();
-		this.renderer = new MultiplayerWorldRenderer(world, game);
+		this.renderer = new MultiplayerWorldRenderer(world);
 	}
 
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(null);
-		game.soundManager.MenuMusic.pause();
-		game.soundManager.GameMusic.setVolume(GameConfig.MUSIC_VOLUME);
-		game.soundManager.GameMusic.setLooping(true);
-		game.soundManager.GameMusic.play();
-		game.soundManager.FootStep.setVolume(GameConfig.SOUND_VOLUME);
-		game.soundManager.FootStep.setLooping(true);
+		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).pause();
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setLooping(true);
+		SoundManager.manager.get(SoundManager.GameMusic, Music.class).play();
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
+		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 	}
 
 	@Override
@@ -161,26 +162,26 @@ public class MultiplayerGameScreen implements Screen {
 		if (Gdx.input.justTouched() && world.player.canShoot()) {
 			world.player.fire();
 			if (world.player.getActWeapon() == "pistol" && !world.player.isReloading()) {
-				game.soundManager.PistolFire.play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (world.player.getActWeapon() == "shotgun" && !world.player.isReloading()) {
-				game.soundManager.ShotgunFire.play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (world.player.getActWeapon() == "rifle" && !world.player.isReloading()) {
-				game.soundManager.RifleFire.play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
 			if (world.player.checkAmmo()) {
 				if (world.player.getActWeapon() == "pistol")
-					game.soundManager.PistolReload.play(GameConfig.SOUND_VOLUME);
+					SoundManager.manager.get(SoundManager.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 				else if (world.player.getActWeapon() == "shotgun")
-					game.soundManager.ShotgunReload.play(GameConfig.SOUND_VOLUME);
+					SoundManager.manager.get(SoundManager.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
 		}
 
 		if ((Gdx.input.isKeyJustPressed(Input.Keys.R) && world.player.canReload()) || world.player.checkAmmo()) {
 			world.player.reload();
 			if (world.player.getActWeapon() == "pistol") {
-				game.soundManager.PistolReload.play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			} else if (world.player.getActWeapon() == "shotgun") {
-				game.soundManager.ShotgunReload.play(GameConfig.SOUND_VOLUME);
+				SoundManager.manager.get(SoundManager.ShotgunReload, Sound.class).play(GameConfig.SOUND_VOLUME);
 			}
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 			world.player.setActWeapon("pistol");

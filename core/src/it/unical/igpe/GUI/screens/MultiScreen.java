@@ -42,7 +42,7 @@ public class MultiScreen implements Screen {
 	private TextField PortClientText;
 	private TextField PortServerText;
 	
-	public MultiScreen(final IGPEGame game) {
+	public MultiScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
@@ -127,7 +127,7 @@ public class MultiScreen implements Screen {
 						Integer.parseInt(PortClientText.getText()));
 				IGPEGame.game.socketClient.start();
 				MultiplayerWorld.username = nameText.getText();
-				ScreenManager.CreateMGS(game);
+				ScreenManager.CreateMGS();
 				LoadingScreen.isMP = true;
 				IGPEGame.game.setScreen(ScreenManager.LS);
 			}

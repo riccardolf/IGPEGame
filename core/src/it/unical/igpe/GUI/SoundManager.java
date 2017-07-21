@@ -1,95 +1,37 @@
 package it.unical.igpe.GUI;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
-import it.unical.igpe.utils.GameConfig;
-
 public class SoundManager {
-	public String footStep;
-	public String pistolFire;
-	public String rifleFire;
-	public String shotgunFire;
-	public String pistolReload;
-	public String shotgunReload;
-	public String trapClosing;
-	public String healthRestored;
-	public String gameMusic;
-	public String menuMusic;
-	
+	public static AssetManager manager = new AssetManager();
+
 	// SFX
-	public Music FootStep;
-	public Sound PistolFire;
-	public Sound RifleFire;
-	public Sound ShotgunFire;
-	public Sound PistolReload;
-	public Sound ShotgunReload;
-	public Sound TrapClosing;
-	public Sound HealthRestored;
+	public static String FootStep = "Audio/footstep.ogg";
+	public static String PistolFire = "Audio/pistol_fire.ogg";
+	public static String RifleFire = "Audio/rifle_fire.ogg";
+	public static String ShotgunFire = "Audio/shotgun_fire.ogg";
+	public static String PistolReload = "Audio/pistol_reload.ogg";
+	public static String ShotgunReload = "Audio/shotgun_reload.ogg";
+	public static String TrapClosing = "Audio/trap.ogg";
+	public static String HealthRestored = "Audio/health.ogg";
 
 	// MUSIC
-	public Music GameMusic;
-	public Music MenuMusic;
-	
-	public SoundManager() {
-		// SFX
-		FootStep = Gdx.audio.newMusic(Gdx.files.internal("Audio/footstep.ogg"));
-		PistolFire = Gdx.audio.newSound(Gdx.files.internal("Audio/pistol_fire.ogg"));
-		RifleFire = Gdx.audio.newSound(Gdx.files.internal("Audio/rifle_fire.ogg"));
-		ShotgunFire = Gdx.audio.newSound(Gdx.files.internal("Audio/shotgun_fire.ogg"));
-		PistolReload = Gdx.audio.newSound(Gdx.files.internal("Audio/pistol_reload.ogg"));
-		ShotgunReload = Gdx.audio.newSound(Gdx.files.internal("Audio/shotgun_reload.ogg"));
-		TrapClosing = Gdx.audio.newSound(Gdx.files.internal("Audio/trap.ogg"));
-		HealthRestored = Gdx.audio.newSound(Gdx.files.internal("Audio/health.ogg"));
+	public static String GameMusic = "Audio/gamemusic.ogg";
+	public static String MenuMusic = "Audio/menumusic.mp3";
 
-		// MUSIC
-		GameMusic = Gdx.audio.newMusic(Gdx.files.internal("Audio/gamemusic.ogg"));
-		MenuMusic = Gdx.audio.newMusic(Gdx.files.internal("Audio/menumusic.mp3"));
-		
-		FootStep.setLooping(true);
-		GameMusic.setLooping(true);
-		MenuMusic.setLooping(true);
+	public static void load() {
+		// load sound effects
+		manager.load(FootStep, Music.class);
+		manager.load(GameMusic, Music.class);
+		manager.load(MenuMusic, Music.class);
+		manager.load(PistolFire, Sound.class);
+		manager.load(RifleFire, Sound.class);
+		manager.load(ShotgunFire, Sound.class);
+		manager.load(ShotgunReload, Sound.class);
+		manager.load(PistolReload, Sound.class);
+		manager.load(TrapClosing, Sound.class);
+		manager.load(HealthRestored, Sound.class);
 	}
-	
-	public void play(String stuff) {
-		switch (stuff) {
-		case "footStep":
-			FootStep.setVolume(GameConfig.MUSIC_VOLUME);
-			FootStep.play();
-			break;
-		case "pistolFire":
-					
-					break;
-		case "rifleFire":
-			
-			break;
-		case "shotgunFire":
-			
-			break;
-		case "pistolReload":
-			
-			break;
-		case "shotgunReload":
-			
-			break;
-		case "trapClosing":
-			
-			break;
-		case "healthRestored":
-			
-			break;
-		case "gameMusic":
-			GameMusic.setVolume(GameConfig.MUSIC_VOLUME);
-			GameMusic.play();		
-			break;
-		case "menuMusic":
-			MenuMusic.setVolume(GameConfig.MUSIC_VOLUME);
-			MenuMusic.play();
-			break;
-		default:
-			break;
-		}
-	}
-
 }

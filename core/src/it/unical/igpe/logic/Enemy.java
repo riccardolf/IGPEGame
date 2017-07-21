@@ -17,17 +17,13 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 	public boolean chaseObj;
 	public boolean canShoot;
 	public boolean canMove;
-	public boolean isMoving;
-	
 	public int startx;
 	public int starty;
 	public int targetx;
 	public int targety;
-	
 	private float shootDelay;
 	private float followDelay;
 	private float followTimer;
-	
 	private TileType nextTile;
 	private Rectangle box;
 	private Vector2 dir;
@@ -55,7 +51,6 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 	}
 
 	public void update(float delta) {
-		isMoving = false;
 		canMove = true;
 		startx = this.getX() + 32;
 		starty = this.getY() + 32;
@@ -64,7 +59,6 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 			targetx = players.getFirst().getX() + 32;
 			targety = players.getFirst().getY() + 32;
 			followDelay = 0;
-			isMoving = true;
 		} else if (followDelay > followTimer) {
 			Random r = new Random();
 			targetx = startx + (r.nextInt(16) - 8) * 32;
