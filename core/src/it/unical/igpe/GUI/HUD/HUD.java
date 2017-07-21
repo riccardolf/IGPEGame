@@ -27,7 +27,7 @@ public class HUD implements Disposable {
 	private Texture rifle;
 	private BitmapFont font;
 
-	public HUD() {
+	public HUD(boolean isMP) {
 		// Loading textures
 		pistol = new Texture(Gdx.files.internal("pistol.png"));
 		rifle = new Texture(Gdx.files.internal("rifle.png"));
@@ -45,15 +45,17 @@ public class HUD implements Disposable {
 		tableHP = new Table();
 		tableHP.setFillParent(true);
 		stage.addActor(tableHP);
-		
+
 		tableSkill = new Table();
 		tableSkill.setFillParent(true);
 		stage.addActor(tableSkill);
 
 		health = new ProgressBar(0, 100, 1, false, IGPEGame.skinUi);
-		skill = new ProgressBar(0.0f, 1.0f, 0.1f, true, IGPEGame.skinUi);
 		tableHP.add(health).padTop(425);
-		tableSkill.add(skill).padLeft(775);
+		if (!isMP) {
+			skill = new ProgressBar(0.0f, 1.0f, 0.1f, true, IGPEGame.skinUi);
+			tableSkill.add(skill).padLeft(775);
+		}
 
 	}
 

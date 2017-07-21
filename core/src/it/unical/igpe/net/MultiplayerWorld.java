@@ -62,11 +62,10 @@ public class MultiplayerWorld implements Updatable {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 				else if (manager.map[x][y] == 1)
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.WALL));
-				else if (manager.map[x][y] == 99) {
+				else if (manager.map[x][y] == 17) {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					spawnPoints.add(new Vector2(x, y));
 				}
-
 			}
 
 		if (!isServer) {

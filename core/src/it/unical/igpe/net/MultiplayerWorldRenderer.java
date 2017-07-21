@@ -18,11 +18,9 @@ import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
-import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.utils.GameConfig;
-import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
 
 public class MultiplayerWorldRenderer {
@@ -88,71 +86,76 @@ public class MultiplayerWorldRenderer {
 			}
 		}
 
-		// Drawing loot
-		for (Lootable loot : world.getLootables()) {
-			if (loot.getType() == LootableType.HEALTPACK)
-				batch.draw(Assets.manager.get(Assets.HealthPack, Texture.class), loot.getBoundingBox().x,
-						loot.getBoundingBox().y);
-			else if (loot.getType() == LootableType.TRAP) {
-				if (loot.closed)
-					batch.draw(Assets.manager.get(Assets.TrapClosed, Texture.class), loot.getBoundingBox().x,
-							loot.getBoundingBox().y);
-				else
-					batch.draw(Assets.manager.get(Assets.TrapOpen, Texture.class), loot.getBoundingBox().x,
-							loot.getBoundingBox().y);
-			} else if (loot.getType() == LootableType.KEYY) {
-				batch.draw(Assets.manager.get(Assets.KeyY, Texture.class), loot.getBoundingBox().x,
-						loot.getBoundingBox().y);
-			} else if (loot.getType() == LootableType.KEYR) {
-				batch.draw(Assets.manager.get(Assets.KeyR, Texture.class), loot.getBoundingBox().x,
-						loot.getBoundingBox().y);
-			} else if (loot.getType() == LootableType.KEYG) {
-				batch.draw(Assets.manager.get(Assets.KeyG, Texture.class), loot.getBoundingBox().x,
-						loot.getBoundingBox().y);
-			} else if (loot.getType() == LootableType.KEYB) {
-				batch.draw(Assets.manager.get(Assets.KeyB, Texture.class), loot.getBoundingBox().x,
-						loot.getBoundingBox().y);
-			} else if (loot.getType() == LootableType.AMMOPACK) {
-				batch.draw(Assets.manager.get(Assets.AmmoBox, Texture.class), loot.getBoundingBox().x,
-						loot.getBoundingBox().y);
-			}
-		}
-
 		// Drawing players
 		batch.setColor(1, 1, 1, 1);
 		Iterator<AbstractDynamicObject> iter = world.entities.iterator();
 		while(iter.hasNext()) {
 			PlayerMP e = (PlayerMP) iter.next();
-			if (e.getActWeapon() == "pistol") {
-				if (e.state == Player.STATE_IDLE)
-					batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				else if (e.state == Player.STATE_RELOADING)
-					batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				else if (e.state == Player.STATE_RUNNING)
-					batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-			} else if (e.getActWeapon() == "shotgun") {
-				if (e.state == Player.STATE_IDLE)
-					batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				else if (e.state == Player.STATE_RELOADING)
-					batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				else if (e.state == Player.STATE_RUNNING)
-					batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-			} else if (e.getActWeapon() == "rifle") {
-				if (e.state == Player.STATE_IDLE)
-					batch.draw(Assets.idleRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				else if (e.state == Player.STATE_RELOADING)
-					batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
-				else if (e.state == Player.STATE_RUNNING)
-					batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
-							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			if(e.getUsername().equalsIgnoreCase(MultiplayerWorld.username)) {
+				if (e.getActWeapon() == "pistol") {
+					if (e.state == Player.STATE_IDLE)
+						batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RELOADING)
+						batch.draw(Assets.reloadingPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RUNNING)
+						batch.draw(Assets.runningPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				} else if (e.getActWeapon() == "shotgun") {
+					if (e.state == Player.STATE_IDLE)
+						batch.draw(Assets.idleShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RELOADING)
+						batch.draw(Assets.reloadingShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RUNNING)
+						batch.draw(Assets.runningShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				} else if (e.getActWeapon() == "rifle") {
+					if (e.state == Player.STATE_IDLE)
+						batch.draw(Assets.idleRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RELOADING)
+						batch.draw(Assets.reloadingRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RUNNING)
+						batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				}
+			}
+			else {
+				if (e.getActWeapon() == "pistol") {
+					if (e.state == Player.STATE_IDLE)
+						batch.draw(Assets.eIdlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RELOADING)
+						batch.draw(Assets.eReloadingPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RUNNING)
+						batch.draw(Assets.eRunningPistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				} else if (e.getActWeapon() == "shotgun") {
+					if (e.state == Player.STATE_IDLE)
+						batch.draw(Assets.eIdleShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RELOADING)
+						batch.draw(Assets.eReloadingShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RUNNING)
+						batch.draw(Assets.eRunningShotgunAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				} else if (e.getActWeapon() == "rifle") {
+					if (e.state == Player.STATE_IDLE)
+						batch.draw(Assets.eIdleRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RELOADING)
+						batch.draw(Assets.eReloadingRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+					else if (e.state == Player.STATE_RUNNING)
+						batch.draw(Assets.eRunningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
+								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+				}
 			}
 		}
 		batch.setColor(1, 1, 1, 0.5f);

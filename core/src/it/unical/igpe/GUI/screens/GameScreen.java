@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 
 	public GameScreen(World _world) {
 		this.world = _world;
-		this.hud = new HUD();
+		this.hud = new HUD(false);
 		this.renderer = new WorldRenderer(world);
 	}
 
@@ -45,7 +45,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		if (world.player.isSlowMo(delta))
+		if (World.player.isSlowMo(delta))
 			delta *= 0.5f;
 		
 		world.update(delta);
@@ -54,10 +54,10 @@ public class GameScreen implements Screen {
 		hud.render(world.getPlayer());
 
 		if (world.isLevelFinished()) {
-			ScreenManager.LCompletedS.kills = world.player.kills;
+			ScreenManager.LCompletedS.kills = World.player.kills;
 			IGPEGame.game.setScreen(ScreenManager.LCompletedS);
 		} else if (world.isGameOver()) {
-			ScreenManager.LCompletedS.kills = world.player.kills;
+			ScreenManager.LCompletedS.kills = World.player.kills;
 			ScreenManager.LCompletedS.gameOver = true;
 			IGPEGame.game.setScreen(ScreenManager.LCompletedS);
 		}
@@ -78,6 +78,7 @@ public class GameScreen implements Screen {
 	 * Handle Inputs from the user
 	 * @param delta The time in seconds since the last update
 	 */
+	@SuppressWarnings("static-access")
 	private void handleInput(float delta) {
 		if (world.player.slowActive)
 			delta *= 2f;

@@ -27,7 +27,7 @@ public class World implements Updatable {
 	public static boolean finished = false;
 	public static int keyCollected;
 
-	public Player player;
+	public static Player player;
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
 	private static LinkedList<Lootable> lootables;
@@ -54,20 +54,24 @@ public class World implements Updatable {
 
 		for (int x = 0; x < manager.map.length; x++)
 			for (int y = 0; y < manager.map.length; y++) {
-				if (manager.map[x][y] == 0)
+				if (manager.map[x][y] == 0) // Ground
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-				else if (manager.map[x][y] == 1)
+				else if (manager.map[x][y] == 1) // Wall
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.WALL));
-				else if (manager.map[x][y] == 2)
+				else if (manager.map[x][y] == 2) // EndLevel
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.ENDLEVEL));
-				else if (manager.map[x][y] == 11 || manager.map[x][y] == 12) { // Enemy
+				else if (manager.map[x][y] == 3) { // AmmoPack
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.AMMOPACK));
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-					Enemy e = new Enemy(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM));
-					e.addPlayer(player);
-					ens.add(e);
-				} else if (manager.map[x][y] == 10) { // Player
+				} else if (manager.map[x][y] == 4) { // HealthPack
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.HEALTPACK));
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-					player.setPos(new Vector2(x, y));
+				} else if (manager.map[x][y] == 5) { // Trap
+					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
+							LootableType.TRAP));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 6) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYY));
@@ -84,19 +88,23 @@ public class World implements Updatable {
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYG));
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-				} else if (manager.map[x][y] == 5) { // HealthPack
-					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
-							LootableType.HEALTPACK));
+				} else if (manager.map[x][y] == 10) { // Player
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-				} else if (manager.map[x][y] == 13) { // Trap
-					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
-							LootableType.TRAP));
+					player.setPos(new Vector2(x, y));
+				} else if (manager.map[x][y] == 11) { // Enemy
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-				} else if (manager.map[x][y] == 4) { // AmmoPack
-					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
-							LootableType.AMMOPACK));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
-				}
+					Enemy e = new Enemy(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM));
+					ens.add(e);
+				} else if (manager.map[x][y] == 12) // Box
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BOX));
+				else if (manager.map[x][y] == 13) // Barrel
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BARREL));
+				else if (manager.map[x][y] == 14) // Cactus
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.CACTUS));
+				else if (manager.map[x][y] == 15) // Plant
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.PLANT));
+				else if (manager.map[x][y] == 16) // Logs
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.LOGS));
 			}
 		dir = new Vector2();
 		EM = new EnemyManager(this);

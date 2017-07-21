@@ -1,7 +1,6 @@
 package it.unical.igpe.logic;
 
 import java.awt.Rectangle;
-import java.util.LinkedList;
 import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
@@ -29,7 +28,6 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 	private TileType nextTile;
 	private Rectangle box;
 	private Vector2 dir;
-	private LinkedList<Player> players;
 	private IntArray path;
 
 	public Enemy(Vector2 _pos) {
@@ -40,7 +38,6 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 		speed = 1.5f;
 		chaseObj = true;
 		canShoot = false;
-		players = new LinkedList<Player>();
 		path = new IntArray();
 		dir = new Vector2();
 		Random random = new Random();
@@ -57,30 +54,30 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 		isMoving = false;
 		startx = this.getX() + 32;
 		starty = this.getY() + 32;
-		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
-				&& this.getPos().dst(players.getFirst().getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
-			targetx = players.getFirst().getX() + 32;
-			targety = players.getFirst().getY() + 32;
+		if (this.getPos().dst(World.player.getPos()) < GameConfig.ENEMY_RADIUS
+				&& this.getPos().dst(World.player.getPos()) > GameConfig.ENEMY_SHOOT_RADIUS) {
+			targetx = World.player.getX() + 32;
+			targety = World.player.getY() + 32;
 			followDelay = 0;
 		} else if (followDelay > followTimer) {
 			Random r = new Random();
 			targetx = startx + (r.nextInt(16) - 8) * 32;
 			targety = starty + (r.nextInt(16) - 8) * 32;
 			followDelay = 0;
-		} else if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_SHOOT_RADIUS) {
+		} else if (this.getPos().dst(World.player.getPos()) < GameConfig.ENEMY_SHOOT_RADIUS) {
 			canMove = false;
 			followDelay = 0;
-			targetx = players.getFirst().getX() + 32;
-			targety = players.getFirst().getY() + 32;
+			targetx = World.player.getX() + 32;
+			targety = World.player.getY() + 32;
 		}
 
 		dir = new Vector2(targetx - startx, targety - starty);
 		dir.rotate90(-1);
 		angle = dir.angle();
 
-		if (this.getPos().dst(players.getFirst().getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS) {
-			targetx = players.getFirst().getX() + 32;
-			targety = players.getFirst().getY() + 32;
+		if (this.getPos().dst(World.player.getPos()) <= GameConfig.ENEMY_SHOOT_RADIUS) {
+			targetx = World.player.getX() + 32;
+			targety = World.player.getY() + 32;
 			followDelay = 0;
 			if (shootDelay > 1) {
 				shootDelay = 0;
@@ -149,8 +146,4 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 		}
 	}
 	
-	public void addPlayer(Player player) {
-		this.players.add(player);
-	}
-
 }

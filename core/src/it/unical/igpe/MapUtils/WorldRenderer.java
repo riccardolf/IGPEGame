@@ -107,8 +107,9 @@ public class WorldRenderer {
 				batch.draw(Assets.manager.get(Assets.Light, Texture.class), e.getX() - 320 + 32, e.getY() - 320 + 32,
 						640, 640);
 				batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-				batch.draw(Assets.Enemy, e.getPos().x, e.getPos().y, 32, 32, 56, 56, 1f, 1f, e.angle);
 				if (e.isMoving) {
+					batch.draw(Assets.eRunningPistolAnimation.getKeyFrame(stateTime, true), e.getX(), e.getY(), 32, 32, 64,
+							64, 1f, 1f, e.angle);
 					e.timeToNextStep -= deltaTime;
 					if (e.timeToNextStep < 0) {
 						float boundary = camera.viewportWidth / 2;
@@ -122,6 +123,8 @@ public class WorldRenderer {
 							e.timeToNextStep += 0.35f;
 					}
 				} else {
+					batch.draw(Assets.eIdlePistolAnimation.getKeyFrame(stateTime, true), e.getX(), e.getY(), 32, 32, 64,
+							64, 1f, 1f, e.angle);
 					e.timeToNextStep = 0;
 				}
 
