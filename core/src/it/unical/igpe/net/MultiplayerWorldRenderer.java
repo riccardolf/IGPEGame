@@ -2,7 +2,6 @@ package it.unical.igpe.net;
 
 import java.util.Iterator;
 
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,17 +13,19 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import it.unical.igpe.GUI.Assets;
-import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
+import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
+import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
 
 public class MultiplayerWorldRenderer {
+	private IGPEGame game;
 	private OrthographicCamera camera;
 	public Viewport viewport;
 	private SpriteBatch batch;
@@ -32,7 +33,8 @@ public class MultiplayerWorldRenderer {
 	private float stateTime;
 	private MultiplayerWorld world;
 
-	public MultiplayerWorldRenderer(MultiplayerWorld world) {
+	public MultiplayerWorldRenderer(MultiplayerWorld world, IGPEGame game) {
+		this.game = game;
 		this.world = world;
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(true, 800, 800);
@@ -56,9 +58,9 @@ public class MultiplayerWorldRenderer {
 
 		// Sound from the player
 		if (world.getPlayer().state == Player.STATE_RUNNING)
-			SoundManager.manager.get(SoundManager.FootStep, Music.class).play();
+			game.soundManager.FootStep.play();
 		else
-			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
+			game.soundManager.FootStep.pause();
 
 		batch.begin();
 
@@ -145,6 +147,11 @@ public class MultiplayerWorldRenderer {
 				else if (e.state == Player.STATE_RUNNING)
 					batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 							e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
+			}
+			if(e.state == Player.STATE_RUNNING) {
+				game.soundManager.FootStep.setVolume(GameConfig.SOUND_VOLUME 
+						- (camera.position.x - e.getPos().x + camera.position.y - e.getPos().y));
+				game.soundManager.FootStep.play();
 			}
 		}
 		batch.setColor(1, 1, 1, 0.5f);

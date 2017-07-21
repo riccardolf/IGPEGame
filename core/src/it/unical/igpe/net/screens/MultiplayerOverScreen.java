@@ -3,7 +3,6 @@ package it.unical.igpe.net.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import it.unical.igpe.GUI.Assets;
-import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.GUI.screens.ScreenManager;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.utils.GameConfig;
 
 public class MultiplayerOverScreen implements Screen {
+	private IGPEGame game;
 	private float time;
 	public static String winner;
 	public static int kills;
@@ -28,7 +27,8 @@ public class MultiplayerOverScreen implements Screen {
 	private Label winnerText;
 	private Label killsText;
 	
-	public MultiplayerOverScreen() {
+	public MultiplayerOverScreen(IGPEGame game) {
+		this.game = game;
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 800);
 
@@ -53,11 +53,11 @@ public class MultiplayerOverScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
-		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
-		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);
+		game.soundManager.GameMusic.stop();
+		game.soundManager.FootStep.stop();
+		game.soundManager.MenuMusic.play();
+		game.soundManager.MenuMusic.setVolume(GameConfig.MUSIC_VOLUME);
+		game.soundManager.MenuMusic.setLooping(true);
 	}
 
 	@Override

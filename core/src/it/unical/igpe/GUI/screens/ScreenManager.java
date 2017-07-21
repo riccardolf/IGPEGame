@@ -1,14 +1,10 @@
 package it.unical.igpe.GUI.screens;
 
-import com.badlogic.gdx.audio.Music;
-
-import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.screens.MultiplayerGameScreen;
 import it.unical.igpe.net.screens.MultiplayerOverScreen;
 import it.unical.igpe.net.screens.MultiplayerPauseScreen;
-import it.unical.igpe.utils.GameConfig;
 
 public class ScreenManager {
 	public static MainMenuScreen MMS;
@@ -23,31 +19,24 @@ public class ScreenManager {
 	public static MultiplayerPauseScreen MPS;
 	public static MultiplayerOverScreen MOS;
 	
-	public ScreenManager() {
-		SoundManager.load();
-		while(!SoundManager.manager.update())
-			SoundManager.manager.finishLoading();
-		
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
-		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);
-		
-		MMS = new MainMenuScreen();
-		LCS = new LevelChooseScreen();
-		LCompletedS = new LevelCompletedScreen();
-		OS = new OptionScreen();
-		PS = new PauseScreen();
+	public ScreenManager(IGPEGame game) {
+		MMS = new MainMenuScreen(game);
+		LCS = new LevelChooseScreen(game);
+		LCompletedS = new LevelCompletedScreen(game);
+		OS = new OptionScreen(game);
+		PS = new PauseScreen(game);
 		LS = new LoadingScreen();
-		MS = new MultiScreen();
-		MOS = new MultiplayerOverScreen();
+		MS = new MultiScreen(game);
+		MOS = new MultiplayerOverScreen(game);
 		IGPEGame.game.setScreen(MMS);
 	}
 	
-	public static void CreateGS(String path) {
-		GS = new GameScreen(new World(path));
+	public static void CreateGS(String path, IGPEGame game) {
+		GS = new GameScreen(new World(path, game));
 	}
 	
-	public static void CreateMGS() {
-		MGS = new MultiplayerGameScreen();
-		MPS = new MultiplayerPauseScreen();
+	public static void CreateMGS(IGPEGame game) {
+		MGS = new MultiplayerGameScreen(game);
+		MPS = new MultiplayerPauseScreen(game);
 	}
 }

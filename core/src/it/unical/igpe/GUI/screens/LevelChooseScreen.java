@@ -28,7 +28,7 @@ public class LevelChooseScreen implements Screen {
 	private TextButton returnButton;
 	public String world;
 	
-	public LevelChooseScreen() {
+	public LevelChooseScreen(final IGPEGame game) {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
 
@@ -44,7 +44,7 @@ public class LevelChooseScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				ScreenManager.CreateGS("default.map");
+				ScreenManager.CreateGS("default.map", game);
 				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});
@@ -63,7 +63,7 @@ public class LevelChooseScreen implements Screen {
 				fileChooser.showOpenDialog(fileChooser);
 				File file = fileChooser.getSelectedFile();
 				if (file != null) {
-					ScreenManager.CreateGS(file.getPath());
+					ScreenManager.CreateGS(file.getPath(), game);
 					if(GameConfig.isFullscreen = true)
 						Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 					IGPEGame.game.setScreen(ScreenManager.LS);
