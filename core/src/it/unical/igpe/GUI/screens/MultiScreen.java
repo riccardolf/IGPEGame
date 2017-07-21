@@ -161,12 +161,12 @@ public class MultiScreen implements Screen {
 		IPClientLabel = new Label("IP", IGPEGame.skinsoldier);
 		PortClientLabel = new Label("Port", IGPEGame.skinsoldier);
 		PortServerLabel = new Label("Port", IGPEGame.skinsoldier);
-		nameClientLabel = new Label("Name", IGPEGame.skinsoldier);
+		nameClientLabel = new Label("Username", IGPEGame.skinsoldier);
 		nameText = new TextField("", IGPEGame.skinsoldier);
 		IPClientText = new TextField("127.0.0.1", IGPEGame.skinsoldier);
 		PortClientText = new TextField("1234", IGPEGame.skinsoldier);
 		PortServerText = new TextField("1234", IGPEGame.skinsoldier);
-		nameServerLabel = new Label("Name", IGPEGame.skinsoldier);
+		nameServerLabel = new Label("Username", IGPEGame.skinsoldier);
 		serverNameText = new TextField("", IGPEGame.skinsoldier);
 		serverKills = new TextField("10", IGPEGame.skinsoldier);
 		serverKillsLabel = new Label("Max Kills", IGPEGame.skinsoldier);
