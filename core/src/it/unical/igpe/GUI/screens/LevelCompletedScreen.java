@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.utils.GameConfig;
 
 public class LevelCompletedScreen implements Screen {
 	private SpriteBatch batch;
@@ -28,7 +29,7 @@ public class LevelCompletedScreen implements Screen {
 	
 	public LevelCompletedScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 800);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.BACKGROUNDWIDTH, GameConfig.BACKGROUNDHEIGHT);
 
 		stage = new Stage();
 		table = new Table();
@@ -62,9 +63,11 @@ public class LevelCompletedScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+		batch.begin();
+		batch.draw(IGPEGame.background,0,0);
+		batch.end();
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		

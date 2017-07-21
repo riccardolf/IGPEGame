@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
+import it.unical.igpe.utils.GameConfig;
 
 public class LoadingScreen implements Screen {
 	public static boolean isMP = false;
@@ -23,7 +24,7 @@ public class LoadingScreen implements Screen {
 	
 	public LoadingScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.BACKGROUNDWIDTH, GameConfig.BACKGROUNDHEIGHT);
 
 		stage = new Stage();
 		

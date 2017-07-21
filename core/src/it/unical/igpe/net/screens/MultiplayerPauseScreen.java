@@ -36,7 +36,7 @@ public class MultiplayerPauseScreen implements Screen {
 	
 	public MultiplayerPauseScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900,506);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.BACKGROUNDWIDTH, GameConfig.BACKGROUNDHEIGHT);
 
 		stage = new Stage();
 		table = new Table();

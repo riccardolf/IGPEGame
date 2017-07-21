@@ -34,7 +34,7 @@ public class PauseScreen implements Screen {
 
 	public PauseScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.BACKGROUNDWIDTH, GameConfig.BACKGROUNDHEIGHT);
 
 		stage = new Stage();
 

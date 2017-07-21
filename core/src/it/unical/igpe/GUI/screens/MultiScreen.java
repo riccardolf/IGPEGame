@@ -16,6 +16,7 @@ import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.GameClient;
 import it.unical.igpe.net.GameServer;
 import it.unical.igpe.net.MultiplayerWorld;
+import it.unical.igpe.utils.GameConfig;
 
 public class MultiScreen implements Screen {
 	private SpriteBatch batch;
@@ -46,7 +47,7 @@ public class MultiScreen implements Screen {
 	
 	public MultiScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 900, 506);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.BACKGROUNDWIDTH, GameConfig.BACKGROUNDHEIGHT);
 
 		stage = new Stage();
 		

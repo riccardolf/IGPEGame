@@ -30,7 +30,7 @@ public class MultiplayerOverScreen implements Screen {
 	
 	public MultiplayerOverScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 800);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.BACKGROUNDWIDTH, GameConfig.BACKGROUNDHEIGHT);
 
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
@@ -65,6 +65,9 @@ public class MultiplayerOverScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.begin();
+		batch.draw(IGPEGame.background,0,0);
+		batch.end();
 		
 		time += delta;
 		if (time > 1) {
