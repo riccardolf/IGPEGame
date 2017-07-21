@@ -24,7 +24,7 @@ import it.unical.igpe.utils.TileType;
 import it.unical.igpe.utils.Updatable;
 
 public class World implements Updatable {
-	public static boolean finished = false;
+	public static boolean finished;
 	public static int keyCollected;
 
 	public static Player player;
@@ -42,6 +42,8 @@ public class World implements Updatable {
 		lootables = new LinkedList<Lootable>();
 		ens = new LinkedList<Enemy>();
 		bls = new LinkedList<Bullet>();
+		
+		finished = false;
 		keyCollected = 0;
 
 		manager = new WorldLoader(GameConfig.TILEDIM, GameConfig.TILEDIM);
@@ -71,6 +73,7 @@ public class World implements Updatable {
 				} else if (manager.map[x][y] == 5) { // Trap
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.TRAP));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 6) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYY));
@@ -82,6 +85,7 @@ public class World implements Updatable {
 				} else if (manager.map[x][y] == 8) { // Blue Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYB));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 9) { // Green Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYG));

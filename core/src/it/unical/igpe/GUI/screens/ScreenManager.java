@@ -3,7 +3,6 @@ package it.unical.igpe.GUI.screens;
 import com.badlogic.gdx.audio.Music;
 
 import it.unical.igpe.GUI.SoundManager;
-import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.game.IGPEGame;
 import it.unical.igpe.net.screens.MultiplayerGameScreen;
 import it.unical.igpe.net.screens.MultiplayerOverScreen;
@@ -40,10 +39,6 @@ public class ScreenManager {
 		MS = new MultiScreen();
 		MOS = new MultiplayerOverScreen();
 		IGPEGame.game.setScreen(MMS);
-	}
-	
-	public static void CreateGS(String path) {
-		GS = new GameScreen(new World(path));
 	}
 	
 	public static void CreateMGS() {

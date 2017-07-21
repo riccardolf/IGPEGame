@@ -44,7 +44,7 @@ public class LevelChooseScreen implements Screen {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				ScreenManager.CreateGS("Default.map");
+				ScreenManager.GS = new GameScreen("Default.map");
 				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});
@@ -63,7 +63,7 @@ public class LevelChooseScreen implements Screen {
 				fileChooser.showOpenDialog(fileChooser);
 				File file = fileChooser.getSelectedFile();
 				if (file != null) {
-					ScreenManager.CreateGS(file.getPath());
+					ScreenManager.GS = new GameScreen(file.getPath());
 					if(GameConfig.isFullscreen)
 						Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 					IGPEGame.game.setScreen(ScreenManager.LS);

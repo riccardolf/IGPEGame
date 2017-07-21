@@ -76,6 +76,8 @@ public class LevelCompletedScreen implements Screen {
 			if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || Gdx.input.justTouched()) {
 				time = 0;
 				Assets.manager.clear();
+				table.removeActor(labelGO);
+				table.removeActor(labelLC);
 				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		}
