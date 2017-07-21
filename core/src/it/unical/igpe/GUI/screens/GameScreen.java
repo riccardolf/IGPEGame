@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -214,7 +215,7 @@ public class GameScreen implements Screen {
 		}
 
 		// Fire and Reloading action of the player
-		if (Gdx.input.justTouched() && world.player.canShoot()) {
+		if (Gdx.input.isButtonPressed(Buttons.LEFT) && world.player.canShoot()) {
 			if (world.player.getActWeapon() == "pistol") {
 				SoundManager.manager.get(SoundManager.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
 				world.player.fire();

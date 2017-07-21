@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -169,7 +170,7 @@ public class MultiplayerGameScreen implements Screen {
 		}
 
 		// Fire and Reloading action of the player
-		if (Gdx.input.justTouched() && world.player.canShoot()) {
+		if (Gdx.input.isButtonPressed(Buttons.LEFT) && world.player.canShoot()) {
 			world.player.fire();
 			if (world.player.checkAmmo()) {
 				if (world.player.getActWeapon() == "pistol")
