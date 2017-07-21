@@ -68,8 +68,9 @@ public class EnemyManager implements Updatable {
 					&& astar.isValid(e.targetx / GameConfig.TILEDIM, e.targety / GameConfig.TILEDIM))
 				e.setPath(astar.getPath(e.startx / GameConfig.TILEDIM, e.starty / GameConfig.TILEDIM,
 						e.targetx / GameConfig.TILEDIM, e.targety / GameConfig.TILEDIM));
-			if (e.canShoot)
+			if (e.canShoot) {
 				world.addBullet(e.fire());
+			}
 			e.update(delta);
 		}
 	}

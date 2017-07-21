@@ -17,6 +17,8 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 	public boolean chaseObj;
 	public boolean canShoot;
 	public boolean canMove;
+	public boolean isMoving;
+	public float timeToNextStep;
 	public int startx;
 	public int starty;
 	public int targetx;
@@ -52,6 +54,7 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 
 	public void update(float delta) {
 		canMove = true;
+		isMoving = false;
 		startx = this.getX() + 32;
 		starty = this.getY() + 32;
 		if (this.getPos().dst(players.getFirst().getPos()) < GameConfig.ENEMY_RADIUS
@@ -85,6 +88,7 @@ public class Enemy extends AbstractDynamicObject implements Updatable {
 			}
 		}
 		if (path.size != 0 && canMove) {
+			isMoving = true;
 			float y = path.pop();
 			float x = path.pop();
 			this.followPath(new Vector2(x * 64, y * 64), delta);

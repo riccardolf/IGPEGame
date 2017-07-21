@@ -2,7 +2,6 @@ package it.unical.igpe.GUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -23,7 +22,6 @@ public class Assets {
 	public static String KeyG = "keyG.png";
 	public static String KeyB = "keyB.png";
 	public static String Key = "key.png";
-	public static String Crosshair = "crosshair2.png";
 	public static String AmmoBox = "ammobox.png";
 
 	public static TextureAtlas atlas;
@@ -62,7 +60,6 @@ public class Assets {
 		manager.load(KeyG, Texture.class);
 		manager.load(KeyB, Texture.class);
 		manager.load(Key, Texture.class);
-		manager.load(Crosshair, Pixmap.class);
 		manager.load(AmmoBox, Texture.class);
 
 		// load character's animations

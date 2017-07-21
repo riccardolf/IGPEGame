@@ -40,8 +40,6 @@ public class MultiplayerGameScreen implements Screen {
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).setLooping(true);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).play();
-		SoundManager.manager.get(SoundManager.FootStep, Music.class).setVolume(GameConfig.SOUND_VOLUME);
-		SoundManager.manager.get(SoundManager.FootStep, Music.class).setLooping(true);
 	}
 
 	@Override

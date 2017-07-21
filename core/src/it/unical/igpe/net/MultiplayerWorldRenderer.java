@@ -2,7 +2,7 @@ package it.unical.igpe.net;
 
 import java.util.Iterator;
 
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +21,7 @@ import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Lootable;
 import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
+import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.LootableType;
 import it.unical.igpe.utils.TileType;
 
@@ -55,11 +56,18 @@ public class MultiplayerWorldRenderer {
 		camera.update();
 
 		// Sound from the player
-		if (world.getPlayer().state == Player.STATE_RUNNING)
-			SoundManager.manager.get(SoundManager.FootStep, Music.class).play();
-		else
-			SoundManager.manager.get(SoundManager.FootStep, Music.class).pause();
-
+		if (world.getPlayer().state == Player.STATE_RUNNING) {
+			world.getPlayer().timeToNextStep -= deltaTime;
+			if(world.getPlayer().timeToNextStep < 0) {
+				SoundManager.manager.get(SoundManager.Step, Sound.class).play(GameConfig.SOUND_VOLUME);
+				while(world.getPlayer().timeToNextStep < 0)
+					world.getPlayer().timeToNextStep += 0.35f;
+			}
+		}
+		else {
+			world.getPlayer().timeToNextStep = 0;
+		}
+		
 		batch.begin();
 
 		// Drawing tiles

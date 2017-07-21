@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,12 +15,12 @@ import it.unical.igpe.GUI.SoundManager;
 import it.unical.igpe.game.IGPEGame;
 
 public class LevelCompletedScreen implements Screen {
-	private Texture levelCompleted;
-	private Texture GameOver;
 	private SpriteBatch batch;
 	private Stage stage;
 	private Table table;
-	private Label label;
+	private Label labelK;
+	private Label labelLC;
+	private Label labelGO;
 	
 	private float time = 0;
 	public boolean gameOver;
@@ -29,41 +28,42 @@ public class LevelCompletedScreen implements Screen {
 	
 	public LevelCompletedScreen() {
 		batch = new SpriteBatch();
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, 600, 600);
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 800);
 
-		levelCompleted = new Texture(Gdx.files.internal("levelcomplete.png"));
-		GameOver = new Texture(Gdx.files.internal("GameOver.jpg"));
-		
 		stage = new Stage();
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		label = new Label("You killed " + kills + " enemies", IGPEGame.skinsoldier);
-		table.add(label);
+		labelLC = new Label("LEVEL COMPLETED", IGPEGame.skinsoldier);
+		labelGO = new Label("GAMEOVER", IGPEGame.skinsoldier);
 	}
 	
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
-		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+		
+		table = new Table();
+		table.setFillParent(true);
+		stage.addActor(table);
+		
+		labelK = new Label("You killed " + kills + " enemies", IGPEGame.skinsoldier);
+		
+		if(gameOver)
+			table.add(labelGO);
+		else
+			table.add(labelLC);
+		
+		table.row();
+		table.add(labelK); 
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		batch.begin();
-		
-		if(gameOver)
-			batch.draw(GameOver, 0, 0);
-		else
-			batch.draw(levelCompleted, 0, 0);
-		
-		batch.end();
 		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
@@ -88,8 +88,6 @@ public class LevelCompletedScreen implements Screen {
 	public void dispose() {
 		batch.dispose();
 		stage.dispose();
-		GameOver.dispose();
-		levelCompleted.dispose();
 	}
 
 	@Override

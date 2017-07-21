@@ -124,7 +124,6 @@ public class MultiplayerPauseScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
-		SoundManager.manager.get(SoundManager.FootStep, Music.class).stop();
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);	
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();

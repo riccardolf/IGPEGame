@@ -25,6 +25,7 @@ public class Player extends AbstractDynamicObject {
 	public boolean slowActive;
 	public int kills;
 	public int deaths;
+	public float timeToNextStep;
 
 	public Player(Vector2 _pos, World _world, String username) {
 		this.world = _world;
