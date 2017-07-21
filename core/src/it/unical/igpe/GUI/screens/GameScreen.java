@@ -44,10 +44,10 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		if (World.player.isSlowMo(delta))
 			delta *= 0.5f;
-		
+
 		world.update(delta);
 		handleInput(delta);
 		renderer.render(delta);
@@ -76,13 +76,15 @@ public class GameScreen implements Screen {
 
 	/**
 	 * Handle Inputs from the user
-	 * @param delta The time in seconds since the last update
+	 * 
+	 * @param delta
+	 *            The time in seconds since the last update
 	 */
 	@SuppressWarnings("static-access")
 	private void handleInput(float delta) {
 		if (world.player.slowActive)
 			delta *= 2f;
-		
+
 		float midX = Gdx.graphics.getWidth() / 2;
 		float midY = Gdx.graphics.getHeight() / 2;
 		float mouseX = Gdx.input.getX();
@@ -97,13 +99,14 @@ public class GameScreen implements Screen {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getX() - (int) (GameConfig.MOVESPEED * delta),
-					world.player.getY() - (int) (GameConfig.MOVESPEED * delta),
-					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+					world.player.getY() - (int) (GameConfig.MOVESPEED * delta), world.player.getBoundingBox().width,
+					world.player.getBoundingBox().height);
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
@@ -112,13 +115,14 @@ public class GameScreen implements Screen {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getX() + (int) (GameConfig.MOVESPEED * delta),
-					world.player.getY() - (int) (GameConfig.MOVESPEED * delta),
-					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+					world.player.getY() - (int) (GameConfig.MOVESPEED * delta), world.player.getBoundingBox().width,
+					world.player.getBoundingBox().height);
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
@@ -127,13 +131,14 @@ public class GameScreen implements Screen {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getX() - (int) (GameConfig.MOVESPEED * delta),
-					world.player.getY() + (int) (GameConfig.MOVESPEED * delta),
-					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+					world.player.getY() + (int) (GameConfig.MOVESPEED * delta), world.player.getBoundingBox().width,
+					world.player.getBoundingBox().height);
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -142,13 +147,14 @@ public class GameScreen implements Screen {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
 			box = new Rectangle(world.player.getX() + (int) (GameConfig.MOVESPEED * delta),
-					world.player.getY() + (int) (GameConfig.MOVESPEED * delta),
-					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+					world.player.getY() + (int) (GameConfig.MOVESPEED * delta), world.player.getBoundingBox().width,
+					world.player.getBoundingBox().height);
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -156,57 +162,58 @@ public class GameScreen implements Screen {
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
-			box = new Rectangle(world.player.getX(),
-					world.player.getY() - (int) (GameConfig.MOVESPEED * delta),
+			box = new Rectangle(world.player.getX(), world.player.getY() - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
 				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
 			}
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
-			box = new Rectangle(world.player.getX() - (int) (GameConfig.MOVESPEED * delta),
-					world.player.getY(), world.player.getBoundingBox().width,
-					world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+			box = new Rectangle(world.player.getX() - (int) (GameConfig.MOVESPEED * delta), world.player.getY(),
+					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
 			}
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
-			box = new Rectangle(world.player.getX(),
-					world.player.getY() + (int) (GameConfig.MOVESPEED * delta),
+			box = new Rectangle(world.player.getX(), world.player.getY() + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
 				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
 			}
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!world.player.isReloading() && !world.player.isShooting())
 				world.player.state = Player.STATE_RUNNING;
-			box = new Rectangle(world.player.getX() + (int) (GameConfig.MOVESPEED * delta),
-					world.player.getY(), world.player.getBoundingBox().width,
-					world.player.getBoundingBox().height);
-			if (World.getNextTile(box) == TileType.ENDLEVEL && World.isDoorUnlocked()) {
+			box = new Rectangle(world.player.getX() + (int) (GameConfig.MOVESPEED * delta), world.player.getY(),
+					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
+			TileType tmp = World.getNextTile(box);
+			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
-			} else if (World.getNextTile(box) != TileType.WALL) {
+			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS
+					&& tmp != TileType.LOGS && tmp != TileType.PLANT) {
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
 			}
 
 		}
-		
+
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched() && world.player.canShoot()) {
 			if (world.player.getActWeapon() == "pistol") {
@@ -243,7 +250,7 @@ public class GameScreen implements Screen {
 			else
 				world.player.slowActive = true;
 		}
-		
+
 		// Escape Key
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			IGPEGame.game.setScreen(ScreenManager.PS);

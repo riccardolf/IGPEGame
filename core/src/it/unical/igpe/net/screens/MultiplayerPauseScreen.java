@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -34,8 +33,6 @@ public class MultiplayerPauseScreen implements Screen {
 	private Slider soundVolume;
 	private TextButton quitButton;
 	private CheckBox fullscreen;
-	
-	private Texture command;
 	
 	public MultiplayerPauseScreen() {
 		batch = new SpriteBatch();
@@ -139,8 +136,6 @@ public class MultiplayerPauseScreen implements Screen {
 
 		batch.begin();
 		batch.draw(IGPEGame.background, 0, 0);
-		command=new Texture(Gdx.files.internal("command.png"));
-		batch.draw(command,0,0);
 		batch.end();
 
 		stage.act(Gdx.graphics.getDeltaTime());

@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import it.unical.igpe.GUI.Assets;
 import it.unical.igpe.GUI.SoundManager;
-import it.unical.igpe.MapUtils.World;
 import it.unical.igpe.logic.AbstractDynamicObject;
 import it.unical.igpe.logic.Bullet;
 import it.unical.igpe.logic.Player;
@@ -39,7 +38,7 @@ public class MultiplayerWorldRenderer {
 		this.camera.position.y = world.player.getBoundingBox().y;
 		this.viewport = new ExtendViewport(800, 800, camera);
 		this.batch = new SpriteBatch();
-		this.batch.setColor(1, 1, 1, 0.5f);
+		batch.setColor(1f, 1f, 1f, 0.7f);
 		this.sr = new ShapeRenderer();
 		this.sr.setColor(Color.BLACK);
 	}
@@ -53,43 +52,32 @@ public class MultiplayerWorldRenderer {
 				0.5f);
 		camera.update();
 
-		// Sound from the player
-//		if (world.getPlayer().state == Player.STATE_RUNNING) {
-//			world.getPlayer().timeToNextStep -= deltaTime;
-//			if(world.getPlayer().timeToNextStep < 0) {
-//				SoundManager.manager.get(SoundManager.Step, Sound.class).play(GameConfig.SOUND_VOLUME);
-//				while(world.getPlayer().timeToNextStep < 0)
-//					world.getPlayer().timeToNextStep += 0.35f;
-//			}
-//		}
-//		else {
-//			world.getPlayer().timeToNextStep = 0;
-//		}
-		
 		batch.begin();
 
 		// Drawing tiles
 		for (Tile tile : world.getTiles()) {
-			if (tile.getType() == TileType.GROUND)
-				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getBoundingBox().x,
+			batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getBoundingBox().x,
 						tile.getBoundingBox().y);
-			else if (tile.getType() == TileType.WALL)
+			
+			if (tile.getType() == TileType.WALL)
 				batch.draw(Assets.manager.get(Assets.Wall, Texture.class), tile.getBoundingBox().x,
 						tile.getBoundingBox().y);
-			else if (tile.getType() == TileType.ENDLEVEL) {
-				if (!World.isDoorUnlocked())
-					batch.draw(Assets.manager.get(Assets.StairClosed, Texture.class), tile.getBoundingBox().x,
-							tile.getBoundingBox().y);
-				else
-					batch.draw(Assets.manager.get(Assets.Stair, Texture.class), tile.getBoundingBox().x,
-							tile.getBoundingBox().y);
-			}
+			else if (tile.getType() == TileType.BOX)
+				batch.draw(Assets.manager.get(Assets.Box, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.BARREL) 
+				batch.draw(Assets.manager.get(Assets.Barrel, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.CACTUS) 
+				batch.draw(Assets.manager.get(Assets.Cactus, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.PLANT) 
+				batch.draw(Assets.manager.get(Assets.Plant, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.LOGS)
+				batch.draw(Assets.manager.get(Assets.Logs, Texture.class), tile.getX(), tile.getY());
 		}
-
+		
 		// Drawing players
-		batch.setColor(1, 1, 1, 1);
+		batch.setColor(1f, 1f, 1f, 1f);
 		Iterator<AbstractDynamicObject> iter = world.entities.iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			PlayerMP e = (PlayerMP) iter.next();
 			if (e.state == Player.STATE_RUNNING) {
 				e.timeToNextStep -= deltaTime;
@@ -106,7 +94,7 @@ public class MultiplayerWorldRenderer {
 			} else {
 				e.timeToNextStep = 0;
 			}
-			if(e.getUsername().equalsIgnoreCase(MultiplayerWorld.username)) {
+			if (e.getUsername().equalsIgnoreCase(MultiplayerWorld.username)) {
 				if (e.getActWeapon() == "pistol") {
 					if (e.state == Player.STATE_IDLE)
 						batch.draw(Assets.idlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
@@ -138,8 +126,7 @@ public class MultiplayerWorldRenderer {
 						batch.draw(Assets.runningRifleAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 				}
-			}
-			else {
+			} else {
 				if (e.getActWeapon() == "pistol") {
 					if (e.state == Player.STATE_IDLE)
 						batch.draw(Assets.eIdlePistolAnimation.getKeyFrame(stateTime, true), e.getBoundingBox().x,
@@ -172,15 +159,18 @@ public class MultiplayerWorldRenderer {
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 				}
 			}
-		}batch.setColor(1,1,1,0.5f);batch.end();
+		}
+		batch.end();
+		batch.setColor(1f, 1f, 1f, 0.7f);
 
-	// Drawing Bullets
-	sr.begin(ShapeType.Filled);for(
+		// Drawing Bullets
+		sr.begin(ShapeType.Filled);
+		for (
 
-	Bullet bullet:world.getBls())
-	{
-		sr.circle(bullet.getBoundingBox().x, bullet.getBoundingBox().y, 4);
-	}sr.end();
+		Bullet bullet : world.getBls()) {
+			sr.circle(bullet.getBoundingBox().x, bullet.getBoundingBox().y, 4);
+		}
+		sr.end();
 
 	}
 

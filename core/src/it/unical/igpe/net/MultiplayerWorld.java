@@ -31,7 +31,7 @@ public class MultiplayerWorld implements Updatable {
 	public static int keyCollected;
 	public PlayerMP player;
 	public List<AbstractDynamicObject> entities;
-	
+
 	private LinkedList<Bullet> bls;
 	private static LinkedList<Tile> tiles;
 	private static LinkedList<Lootable> lootables;
@@ -65,6 +65,16 @@ public class MultiplayerWorld implements Updatable {
 				else if (manager.map[x][y] == 17) {
 					tiles.add(new Tile(new Vector2(x * 64, y * 64), TileType.GROUND));
 					spawnPoints.add(new Vector2(x, y));
+				} else if (manager.map[x][y] == 12) // Box
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BOX));
+				else if (manager.map[x][y] == 13) { // Barrel
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BARREL));
+				} else if (manager.map[x][y] == 14) { // Cactus
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.CACTUS));
+				} else if (manager.map[x][y] == 15) { // Plant
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.PLANT));
+				} else if (manager.map[x][y] == 16) { // Logs
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.LOGS));
 				}
 			}
 
@@ -93,7 +103,7 @@ public class MultiplayerWorld implements Updatable {
 			player.state = Player.STATE_RELOADING;
 
 		player.activeWeapon.lastFired += delta;
-		
+
 		String Killer = null;
 		// Bullet collisions
 		synchronized (bls) {
@@ -118,13 +128,15 @@ public class MultiplayerWorld implements Updatable {
 					}
 					if (removed)
 						continue;
-					if (getNextTile(b.getBoundingBox()) == TileType.WALL)
+					TileType tmp = getNextTile(b.getBoundingBox());
+					if (tmp == TileType.WALL || tmp == TileType.BARREL || tmp == TileType.BOX || tmp == TileType.CACTUS
+							|| tmp == TileType.LOGS || tmp == TileType.PLANT)
 						it.remove();
 				}
 			}
 		}
-		
-		if(this.player.getHP() <= 0) {
+
+		if (this.player.getHP() <= 0) {
 			Packet04Death packet = new Packet04Death(Killer, this.player.getUsername());
 			packet.writeData(IGPEGame.game.socketClient);
 		} else if (this.player.kills >= GameConfig.MULTIKILLS) {
@@ -205,7 +217,7 @@ public class MultiplayerWorld implements Updatable {
 			this.player.setPos(randomSpawn());
 		}
 	}
-	
+
 	public void handleGameOver(String usernameWinner) {
 		MultiplayerOverScreen.winner = usernameWinner;
 		MultiplayerOverScreen.kills = GameConfig.MULTIKILLS;

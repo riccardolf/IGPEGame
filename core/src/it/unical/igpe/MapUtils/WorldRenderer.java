@@ -37,7 +37,7 @@ public class WorldRenderer {
 		this.camera.setToOrtho(true, 800, 800);
 		this.viewport = new ExtendViewport(800, 800, camera);
 		this.batch = new SpriteBatch();
-		this.batch.setColor(1, 1, 1, 0.5f);
+		this.batch.setColor(1, 1, 1, 0.7f);
 		this.sr = new ShapeRenderer();
 		this.sr.setColor(Color.BLACK);
 	}
@@ -65,9 +65,8 @@ public class WorldRenderer {
 
 		// Drawing Tile
 		for (Tile tile : world.getTiles()) {
-			if (tile.getType() == TileType.GROUND)
-				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getX(), tile.getY());
-			else if (tile.getType() == TileType.WALL)
+			batch.draw(Assets.manager.get(Assets.Ground, Texture.class), tile.getX(), tile.getY());
+			if (tile.getType() == TileType.WALL)
 				batch.draw(Assets.manager.get(Assets.Wall, Texture.class), tile.getX(), tile.getY());
 			else if (tile.getType() == TileType.ENDLEVEL) {
 				if (!World.isDoorUnlocked())
@@ -89,6 +88,7 @@ public class WorldRenderer {
 
 		// Drawing loot
 		for (Lootable loot : world.getLootables()) {
+			batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 			if (loot.getType() == LootableType.HEALTPACK)
 				batch.draw(Assets.manager.get(Assets.HealthPack, Texture.class), loot.getX(), loot.getY());
 			else if (loot.getType() == LootableType.TRAP) {
@@ -186,7 +186,7 @@ public class WorldRenderer {
 						world.getPlayer().getY(), 32, 32, 64, 64, 1f, 1f, world.getPlayer().angle);
 			}
 		}
-		batch.setColor(1, 1, 1, 0.5f);
+		batch.setColor(1, 1, 1, 0.7f);
 		batch.end();
 
 		// Draw Bullets

@@ -63,31 +63,24 @@ public class World implements Updatable {
 				else if (manager.map[x][y] == 3) { // AmmoPack
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.AMMOPACK));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 4) { // HealthPack
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.HEALTPACK));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 5) { // Trap
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.TRAP));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 6) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYY));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 7) { // Red Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYR));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 8) { // Blue Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYB));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 9) { // Green Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYG));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 10) { // Player
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 					player.setPos(new Vector2(x, y));
@@ -97,18 +90,15 @@ public class World implements Updatable {
 					ens.add(e);
 				} else if (manager.map[x][y] == 12) // Box
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BOX));
-				else if (manager.map[x][y] == 13){ // Barrel
+				else if (manager.map[x][y] == 13) { // Barrel
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BARREL));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
-				else if (manager.map[x][y] == 14){ // Cactus
+				} else if (manager.map[x][y] == 14) { // Cactus
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.CACTUS));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
-				else if (manager.map[x][y] == 15){ // Plant
+				} else if (manager.map[x][y] == 15) { // Plant
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.PLANT));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
-				else if (manager.map[x][y] == 16){ // Logs
+				} else if (manager.map[x][y] == 16) { // Logs
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.LOGS));
-					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
+				}
 			}
 		dir = new Vector2();
 		EM = new EnemyManager(this);
@@ -152,10 +142,10 @@ public class World implements Updatable {
 					player.hit(b.getHP());
 					continue;
 				}
-				if (getNextTile(b.getBoundingBox()) == TileType.WALL) {
+				TileType tmp = getNextTile(b.getBoundingBox());
+				if (tmp == TileType.WALL || tmp == TileType.BARREL || tmp == TileType.BOX || tmp == TileType.CACTUS
+						|| tmp == TileType.LOGS || tmp == TileType.PLANT)
 					it.remove();
-					continue;
-				}
 			}
 		}
 
