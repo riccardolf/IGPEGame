@@ -1,0 +1,146 @@
+
+rifle_move.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+rifle_move
+  rotate: false
+  xy: 2, 632
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 10
+rifle_move
+  rotate: false
+  xy: 2, 317
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 11
+rifle_move
+  rotate: false
+  xy: 2, 317
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 9
+rifle_move
+  rotate: false
+  xy: 210, 632
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 12
+rifle_move
+  rotate: false
+  xy: 210, 632
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 8
+rifle_move
+  rotate: false
+  xy: 2, 2
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 13
+rifle_move
+  rotate: false
+  xy: 2, 2
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 7
+rifle_move
+  rotate: false
+  xy: 210, 317
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 14
+rifle_move
+  rotate: false
+  xy: 210, 317
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 6
+rifle_move
+  rotate: false
+  xy: 418, 632
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 15
+rifle_move
+  rotate: false
+  xy: 418, 632
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 5
+rifle_move
+  rotate: false
+  xy: 210, 2
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 16
+rifle_move
+  rotate: false
+  xy: 210, 2
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 4
+rifle_move
+  rotate: false
+  xy: 418, 317
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 17
+rifle_move
+  rotate: false
+  xy: 418, 317
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 3
+rifle_move
+  rotate: false
+  xy: 626, 632
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 18
+rifle_move
+  rotate: false
+  xy: 626, 632
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 2
+rifle_move
+  rotate: false
+  xy: 418, 2
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 19
+rifle_move
+  rotate: false
+  xy: 418, 2
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 1
+rifle_move
+  rotate: false
+  xy: 626, 317
+  size: 206, 313
+  orig: 206, 313
+  offset: 0, 0
+  index: 0

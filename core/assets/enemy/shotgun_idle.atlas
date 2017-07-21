@@ -1,0 +1,146 @@
+
+shotgun_idle.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+shotgun_idle
+  rotate: false
+  xy: 2, 632
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 0
+shotgun_idle
+  rotate: false
+  xy: 2, 317
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 1
+shotgun_idle
+  rotate: false
+  xy: 2, 317
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 19
+shotgun_idle
+  rotate: false
+  xy: 211, 632
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 2
+shotgun_idle
+  rotate: false
+  xy: 211, 632
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 18
+shotgun_idle
+  rotate: false
+  xy: 2, 2
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 3
+shotgun_idle
+  rotate: false
+  xy: 2, 2
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 17
+shotgun_idle
+  rotate: false
+  xy: 211, 317
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 4
+shotgun_idle
+  rotate: false
+  xy: 211, 317
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 16
+shotgun_idle
+  rotate: false
+  xy: 420, 632
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 5
+shotgun_idle
+  rotate: false
+  xy: 420, 632
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 15
+shotgun_idle
+  rotate: false
+  xy: 211, 2
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 6
+shotgun_idle
+  rotate: false
+  xy: 211, 2
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 14
+shotgun_idle
+  rotate: false
+  xy: 420, 317
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 7
+shotgun_idle
+  rotate: false
+  xy: 420, 317
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 13
+shotgun_idle
+  rotate: false
+  xy: 629, 632
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 8
+shotgun_idle
+  rotate: false
+  xy: 629, 632
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 12
+shotgun_idle
+  rotate: false
+  xy: 420, 2
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 9
+shotgun_idle
+  rotate: false
+  xy: 420, 2
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 11
+shotgun_idle
+  rotate: false
+  xy: 629, 317
+  size: 207, 313
+  orig: 207, 313
+  offset: 0, 0
+  index: 10

@@ -1,0 +1,146 @@
+
+handgun_idle.png
+size: 2048,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+handgun_idle
+  rotate: false
+  xy: 2, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 10
+handgun_idle
+  rotate: false
+  xy: 2, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 11
+handgun_idle
+  rotate: false
+  xy: 2, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 9
+handgun_idle
+  rotate: false
+  xy: 220, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 12
+handgun_idle
+  rotate: false
+  xy: 220, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 8
+handgun_idle
+  rotate: false
+  xy: 220, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 13
+handgun_idle
+  rotate: false
+  xy: 220, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 7
+handgun_idle
+  rotate: false
+  xy: 438, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 14
+handgun_idle
+  rotate: false
+  xy: 438, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 6
+handgun_idle
+  rotate: false
+  xy: 438, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 15
+handgun_idle
+  rotate: false
+  xy: 438, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 5
+handgun_idle
+  rotate: false
+  xy: 656, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 16
+handgun_idle
+  rotate: false
+  xy: 656, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 4
+handgun_idle
+  rotate: false
+  xy: 656, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 17
+handgun_idle
+  rotate: false
+  xy: 656, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 3
+handgun_idle
+  rotate: false
+  xy: 874, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 18
+handgun_idle
+  rotate: false
+  xy: 874, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 2
+handgun_idle
+  rotate: false
+  xy: 874, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 19
+handgun_idle
+  rotate: false
+  xy: 874, 2
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 1
+handgun_idle
+  rotate: false
+  xy: 1092, 257
+  size: 216, 253
+  orig: 216, 253
+  offset: 0, 0
+  index: 0

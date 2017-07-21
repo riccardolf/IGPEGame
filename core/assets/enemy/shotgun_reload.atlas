@@ -1,0 +1,146 @@
+
+shotgun_reload.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+shotgun_reload
+  rotate: false
+  xy: 2, 650
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 10
+shotgun_reload
+  rotate: false
+  xy: 2, 326
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 11
+shotgun_reload
+  rotate: false
+  xy: 221, 650
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 12
+shotgun_reload
+  rotate: false
+  xy: 2, 2
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 13
+shotgun_reload
+  rotate: false
+  xy: 221, 326
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 14
+shotgun_reload
+  rotate: false
+  xy: 440, 650
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 15
+shotgun_reload
+  rotate: false
+  xy: 221, 2
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 16
+shotgun_reload
+  rotate: false
+  xy: 440, 326
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 17
+shotgun_reload
+  rotate: false
+  xy: 659, 650
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 18
+shotgun_reload
+  rotate: false
+  xy: 440, 2
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 19
+shotgun_reload
+  rotate: false
+  xy: 659, 326
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 0
+shotgun_reload
+  rotate: false
+  xy: 878, 650
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 1
+shotgun_reload
+  rotate: false
+  xy: 659, 2
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 2
+shotgun_reload
+  rotate: false
+  xy: 878, 326
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 3
+shotgun_reload
+  rotate: false
+  xy: 1097, 650
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 4
+shotgun_reload
+  rotate: false
+  xy: 878, 2
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 5
+shotgun_reload
+  rotate: false
+  xy: 1097, 326
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 6
+shotgun_reload
+  rotate: false
+  xy: 1316, 650
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 7
+shotgun_reload
+  rotate: false
+  xy: 1097, 2
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 8
+shotgun_reload
+  rotate: false
+  xy: 1316, 326
+  size: 217, 322
+  orig: 217, 322
+  offset: 0, 0
+  index: 9

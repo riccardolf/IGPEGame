@@ -1,0 +1,146 @@
+
+handgun_move.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+handgun_move
+  rotate: false
+  xy: 2, 522
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 0
+handgun_move
+  rotate: false
+  xy: 2, 262
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 1
+handgun_move
+  rotate: false
+  xy: 2, 262
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 19
+handgun_move
+  rotate: false
+  xy: 224, 522
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 2
+handgun_move
+  rotate: false
+  xy: 224, 522
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 18
+handgun_move
+  rotate: false
+  xy: 2, 2
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 3
+handgun_move
+  rotate: false
+  xy: 2, 2
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 17
+handgun_move
+  rotate: false
+  xy: 224, 262
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 4
+handgun_move
+  rotate: false
+  xy: 224, 262
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 16
+handgun_move
+  rotate: false
+  xy: 446, 522
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 5
+handgun_move
+  rotate: false
+  xy: 446, 522
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 15
+handgun_move
+  rotate: false
+  xy: 224, 2
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 6
+handgun_move
+  rotate: false
+  xy: 224, 2
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 14
+handgun_move
+  rotate: false
+  xy: 446, 262
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 7
+handgun_move
+  rotate: false
+  xy: 446, 262
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 13
+handgun_move
+  rotate: false
+  xy: 668, 522
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 8
+handgun_move
+  rotate: false
+  xy: 668, 522
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 12
+handgun_move
+  rotate: false
+  xy: 446, 2
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 9
+handgun_move
+  rotate: false
+  xy: 446, 2
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 11
+handgun_move
+  rotate: false
+  xy: 668, 262
+  size: 220, 258
+  orig: 220, 258
+  offset: 0, 0
+  index: 10

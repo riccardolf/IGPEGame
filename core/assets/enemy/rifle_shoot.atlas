@@ -1,0 +1,27 @@
+
+rifle_shoot.png
+size: 256,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+rifle_shoot
+  rotate: false
+  xy: 2, 630
+  size: 206, 312
+  orig: 206, 312
+  offset: 0, 0
+  index: 0
+rifle_shoot
+  rotate: false
+  xy: 2, 316
+  size: 206, 312
+  orig: 206, 312
+  offset: 0, 0
+  index: 1
+rifle_shoot
+  rotate: false
+  xy: 2, 2
+  size: 206, 312
+  orig: 206, 312
+  offset: 0, 0
+  index: 2
