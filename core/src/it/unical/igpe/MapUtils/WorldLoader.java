@@ -13,7 +13,7 @@ public class WorldLoader {
 
 	public void LoadMap(String path) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(path));
-		for (int i = 0; i < 64; i++) {
+		for (int i = 0; i < map[0].length; i++) {
 			String line = null;
 			line = br.readLine();
 			String[] tokens = line.split(" ");

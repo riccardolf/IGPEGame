@@ -84,6 +84,10 @@ public class MultiplayerGameScreen implements Screen {
 			box = new Rectangle(world.player.getBoundingBox().x - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
+			if (MultiplayerWorld.getNextTile(box) != TileType.WALL) {
+				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
+				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
+			}
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!world.player.isReloading())

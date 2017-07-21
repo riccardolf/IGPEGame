@@ -49,7 +49,7 @@ public class MultiplayerWorld implements Updatable {
 		spawnPoints = new LinkedList<Vector2>();
 		keyCollected = 0;
 
-		manager = new WorldLoader(64, 64);
+		manager = new WorldLoader(32, 32);
 		try {
 			manager.LoadMap(path);
 		} catch (IOException e) {

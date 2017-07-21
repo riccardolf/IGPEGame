@@ -54,17 +54,17 @@ public class MultiplayerWorldRenderer {
 		camera.update();
 
 		// Sound from the player
-		if (world.getPlayer().state == Player.STATE_RUNNING) {
-			world.getPlayer().timeToNextStep -= deltaTime;
-			if(world.getPlayer().timeToNextStep < 0) {
-				SoundManager.manager.get(SoundManager.Step, Sound.class).play(GameConfig.SOUND_VOLUME);
-				while(world.getPlayer().timeToNextStep < 0)
-					world.getPlayer().timeToNextStep += 0.35f;
-			}
-		}
-		else {
-			world.getPlayer().timeToNextStep = 0;
-		}
+//		if (world.getPlayer().state == Player.STATE_RUNNING) {
+//			world.getPlayer().timeToNextStep -= deltaTime;
+//			if(world.getPlayer().timeToNextStep < 0) {
+//				SoundManager.manager.get(SoundManager.Step, Sound.class).play(GameConfig.SOUND_VOLUME);
+//				while(world.getPlayer().timeToNextStep < 0)
+//					world.getPlayer().timeToNextStep += 0.35f;
+//			}
+//		}
+//		else {
+//			world.getPlayer().timeToNextStep = 0;
+//		}
 		
 		batch.begin();
 
@@ -91,6 +91,21 @@ public class MultiplayerWorldRenderer {
 		Iterator<AbstractDynamicObject> iter = world.entities.iterator();
 		while(iter.hasNext()) {
 			PlayerMP e = (PlayerMP) iter.next();
+			if (e.state == Player.STATE_RUNNING) {
+				e.timeToNextStep -= deltaTime;
+				if (e.timeToNextStep < 0) {
+					float boundary = camera.viewportWidth / 2;
+					float xDistance = e.getX() - camera.position.x;
+					float distance = camera.position.dst(e.getX(), e.getY(), 0) * Math.signum(xDistance);
+					distance = Math.min(boundary, Math.max(distance, -boundary));
+					SoundManager.manager.get(SoundManager.Step, Sound.class).play(
+							GameConfig.SOUND_VOLUME * (1 - Math.abs(distance) / boundary), 1.0f, xDistance / boundary);
+					while (e.timeToNextStep < 0)
+						e.timeToNextStep += 0.35f;
+				}
+			} else {
+				e.timeToNextStep = 0;
+			}
 			if(e.getUsername().equalsIgnoreCase(MultiplayerWorld.username)) {
 				if (e.getActWeapon() == "pistol") {
 					if (e.state == Player.STATE_IDLE)
@@ -157,16 +172,15 @@ public class MultiplayerWorldRenderer {
 								e.getBoundingBox().y, 32, 32, 64, 64, 1f, 1f, e.angle);
 				}
 			}
-		}
-		batch.setColor(1, 1, 1, 0.5f);
-		batch.end();
+		}batch.setColor(1,1,1,0.5f);batch.end();
 
-		// Drawing Bullets
-		sr.begin(ShapeType.Filled);
-		for (Bullet bullet : world.getBls()) {
-			sr.circle(bullet.getBoundingBox().x, bullet.getBoundingBox().y, 4);
-		}
-		sr.end();
+	// Drawing Bullets
+	sr.begin(ShapeType.Filled);for(
+
+	Bullet bullet:world.getBls())
+	{
+		sr.circle(bullet.getBoundingBox().x, bullet.getBoundingBox().y, 4);
+	}sr.end();
 
 	}
 
