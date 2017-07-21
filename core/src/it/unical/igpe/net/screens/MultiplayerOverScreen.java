@@ -76,6 +76,8 @@ public class MultiplayerOverScreen implements Screen {
 				Assets.manager.clear();
 				if(IGPEGame.game.socketServer != null)
 					IGPEGame.game.socketServer.close();
+				table.removeActor(winnerText);
+				table.removeActor(killsText);
 				IGPEGame.game.setScreen(ScreenManager.MMS);
 			}
 		}

@@ -39,11 +39,13 @@ public class MultiScreen implements Screen {
 	private Label nameClientLabel;
 	private Label multiLabel;
 	private Label nameServerLabel;
+	private Label serverKillsLabel;
 	private TextField nameText;
 	private TextField IPClientText;
 	private TextField PortClientText;
 	private TextField PortServerText;
 	private TextField serverNameText;
+	private TextField serverKills;
 	
 	public MultiScreen() {
 		batch = new SpriteBatch();
@@ -142,6 +144,7 @@ public class MultiScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				IGPEGame.game.socketServer = new GameServer(Integer.parseInt(PortServerText.getText()));
+				IGPEGame.game.socketServer.MaxKills = Integer.parseInt(serverKills.getText());
 				IGPEGame.game.socketServer.start();
 				IGPEGame.game.socketClient = new GameClient("127.0.0.1", Integer.parseInt(PortServerText.getText()));
 				IGPEGame.game.socketClient.start();
@@ -165,6 +168,8 @@ public class MultiScreen implements Screen {
 		PortServerText = new TextField("1234", IGPEGame.skinsoldier);
 		nameServerLabel = new Label("Name", IGPEGame.skinsoldier);
 		serverNameText = new TextField("", IGPEGame.skinsoldier);
+		serverKills = new TextField("10", IGPEGame.skinsoldier);
+		serverKillsLabel = new Label("Max Kills", IGPEGame.skinsoldier);
 
 		tableChoose.add(multiLabel);
 		tableChoose.row();
@@ -193,6 +198,9 @@ public class MultiScreen implements Screen {
 		tableServer.row();
 		tableServer.add(nameServerLabel);
 		tableServer.add(serverNameText).width(200);
+		tableServer.row();
+		tableServer.add(serverKillsLabel);
+		tableServer.add(serverKills).width(100);
 		tableServer.row();
 		tableServer.add(PortServerLabel);
 		tableServer.add(PortServerText).width(200);

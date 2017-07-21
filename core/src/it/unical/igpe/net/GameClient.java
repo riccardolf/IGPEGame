@@ -99,7 +99,7 @@ public class GameClient extends Thread {
 	}
 
 	private void handleGameOver(Packet05GameOver packet) {
-		IGPEGame.game.worldMP.handleGameOver(packet.getUsernameWinner());
+		IGPEGame.game.worldMP.handleGameOver(packet.getUsernameWinner(), packet.getKillsWinner());
 	}
 
 	private void handleDeath(Packet04Death packet) {

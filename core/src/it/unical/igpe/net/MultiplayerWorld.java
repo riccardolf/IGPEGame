@@ -19,7 +19,6 @@ import it.unical.igpe.logic.Player;
 import it.unical.igpe.logic.Tile;
 import it.unical.igpe.net.packet.Packet00Login;
 import it.unical.igpe.net.packet.Packet04Death;
-import it.unical.igpe.net.packet.Packet05GameOver;
 import it.unical.igpe.net.screens.MultiplayerOverScreen;
 import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
@@ -138,9 +137,6 @@ public class MultiplayerWorld implements Updatable {
 		if (this.player.getHP() <= 0) {
 			Packet04Death packet = new Packet04Death(Killer, this.player.getUsername());
 			packet.writeData(IGPEGame.game.socketClient);
-		} else if (this.player.kills >= GameConfig.MULTIKILLS) {
-			Packet05GameOver packet = new Packet05GameOver(username);
-			packet.writeData(IGPEGame.game.socketClient);
 		}
 	}
 
@@ -230,9 +226,9 @@ public class MultiplayerWorld implements Updatable {
 		}
 	}
 
-	public void handleGameOver(String usernameWinner) {
+	public void handleGameOver(String usernameWinner, int killsWinner) {
 		MultiplayerOverScreen.winner = usernameWinner;
-		MultiplayerOverScreen.kills = GameConfig.MULTIKILLS;
+		MultiplayerOverScreen.kills = killsWinner;
 		this.gameOver = true;
 	}
 

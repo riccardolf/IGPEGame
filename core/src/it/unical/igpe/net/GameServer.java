@@ -22,6 +22,7 @@ import it.unical.igpe.net.packet.Packet05GameOver;
 
 public class GameServer extends Thread {
 	public MultiplayerWorld worldMP;
+	public int MaxKills;
 	private DatagramSocket socket;
 	private List<PlayerMP> connectedPlayers = new ArrayList<PlayerMP>();
 
@@ -45,6 +46,12 @@ public class GameServer extends Thread {
 				e.printStackTrace();
 			}
 			this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
+			for (PlayerMP p : connectedPlayers) {
+				if(p.kills >= MaxKills)  {
+					Packet05GameOver packetGO = new Packet05GameOver(p.username, p.kills);
+					packetGO.writeData(this);
+				}
+			}
 		}
 	}
 
@@ -81,7 +88,7 @@ public class GameServer extends Thread {
 			break;
 		case DEATH:
 			packet = new Packet04Death(data);
-			packet.writeData(this);
+			handleDeath((Packet04Death) packet);
 			break;
 		case GAMEOVER:
 			packet = new Packet05GameOver(data);
@@ -90,6 +97,18 @@ public class GameServer extends Thread {
 		}
 	}
 	
+	private void handleDeath(Packet04Death packet) {
+		if (getPlayerMP(packet.getUsernameKiller()) != null && getPlayerMP(packet.getUsernameKilled()) != null) {
+			int index = getPlayerMPIndex(packet.getUsernameKiller());
+			if(!packet.getUsernameKiller().equalsIgnoreCase(MultiplayerWorld.username))
+				this.connectedPlayers.get(index).kills++;
+			index = getPlayerMPIndex(packet.getUsernameKilled());
+			if(!packet.getUsernameKilled().equalsIgnoreCase(MultiplayerWorld.username))
+				this.connectedPlayers.get(index).deaths++;
+			packet.writeData(this);
+		}
+	}
+
 	public void close() {
 		this.socket.close();
 	}
