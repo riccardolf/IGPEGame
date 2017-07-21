@@ -67,6 +67,10 @@ public class IGPEGame extends Game implements Disposable {
 			packetDisconnect.writeData(IGPEGame.game.socketClient);
 			IGPEGame.game.socketServer.close();
 		}
+		else if(this.socketClient != null) {
+			Packet01Disconnect packetDisconnect = new Packet01Disconnect(IGPEGame.game.worldMP.player.getUsername());
+			packetDisconnect.writeData(IGPEGame.game.socketClient);
+		}
 	}
 
 	public void setVolume() {

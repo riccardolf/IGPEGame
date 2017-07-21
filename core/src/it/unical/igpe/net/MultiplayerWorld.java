@@ -121,7 +121,7 @@ public class MultiplayerWorld implements Updatable {
 							it.remove();
 							removed = true;
 							if (a.getUsername() == this.player.getUsername()) {
-								this.player.hit(15); // TODO: DMG
+								this.player.hit(b.getHP());
 								Killer = b.getID();
 							}
 						}
@@ -148,7 +148,8 @@ public class MultiplayerWorld implements Updatable {
 		for (Tile tile : tiles) {
 			if (Math.sqrt(Math.pow((_box.x - tile.getBoundingBox().x), 2)
 					+ Math.pow(_box.y - tile.getBoundingBox().y, 2)) < 128) {
-				if (tile.getType() != TileType.GROUND && tile.getType() != TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
+				if (tile.getType() != TileType.GROUND && tile.getType() != TileType.ENDLEVEL
+						&& _box.intersects(tile.getBoundingBox()))
 					return TileType.WALL;
 				else if (tile.getType() == TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
 					return TileType.ENDLEVEL;
@@ -196,12 +197,26 @@ public class MultiplayerWorld implements Updatable {
 		}
 	}
 
-	public void fireBullet(String username, int x, int y, float angle) {
+	public void fireBullet(String username, int x, int y, float angle, int weapon) {
 		synchronized (bls) {
 			float x2 = (float) (16 * Math.cos(Math.toRadians(angle)) - 16 * Math.sin(Math.toRadians(angle)));
 			float y2 = (float) (16 * Math.sin(Math.toRadians(angle)) + 16 * Math.cos(Math.toRadians(angle)));
-			this.bls.add(new Bullet(new Vector2(x + 32 + x2, y + 32 + y2), (float) Math.toRadians(angle + 90f),
-					username, 15));
+			Vector2 shotPos = new Vector2(x + 32 + x2, y + 32 + y2);
+			if (weapon == 1) {
+				this.bls.add(new Bullet(shotPos, (float) Math.toRadians(angle + 90f), username, 15));
+				MultiplayerWorldRenderer.pistolShot = true;
+				MultiplayerWorldRenderer.shotPos = shotPos;
+			} else if (weapon == 2) {
+				this.bls.add(new Bullet(shotPos, (float) Math.toRadians(angle + 90f), username, 34));
+				this.bls.add(new Bullet(shotPos, (float) Math.toRadians(angle + 100f), username, 34));
+				this.bls.add(new Bullet(shotPos, (float) Math.toRadians(angle + 80f), username, 34));
+				MultiplayerWorldRenderer.shotgunShot = true;
+				MultiplayerWorldRenderer.shotPos = shotPos;
+			} else {
+				this.bls.add(new Bullet(shotPos, (float) Math.toRadians(angle + 90f), username, 50));
+				MultiplayerWorldRenderer.rifleShot = true;
+				MultiplayerWorldRenderer.shotPos = shotPos;
+			}
 		}
 	}
 

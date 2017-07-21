@@ -35,12 +35,14 @@ public class MultiScreen implements Screen {
 	private Label IPClientLabel;
 	private Label PortClientLabel;
 	private Label PortServerLabel;
-	private Label nameLabel;
+	private Label nameClientLabel;
 	private Label multiLabel;
+	private Label nameServerLabel;
 	private TextField nameText;
 	private TextField IPClientText;
 	private TextField PortClientText;
 	private TextField PortServerText;
+	private TextField serverNameText;
 	
 	public MultiScreen() {
 		batch = new SpriteBatch();
@@ -140,6 +142,12 @@ public class MultiScreen implements Screen {
 			public void changed(ChangeEvent event, Actor actor) {
 				IGPEGame.game.socketServer = new GameServer(Integer.parseInt(PortServerText.getText()));
 				IGPEGame.game.socketServer.start();
+				IGPEGame.game.socketClient = new GameClient("127.0.0.1", Integer.parseInt(PortServerText.getText()));
+				IGPEGame.game.socketClient.start();
+				MultiplayerWorld.username = serverNameText.getText();
+				ScreenManager.CreateMGS();
+				LoadingScreen.isMP = true;
+				IGPEGame.game.setScreen(ScreenManager.LS);
 			}
 		});
 
@@ -149,11 +157,13 @@ public class MultiScreen implements Screen {
 		IPClientLabel = new Label("IP", IGPEGame.skinsoldier);
 		PortClientLabel = new Label("Port", IGPEGame.skinsoldier);
 		PortServerLabel = new Label("Port", IGPEGame.skinsoldier);
-		nameLabel = new Label("Name", IGPEGame.skinsoldier);
+		nameClientLabel = new Label("Name", IGPEGame.skinsoldier);
 		nameText = new TextField("", IGPEGame.skinsoldier);
 		IPClientText = new TextField("127.0.0.1", IGPEGame.skinsoldier);
 		PortClientText = new TextField("1234", IGPEGame.skinsoldier);
 		PortServerText = new TextField("1234", IGPEGame.skinsoldier);
+		nameServerLabel = new Label("Name", IGPEGame.skinsoldier);
+		serverNameText = new TextField("", IGPEGame.skinsoldier);
 
 		tableChoose.add(multiLabel);
 		tableChoose.row();
@@ -165,7 +175,7 @@ public class MultiScreen implements Screen {
 
 		tableClient.add(clientLabel);
 		tableClient.row();
-		tableClient.add(nameLabel);
+		tableClient.add(nameClientLabel);
 		tableClient.add(nameText).width(250);
 		tableClient.row();
 		tableClient.add(IPClientLabel);
@@ -179,6 +189,9 @@ public class MultiScreen implements Screen {
 		tableClient.add(chosenReturnClientButton);
 
 		tableServer.add(serverLabel);
+		tableServer.row();
+		tableServer.add(nameServerLabel);
+		tableServer.add(serverNameText).width(200);
 		tableServer.row();
 		tableServer.add(PortServerLabel);
 		tableServer.add(PortServerText).width(200);

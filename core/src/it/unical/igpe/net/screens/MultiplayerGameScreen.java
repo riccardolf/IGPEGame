@@ -171,13 +171,6 @@ public class MultiplayerGameScreen implements Screen {
 		// Fire and Reloading action of the player
 		if (Gdx.input.justTouched() && world.player.canShoot()) {
 			world.player.fire();
-			if (world.player.getActWeapon() == "pistol" && !world.player.isReloading()) {
-				SoundManager.manager.get(SoundManager.PistolFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-			} else if (world.player.getActWeapon() == "shotgun" && !world.player.isReloading()) {
-				SoundManager.manager.get(SoundManager.ShotgunFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-			} else if (world.player.getActWeapon() == "rifle" && !world.player.isReloading()) {
-				SoundManager.manager.get(SoundManager.RifleFire, Sound.class).play(GameConfig.SOUND_VOLUME);
-			}
 			if (world.player.checkAmmo()) {
 				if (world.player.getActWeapon() == "pistol")
 					SoundManager.manager.get(SoundManager.PistolReload, Sound.class).play(GameConfig.SOUND_VOLUME);

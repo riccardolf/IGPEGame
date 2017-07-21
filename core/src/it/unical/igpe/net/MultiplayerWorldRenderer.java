@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -23,6 +24,11 @@ import it.unical.igpe.utils.GameConfig;
 import it.unical.igpe.utils.TileType;
 
 public class MultiplayerWorldRenderer {
+	public static boolean pistolShot;
+	public static boolean shotgunShot;
+	public static boolean rifleShot;
+	public static Vector2 shotPos;
+	
 	private OrthographicCamera camera;
 	public Viewport viewport;
 	private SpriteBatch batch;
@@ -171,11 +177,48 @@ public class MultiplayerWorldRenderer {
 			sr.circle(bullet.getBoundingBox().x, bullet.getBoundingBox().y, 4);
 		}
 		sr.end();
+		
+		if(pistolShot)
+			this.firePistol();
+		else if(shotgunShot)
+			this.fireShotgun();
+		else if(rifleShot)
+			this.fireRifle();
 
 	}
 
 	public void dispose() {
 		batch.dispose();
+	}
+	
+	public void firePistol() {
+		pistolShot = false;
+		float boundary = camera.viewportWidth / 2;
+		float xDistance = shotPos.x - camera.position.x;
+		float distance = camera.position.dst(shotPos.x, shotPos.y, 0) * Math.signum(xDistance);
+		distance = Math.min(boundary, Math.max(distance, -boundary));
+		SoundManager.manager.get(SoundManager.PistolFire, Sound.class).play(
+				GameConfig.SOUND_VOLUME * (1 - Math.abs(distance) / boundary), 1.0f, xDistance / boundary);
+	}
+	
+	public void fireShotgun() {
+		shotgunShot = false;
+		float boundary = camera.viewportWidth / 2;
+		float xDistance = shotPos.x - camera.position.x;
+		float distance = camera.position.dst(shotPos.x, shotPos.y, 0) * Math.signum(xDistance);
+		distance = Math.min(boundary, Math.max(distance, -boundary));
+		SoundManager.manager.get(SoundManager.ShotgunFire, Sound.class).play(
+				GameConfig.SOUND_VOLUME * (1 - Math.abs(distance) / boundary), 1.0f, xDistance / boundary);
+	}
+
+	public void fireRifle() {
+		rifleShot = false;
+		float boundary = camera.viewportWidth / 2;
+		float xDistance = shotPos.x - camera.position.x;
+		float distance = camera.position.dst(shotPos.x, shotPos.y, 0) * Math.signum(xDistance);
+		distance = Math.min(boundary, Math.max(distance, -boundary));
+		SoundManager.manager.get(SoundManager.RifleFire, Sound.class).play(
+				GameConfig.SOUND_VOLUME * (1 - Math.abs(distance) / boundary), 1.0f, xDistance / boundary);
 	}
 
 }

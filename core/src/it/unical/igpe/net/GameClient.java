@@ -107,7 +107,7 @@ public class GameClient extends Thread {
 	}
 
 	private void handleFire(Packet03Fire packet) {
-		IGPEGame.game.worldMP.fireBullet(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle());
+		IGPEGame.game.worldMP.fireBullet(packet.getUsername(), packet.getX(), packet.getY(), packet.getAngle(), packet.getWeapon());
 	}
 
 	private void handleLogin(Packet00Login packet, InetAddress address, int port) {

@@ -26,16 +26,16 @@ public class PlayerMP extends Player {
 	public void fire() {
 		Packet03Fire packetFire;
 		if (!reloading) {
-			packetFire = new Packet03Fire(username, boundingBox.x, boundingBox.y, angle);
+			if(this.activeWeapon.ID == "pistol")
+				packetFire = new Packet03Fire(username, boundingBox.x, boundingBox.y, angle, 1);
+			else if(this.activeWeapon.ID == "shotgun")
+				packetFire = new Packet03Fire(username, boundingBox.x, boundingBox.y, angle, 2);
+			else 
+				packetFire = new Packet03Fire(username, boundingBox.x, boundingBox.y, angle, 3);
+			
 			packetFire.writeData(IGPEGame.game.socketClient);
 			this.activeWeapon.lastFired = 0f;
 			this.activeWeapon.actClip--;
-		}
-		if (!reloading && activeWeapon.ID == "shotgun") {
-			packetFire = new Packet03Fire(username, boundingBox.x, boundingBox.y, angle + 10f);
-			packetFire.writeData(IGPEGame.game.socketClient);
-			packetFire = new Packet03Fire(username, boundingBox.x, boundingBox.y, angle - 10f);
-			packetFire.writeData(IGPEGame.game.socketClient);
 		}
 	}
 
