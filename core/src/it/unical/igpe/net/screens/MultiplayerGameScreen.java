@@ -85,7 +85,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
@@ -97,7 +97,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
@@ -109,7 +109,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -121,7 +121,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -133,7 +133,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y - (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS)
+			if (tmp != TileType.WALL)
 				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -143,7 +143,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS)
+			if (tmp != TileType.WALL)
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -153,7 +153,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y + (int) (GameConfig.MOVESPEED * delta),
 					world.player.getBoundingBox().width, world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS)
+			if (tmp != TileType.WALL)
 				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
 
 		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -163,7 +163,7 @@ public class MultiplayerGameScreen implements Screen {
 					world.player.getBoundingBox().y, world.player.getBoundingBox().width,
 					world.player.getBoundingBox().height);
 			TileType tmp = MultiplayerWorld.getNextTile(box);
-			if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS)
+			if (tmp != TileType.WALL)
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
 
 		}

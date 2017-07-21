@@ -63,24 +63,29 @@ public class World implements Updatable {
 				else if (manager.map[x][y] == 3) { // AmmoPack
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.AMMOPACK));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 4) { // HealthPack
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.HEALTPACK));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 5) { // Trap
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.TRAP));
 				} else if (manager.map[x][y] == 6) { // Yellow Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYY));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 7) { // Red Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYR));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 8) { // Blue Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYB));
 				} else if (manager.map[x][y] == 9) { // Green Key
 					lootables.add(new Lootable(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM),
 							LootableType.KEYG));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 				} else if (manager.map[x][y] == 10) { // Player
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));
 					player.setPos(new Vector2(x, y));
@@ -143,8 +148,7 @@ public class World implements Updatable {
 					continue;
 				}
 				TileType tmp = getNextTile(b.getBoundingBox());
-				if (tmp == TileType.WALL || tmp == TileType.BARREL || tmp == TileType.BOX || tmp == TileType.CACTUS
-						|| tmp == TileType.LOGS || tmp == TileType.PLANT)
+				if (tmp == TileType.WALL)
 					it.remove();
 			}
 		}
@@ -183,7 +187,7 @@ public class World implements Updatable {
 		for (Tile tile : tiles) {
 			if (Math.sqrt(Math.pow((_box.x - tile.getBoundingBox().x), 2)
 					+ Math.pow(_box.y - tile.getBoundingBox().y, 2)) < 128) {
-				if (tile.getType() == TileType.WALL && _box.intersects(tile.getBoundingBox()))
+				if (tile.getType() != TileType.GROUND && tile.getType() != TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
 					return TileType.WALL;
 				else if (tile.getType() == TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
 					return TileType.ENDLEVEL;

@@ -88,23 +88,30 @@ public class WorldRenderer {
 
 		// Drawing loot
 		for (Lootable loot : world.getLootables()) {
-			batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
-			if (loot.getType() == LootableType.HEALTPACK)
+			if (loot.getType() == LootableType.HEALTPACK) {
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 				batch.draw(Assets.manager.get(Assets.HealthPack, Texture.class), loot.getX(), loot.getY());
+			}
 			else if (loot.getType() == LootableType.TRAP) {
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 				if (loot.closed)
 					batch.draw(Assets.manager.get(Assets.TrapClosed, Texture.class), loot.getX(), loot.getY());
 				else
 					batch.draw(Assets.manager.get(Assets.TrapOpen, Texture.class), loot.getX(), loot.getY());
 			} else if (loot.getType() == LootableType.KEYY) {
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 				batch.draw(Assets.manager.get(Assets.KeyY, Texture.class), loot.getX(), loot.getY());
 			} else if (loot.getType() == LootableType.KEYR) {
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 				batch.draw(Assets.manager.get(Assets.KeyR, Texture.class), loot.getX(), loot.getY());
 			} else if (loot.getType() == LootableType.KEYG) {
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 				batch.draw(Assets.manager.get(Assets.KeyG, Texture.class), loot.getX(), loot.getY());
 			} else if (loot.getType() == LootableType.KEYB) {
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 				batch.draw(Assets.manager.get(Assets.KeyB, Texture.class), loot.getX(), loot.getY());
 			} else if (loot.getType() == LootableType.AMMOPACK) {
+				batch.draw(Assets.manager.get(Assets.Ground, Texture.class), loot.getX(), loot.getY());
 				batch.draw(Assets.manager.get(Assets.AmmoBox, Texture.class), loot.getX(), loot.getY());
 			}
 		}

@@ -129,8 +129,7 @@ public class MultiplayerWorld implements Updatable {
 					if (removed)
 						continue;
 					TileType tmp = getNextTile(b.getBoundingBox());
-					if (tmp == TileType.WALL || tmp == TileType.BARREL || tmp == TileType.BOX || tmp == TileType.CACTUS
-							|| tmp == TileType.LOGS || tmp == TileType.PLANT)
+					if (tmp == TileType.WALL)
 						it.remove();
 				}
 			}
@@ -143,15 +142,13 @@ public class MultiplayerWorld implements Updatable {
 			Packet05GameOver packet = new Packet05GameOver(username);
 			packet.writeData(IGPEGame.game.socketClient);
 		}
-
-		// TODO: Packet for server closed
 	}
 
 	public static TileType getNextTile(Rectangle _box) {
 		for (Tile tile : tiles) {
 			if (Math.sqrt(Math.pow((_box.x - tile.getBoundingBox().x), 2)
 					+ Math.pow(_box.y - tile.getBoundingBox().y, 2)) < 128) {
-				if (tile.getType() == TileType.WALL && _box.intersects(tile.getBoundingBox()))
+				if (tile.getType() != TileType.GROUND && tile.getType() != TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
 					return TileType.WALL;
 				else if (tile.getType() == TileType.ENDLEVEL && _box.intersects(tile.getBoundingBox()))
 					return TileType.ENDLEVEL;

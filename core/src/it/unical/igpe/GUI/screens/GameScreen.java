@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
 				World.finished = true;
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
@@ -122,7 +122,7 @@ public class GameScreen implements Screen {
 				World.finished = true;
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y -= GameConfig.DIAGONALSPEED * delta;
 			}
@@ -138,7 +138,7 @@ public class GameScreen implements Screen {
 				World.finished = true;
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x -= GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -154,7 +154,7 @@ public class GameScreen implements Screen {
 				World.finished = true;
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.DIAGONALSPEED * delta;
 				world.player.getBoundingBox().y += GameConfig.DIAGONALSPEED * delta;
 			}
@@ -168,7 +168,7 @@ public class GameScreen implements Screen {
 			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().y -= GameConfig.MOVESPEED * delta;
 			}
 
@@ -181,7 +181,7 @@ public class GameScreen implements Screen {
 			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x -= GameConfig.MOVESPEED * delta;
 			}
 
@@ -194,7 +194,7 @@ public class GameScreen implements Screen {
 			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().y += GameConfig.MOVESPEED * delta;
 			}
 
@@ -207,8 +207,7 @@ public class GameScreen implements Screen {
 			if (tmp == TileType.ENDLEVEL && World.isDoorUnlocked()) {
 				World.finished = true;
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
-			} else if (tmp != TileType.WALL && tmp != TileType.BARREL && tmp != TileType.BOX && tmp != TileType.CACTUS
-					&& tmp != TileType.LOGS && tmp != TileType.PLANT) {
+			} else if (tmp != TileType.WALL) {
 				world.player.getBoundingBox().x += GameConfig.MOVESPEED * delta;
 			}
 
