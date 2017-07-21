@@ -97,14 +97,18 @@ public class World implements Updatable {
 					ens.add(e);
 				} else if (manager.map[x][y] == 12) // Box
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BOX));
-				else if (manager.map[x][y] == 13) // Barrel
+				else if (manager.map[x][y] == 13){ // Barrel
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.BARREL));
-				else if (manager.map[x][y] == 14) // Cactus
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
+				else if (manager.map[x][y] == 14){ // Cactus
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.CACTUS));
-				else if (manager.map[x][y] == 15) // Plant
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
+				else if (manager.map[x][y] == 15){ // Plant
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.PLANT));
-				else if (manager.map[x][y] == 16) // Logs
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
+				else if (manager.map[x][y] == 16){ // Logs
 					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.LOGS));
+					tiles.add(new Tile(new Vector2(x * GameConfig.TILEDIM, y * GameConfig.TILEDIM), TileType.GROUND));}
 			}
 		dir = new Vector2();
 		EM = new EnemyManager(this);
