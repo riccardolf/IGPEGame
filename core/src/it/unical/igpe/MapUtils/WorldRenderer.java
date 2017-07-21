@@ -75,6 +75,16 @@ public class WorldRenderer {
 				else
 					batch.draw(Assets.manager.get(Assets.Stair, Texture.class), tile.getX(), tile.getY());
 			}
+			else if (tile.getType() == TileType.BOX)
+				batch.draw(Assets.manager.get(Assets.Box, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.BARREL)
+				batch.draw(Assets.manager.get(Assets.Barrel, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.CACTUS)
+				batch.draw(Assets.manager.get(Assets.Cactus, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.PLANT)
+				batch.draw(Assets.manager.get(Assets.Plant, Texture.class), tile.getX(), tile.getY());
+			else if (tile.getType() == TileType.LOGS)
+				batch.draw(Assets.manager.get(Assets.Logs, Texture.class), tile.getX(), tile.getY());
 		}
 
 		// Drawing loot

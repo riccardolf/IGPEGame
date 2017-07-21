@@ -29,7 +29,7 @@ public class GameServer extends Thread {
 		try {
 			this.socket = new DatagramSocket(port);
 			System.out.println("Creating Server...");
-			this.worldMP = new MultiplayerWorld("arena.map", true);
+			this.worldMP = new MultiplayerWorld("Arena.map", true);
 		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}

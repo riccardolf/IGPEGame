@@ -23,6 +23,11 @@ public class Assets {
 	public static String KeyB = "keyB.png";
 	public static String Key = "key.png";
 	public static String AmmoBox = "ammobox.png";
+	public static String Box = "box.png";
+	public static String Cactus = "cactus.png";
+	public static String Logs = "logs.png";
+	public static String Barrel = "barrel.png";
+	public static String Plant = "plant.png";
 
 	public static TextureAtlas atlas;
 	public static TextureRegion Skull;
@@ -75,6 +80,11 @@ public class Assets {
 		manager.load(KeyB, Texture.class);
 		manager.load(Key, Texture.class);
 		manager.load(AmmoBox, Texture.class);
+		manager.load(Box, Texture.class);
+		manager.load(Cactus, Texture.class);
+		manager.load(Logs, Texture.class);
+		manager.load(Barrel, Texture.class);
+		manager.load(Plant, Texture.class);
 
 		// load character's animations
 		Skull = new TextureRegion(new Texture(Gdx.files.internal("enemy/skull.png")));
