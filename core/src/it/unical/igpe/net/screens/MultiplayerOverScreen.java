@@ -40,14 +40,8 @@ public class MultiplayerOverScreen implements Screen {
 		stage.addActor(table);
 
 		title = new Label("THE GAME IS OVER", IGPEGame.skinsoldier);
-		winnerText = new Label("THE WINNER IS " + winner, IGPEGame.skinsoldier);
-		killsText = new Label("WITH " + kills + " KILLS", IGPEGame.skinsoldier);
 		
 		table.add(title);
-		table.row();
-		table.add(winnerText);
-		table.row();
-		table.add(killsText);
 	}
 	
 	@Override
@@ -57,6 +51,14 @@ public class MultiplayerOverScreen implements Screen {
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);
+		
+		winnerText = new Label("THE WINNER IS " + winner, IGPEGame.skinsoldier);
+		killsText = new Label("WITH " + kills + " KILLS", IGPEGame.skinsoldier);
+		
+		table.row();
+		table.add(winnerText);
+		table.row();
+		table.add(killsText);
 	}
 
 	@Override
