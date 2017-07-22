@@ -51,10 +51,10 @@ public class HUD implements Disposable {
 		stage.addActor(tableSkill);
 
 		health = new ProgressBar(0, 100, 1, false, IGPEGame.skinUi);
-		tableHP.add(health).padTop(425);
+		tableHP.add(health).padTop(Gdx.graphics.getHeight() - 100);
 		if (!isMP) {
 			skill = new ProgressBar(0.0f, 1.0f, 0.1f, true, IGPEGame.skinUi);
-			tableSkill.add(skill).padLeft(775);
+			tableSkill.add(skill).padLeft(Gdx.graphics.getWidth() - 100);
 		}
 
 	}
