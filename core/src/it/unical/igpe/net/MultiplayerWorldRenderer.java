@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -40,8 +39,8 @@ public class MultiplayerWorldRenderer {
 		this.world = world;
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(true, 800, 800);
-		this.camera.position.x = world.player.getBoundingBox().x;
-		this.camera.position.y = world.player.getBoundingBox().y;
+		this.camera.position.x = world.player.getX();
+		this.camera.position.y = world.player.getY();
 		this.viewport = new ExtendViewport(800, 800, camera);
 		this.batch = new SpriteBatch();
 		batch.setColor(1f, 1f, 1f, 0.7f);
@@ -54,8 +53,8 @@ public class MultiplayerWorldRenderer {
 		batch.setProjectionMatrix(camera.combined);
 		sr.setProjectionMatrix(camera.combined);
 
-		camera.position.lerp(new Vector3(world.getPlayer().getBoundingBox().x, world.getPlayer().getBoundingBox().y, 0),
-				0.5f);
+		camera.position.x = world.getPlayer().getX();
+		camera.position.y = world.getPlayer().getY();
 		camera.update();
 
 		batch.begin();

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -47,7 +46,8 @@ public class WorldRenderer {
 		batch.setProjectionMatrix(camera.combined);
 		sr.setProjectionMatrix(camera.combined);
 
-		camera.position.lerp(new Vector3(world.getPlayer().getX(), world.getPlayer().getY(), 0), 0.5f);
+		camera.position.x = world.getPlayer().getX();
+		camera.position.y = world.getPlayer().getY();
 		camera.update();
 
 		if (world.getPlayer().state == Player.STATE_RUNNING) {
