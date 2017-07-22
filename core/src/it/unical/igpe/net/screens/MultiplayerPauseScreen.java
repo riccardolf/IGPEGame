@@ -83,7 +83,7 @@ public class MultiplayerPauseScreen implements Screen {
 		});
 		
 		fullscreen = new CheckBox("FullScreen", IGPEGame.skinComic);
-		fullscreen.setChecked(GameConfig.isFullscreen);
+		
 		fullscreen.addListener(new ChangeListener() {
 			
 			@Override
@@ -124,6 +124,8 @@ public class MultiplayerPauseScreen implements Screen {
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setVolume(GameConfig.MUSIC_VOLUME);
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).setLooping(true);	
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+		
+		fullscreen.setChecked(GameConfig.isFullscreen);
 	}
 
 	@Override
