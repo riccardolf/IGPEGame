@@ -1,5 +1,6 @@
 package it.unical.igpe.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -13,7 +14,7 @@ public class DesktopLauncher {
 		cfg.title = GameConfig.GAMENAME;
 		cfg.width = GameConfig.WIDTH;
 		cfg.height = GameConfig.HEIGHT;
-
+		cfg.addIcon("icon.png", Files.FileType.Internal);
 		new LwjglApplication(new IGPEGame(), cfg);
 	}
 }
