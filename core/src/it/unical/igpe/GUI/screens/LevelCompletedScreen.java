@@ -30,11 +30,6 @@ public class LevelCompletedScreen implements Screen {
 	public LevelCompletedScreen() {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameConfig.BACKGROUNDWIDTH, GameConfig.BACKGROUNDHEIGHT);
-
-		stage = new Stage();
-		table = new Table();
-		table.setFillParent(true);
-		stage.addActor(table);
 		
 		labelLC = new Label("LEVEL COMPLETED", IGPEGame.skinsoldier);
 		labelGO = new Label("GAMEOVER", IGPEGame.skinsoldier);
@@ -45,6 +40,8 @@ public class LevelCompletedScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		SoundManager.manager.get(SoundManager.GameMusic, Music.class).stop();
 		SoundManager.manager.get(SoundManager.MenuMusic, Music.class).play();
+		
+		stage = new Stage();
 		
 		table = new Table();
 		table.setFillParent(true);
